@@ -1,153 +1,134 @@
-== Command Line Interface
+== 使用命令行界面
 
-OpenShift ships with a feature rich web console as well as command line tools
-to provide users with a nice interface to work with applications deployed to the
-platform.  The OpenShift tools are a single executable written in the Go
-programming language and is available for the following operating systems:
+OpenShift附带了一个功能丰富的web控制台以及命令行工具为用户提供一个良好的界面将应用部署到平台。OpenShift工具是用Go语言编写的单个可执行文件，它适用于下列操作系统:
 
 - Microsoft Windows
 - macOS 10
 - Linux
 
-You might already have the OpenShift CLI available on your environment. You can verify
-it by running an `oc` command:
+您的环境中可能已经有了OpenShift命令。您可以通过运行一个 `oc` 命令来验证它：
 
 [source,bash,role=execute-1]
 ----
 oc version --short
 ----
 
-You should see the following (or something similar):
+你应该看到以下(或类似的结果)：
 
 [source,bash]
 ----
 {{OC_VERSION}}
 ----
 
-If the `oc` doesn't exist or you have an older version of the OpenShift CLI, follow
-the next sections to install or update the OpenShift CLI. Otherwise, skip to the
-next lab.
+如果 `oc` 不存在，或者你有一个旧版本的OpenShift命令，请参照下一节内容来安装或更新OpenShift命令。否则，跳转到下一个实验。
 
+== 在Linux环境下载并安装OpenShift命令
 
+下载OpenShift 命令行工具的链接：{{DOWNLOAD_CLIENT_LIN64}}[Linux 64]
 
-== Download and Install OpenShift CLI on Linux
-
-Download the the OpenShift CLI tool for link:{{DOWNLOAD_CLIENT_LIN64}}[Linux 64]
-
-Once the file has been downloaded, you will need to extract the contents as it
-is a compressed archive. I would suggest saving this file to the following
-directories:
+一旦下载了文件，它会是一个压缩归档文件，您需要提取其中的内容。建议将该文件保存到以下目录:
 
 [source,bash]
 ----
 ~/openShift
 ----
 
-Open up a terminal window and change to the directory where you downloaded the
-file.  Once you are in the directory, enter in the following command:
+打开一个终端窗口，并切换到您下载文件的目录。进入目录后，输入以下命令：
 
-CAUTION: The name of the oc packaged archive may vary. Adjust accordingly.
+CAUTION: oc打包归档文件的名称可能会有所不同，有可能需要做相应调整。
 
 [source,bash,role=copyandedit]
 ----
 $tar zxvf oc-linux.tar.gz
 ----
 
-The tar.gz file name needs to be replaced by the entire name that was downloaded in the previous step.
+tar.gz文件名需要替换为在上一步中下载的完整文件名。
 
-Now you can add the OpenShift CLI tools to your PATH.
+现在你可以将OpenShift 命令行工具添加到环境的PATH变量。
 
 [source,bash,role=execute-1]
 ----
 export PATH=$PATH:~/openShift
 ----
 
-At this point, we should have the oc tool available for use. Let's test this
-out by printing the version of the oc command:
+此时，我们应该可以使用oc工具了。让我们来测试通过oc命令打印版本的输出：
 
 [source,bash]
 ----
 $ oc version
 ----
 
-You should see the following (or something similar):
+你应该看到以下(或类似的结果)：
 
 [source,bash]
 ----
 {{OC_VERSION}}
 ----
 
-If you get an error message, you have not updated your path correctly. If you
-need help, raise your hand and the instructor will assist.
+如果你得到一个错误消息，你没有正确更新你的路径。如果你需要帮助，请举手，老师会帮助你。
 
-== Download and Install OpenShift CLI on Mac
+== 在Mac环境下载并安装OpenShift命令
 
-Download the the OpenShift CLI tool for link:{{DOWNLOAD_CLIENT_MAC}}[Mac]
+下载OpenShift 命令行工具的链接：{{DOWNLOAD_CLIENT_MAC}}[Mac]
 
-Once the file has been downloaded, you will need to extract the contents as it
-is a compressed archive. I would suggest saving this file to the following
-directories:
-
+一旦下载了文件，它会是一个压缩归档文件，您需要提取其中的内容。建议将该文件保存到以下目录:
 
 [source,bash]
 ----
 ~/openShift
 ----
 
-Open up a terminal window and change to the directory where you downloaded the
-file. Once you are in the directory, enter in the following command:
+打开一个终端窗口，并切换到您下载文件的目录。进入目录后，输入以下命令：
 
-CAUTION: The name of the oc packaged archive may vary. Adjust accordingly.
+CAUTION: oc打包归档文件的名称可能会有所不同，有可能需要做相应调整。
 
 [source,bash]
 ----
 $ tar zxvf oc-macosx.tar.gz
 ----
 
-The tar.gz file name needs to be replaced by the entire name that was downloaded in the previous step.
+tar.gz文件名需要替换为在上一步中下载的完整文件名。
 
-Now you can add the OpenShift CLI tools to your PATH.
+现在你可以将OpenShift 命令行工具添加到环境的PATH变量。
 
 [source,bash]
 ----
 $ export PATH=$PATH:~/openShift
 ----
 
-At this point, we should have the oc tool available for use. Let's test this
-out by printing the version of the oc command:
+此时，我们应该可以使用oc工具了。让我们来测试通过oc命令打印版本的输出：
 
 [source,bash]
 ----
 $ oc version
 ----
 
-You should see the following (or something similar):
+你应该看到以下(或类似的结果)：
 
 [source,bash]
 ----
 {{OC_VERSION}}
 ----
 
-If you get an error message, you have not updated your path correctly. If you
-need help, raise your hand and the instructor will assist.
+如果你得到一个错误消息，你没有正确更新你的路径。如果你需要帮助，请举手，老师会帮助你。
 
 
-== Tab Completion 
+== Tab键补全 
 
-The OpenShift command line tool supports the ability to use tab completion for the popular zsh and bash shells.  This suits the needs of users using either Linux or OS X.  If you are using Microsoft Windows, never fear, we will discuss some ways to get tab completion working on that operating system as well.
+OpenShift命令行工具支持在流行的zsh和bash shell中使用制表符补全功能。这适合使用Linux或OS X的用户的需求。如果您使用Microsoft Windows，不用担心，我们将讨论一些在该操作系统上也可以使用tab键补全的方法。
 
-=== Tab completion on Mac and Linux
+=== 在Mac和Linux中的Tab键补全
 
-If you are on the Mac operating system, you will need to ensure that you have the *bash-completion* project installed. This can be accomplished using the popular brew system:
+如果你使用的是Mac操作系统，你需要确保你已经安装了 *bash-completion* 项目。这可以通过使用流行的brew系统来安装：
 
 [source, bash]
 ----
 $ brew install bash-completion
 ----
 
-If you're on Linux, ensure you have *bash-completion* installed using your package manager (dnf, yum apt-get,...)
+If you're on Linux, ensure you have *bash-completion* installed using your package manager (dnf, yum apt-get,...)如果你在Linux上，确保你已经使用包管理器(dnf, yum apt-get 等)安装了 *bash-completion* 。
 
-Once *bash-completion* package is available in your machine, to enable tab completion in your shell, you can simply enter in the following command from your terminal
+一旦 *bash-completion* 包在您的机器中可用，要在shell中启用tab补全，您可以从终端简单地输入以下命令：
 
 [source, bash]
 ----
@@ -155,32 +136,30 @@ $ oc completion bash >> oc_completion.sh
 $ source oc_completion.sh
 ----
 
-Alternatively, you can add this to your .bashrc file.
+或者，您也可以将其添加到.bashrc文件中。
 
-If you are using zsh, you can run the following command:
+如果使用的是zsh，可以执行如下命令:
 
 [source, bash]
 ----
 $ source <(oc completion zsh)
 ----
 
-Alternatively, you can add this to your .zshrc file.
+或者，您也可以将其添加到.zshrc文件中。
 
-=== Tab completion on Windows
+=== 在Windows中的Tab键补全
 
-For Windows users, things become a bit more tricky.  You could of course use the Linux Subsystem for Windows but you may want to consider using a combination of babun and cmder.  For a full list of instructions, you can check out the following blog post:
+对于Windows用户来说，事情就变得有点棘手了。当然，您可以在Windows上使用Linux子系统，但是您可能想要考虑使用babun和cmder的组合。要获得完整的说明列表，你可以查看以下博客文章:
 
 -  https://blog.openshift.com/openshift-3-tab-completion-for-windows/[https://blog.openshift.com/openshift-3-tab-completion-for-windows/]
 
-== Working with proxies
-It might happen that you're behind a corporate proxy to access the internet. In this case, you'll need to set
-some additional environment variables for the oc command line to work.
+== 使用代理
+有可能你是通过公司代理访问互联网的。在这种情况下，您需要设置让oc命令行工作的一些附加环境变量。
 
 **Windows:**
-Follow previous section's instructions on how to set an Environment Variable on Windows. The variables you'll need
-to set are:
+按照上一节的说明在Windows上设置环境变量。你需要的变量设置有:
 
-CAUTION: Replace the proxy server with the one for your environment/machine.
+CAUTION: 将以下代理服务器的参数替换为您的环境/计算机的代理服务器地址
 
 [source,bash]
 ----
@@ -190,7 +169,7 @@ HTTPS_PROXY=http://proxy-server.mycorp.com:3128/
 
 **macOS:**
 
-CAUTION: Replace the proxy server with the one for your environment/machine.
+CAUTION: 将以下代理服务器的参数替换为您的环境/计算机的代理服务器地址
 
 [source,bash]
 ----
@@ -200,7 +179,7 @@ $ export HTTPS_PROXY=http://proxy-server.mycorp.com:3128/
 
 **Linux:**
 
-CAUTION: Replace the proxy server with the one for your environment/machine.
+CAUTION: 将以下代理服务器的参数替换为您的环境/计算机的代理服务器地址
 
 [source,bash]
 ----
@@ -210,10 +189,9 @@ $ export HTTPS_PROXY=http://proxy-server.mycorp.com:3128/
 
 [NOTE]
 ====
-If the proxy is secured, make sure to use the following URL pattern, replacing the contents with the
-appropriate values:
+如果代理有用户安全鉴权，请确保以下URL样式中设置了适当的值:
 
 export https_proxy=http://USERNAME:PASSOWRD@proxy-server.mycorp.com:3128/
 
-__Special Characters__: If your password contains special characters, you must replace them with ASCII codes, for example the at sign @ must be replaced by the %40 code, e.g. p@ssword = p%40ssword. 
+__Special Characters__: 如果您的密码包含特殊字符，您必须将其替换为ASCII码，例如必须将 @ 替换成 %40，即 p@ssword = p%40ssword。
 ====
