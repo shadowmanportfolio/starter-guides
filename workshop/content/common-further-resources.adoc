@@ -1,40 +1,30 @@
-The exercices in this workshop have shown you how OpenShift can be used not only for deploying
-stateless web applications, but also applications which require persistent
-file system storage.
+这个Workshop中的练习已经向您展示了OpenShift不仅可以用于部署
+无状态的web应用程序，以及需要持久化的应用程序以及文件系统存储。
 
-This flexibility makes OpenShift an ideal platform for deploying both web
-applications and databases.
+这种灵活性使OpenShift成为部署Web应用程序和数据库的理想平台。
 
-If you have finished this workshop early and want to experiment some more,
-we have additional exercises you can try out using our online interactive
-learning environment.
+如果你提前完成了这个WorkShop，想要做更多的实验，我们有额外的练习，你可以使用我们的在线互动来尝试学习环境。
 
 * *link:https://learn.openshift.com/[OpenShift Interactive Learning
-Portal]* - An online interactive learning environment where you can run
-through various scenarios related to using OpenShift.
+Portal]* - 一个在线互动学习环境，在这里你可以运行和体验OpenShift使用相关的各种场景。
 
-The online interactive learning environment is always available so you
-can continue to work on those exercises even after the workshop is over.
+在线互动学习环境总是可用的，所以你可以在 Workshop 结束后继续做这些练习。
 
-Below you will find further resources for learning about OpenShift and
-running OpenShift on your own computer, as well as details about OpenShift
-Online or other OpenShift related products and services.
+下面你将找到更多的资源来学习OpenShift和
+在自己的电脑上运行OpenShift，以及在线的OpenShift详细信息
+或其他OpenShift相关产品和服务。
 
-* *link:https://docs.openshift.com[OpenShift Documentation]* - The landing page for OpenShift documentation.
+* *link:https://docs.openshift.com[OpenShift Documentation]* - OpenShift文档的入口页面。
 
-* *link:https://developers.redhat.com/openshift/[OpenShift Resources on developers.redhat.com]* - A collection of resources for developers who are building and deploying applications on OpenShift.
+* *link:https://developers.redhat.com/openshift/[OpenShift Resources on developers.redhat.com]* - 为在OpenShift上构建和部署应用程序的开发人员提供的资源集合。
 
-* *link:https://developers.redhat.com/products/codeready-containers/overview[CodeReady Containers]* - A tool which can
-be used to install a local OpenShift cluster on your own computer, running
-in a virtual machine.
+* *link:https://developers.redhat.com/products/codeready-containers/overview[CodeReady Containers]* - 一种可以用于在自己的计算机上安装本地的OpenShift集群，并运行在虚拟机中的开发版本。
 
-* *link:https://www.openshift.com/try[Try OpenShift Container Platform]* - Try Red
-Hat supported OpenShift on Developer Sandbox, Managed and Self-Managed offering.
+* *link:https://www.openshift.com/try[Try OpenShift Container Platform]* - 试用红帽提供支持的OpenShift开发者沙盒、托管和自服务产品。
 
-* *link:https://commons.openshift.org[OpenShift Commons]* - A community for users, partners, customers, and contributors to come together to collaborate and work together on OpenShift.
+* *link:https://commons.openshift.org[OpenShift Commons]* - 一个用户、合作伙伴、客户和代码贡献者聚集在一起在OpenShift上协作和工作的社区。
 
-The following free online eBooks are also available for download related to
-OpenShift.
+以下的免费OpenShift网上电子书也可供下载。
 
 * *link:https://www.openshift.com/for-developers/[OpenShift
 for Developers]*
@@ -45,6 +35,6 @@ image::images/further-resources-openshift-for-developers.png[OpenShift for Devel
 
 image::images/further-resources-devops-with-openshift.png[DevOps with OpenShift]
 
-* *link:https://www.openshift.com/deploying-to-openshift/[Deploying with OpenShift]*
+* *link:https://www.openshift.com/deploying-to-openshift/[Deploying to OpenShift]*
 
 image::images/further-resources-deploying-to-openshift.png[Deploying to OpenShift]
