@@ -1,20 +1,20 @@
 image::images/common-environment-ocp-architecture.png[OCP Architecture]
 
-The workshop is hosted in an OpenShift environment that is running on a
-public cloud. The environment consists of the following systems:
+WorkShop托管在OpenShift环境中，该环境运行在AWS
+公有云。环境由以下系统组成:
 
-* Master node(s)
-* Infrastructure node(s)
-* Worker or "application" nodes
-* Dynamic Provisioned Storage
+* Master 节点
+* Infrastructure 节点
+* Worker 或 "应用" 节点
+* 动态置备存储
 
-The infrastructure node is providing several services:
+基础设施节点提供以下几种服务:
 
 * Gogs git server
-* This lab manual
-* The OpenShift container registry
-* The OpenShift router
+* 实验室手册
+* OpenShift容器镜像库
+* OpenShift路由
 
-You will have your own user account in the OpenShift environment. Your user name is **{{username}}**.
+在OpenShift环境中，您将拥有自己的用户帐户。您的用户名是 **{{username}}**。
 
-You will also have a dedicated project namespace to work in. The name of your project namespace is **{{project_namespace}}**.
+您还将有一个专用的项目命名空间。项目命名空间的名称为 **{{project_namespace}}**。
