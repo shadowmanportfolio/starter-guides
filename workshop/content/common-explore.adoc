@@ -1,78 +1,66 @@
-== Command Line Interface
+== 命令行界面
 
-OpenShift includes a feature-rich web console with both an Administrator perspective and a Developer perspective. In addition to the web console, OpenShift includes command line tools
-to provide users with a nice interface to work with applications deployed to the
-platform.  The `oc` command line tool is an executable written in the Go
-programming language and is available for the following operating systems:
+OpenShift包括一个功能丰富的web控制台，具有管理员视图和开发人员视图。除了web控制台，OpenShift还包括命令行工具为用户提供一个良好的界面将应用部署到平台。 `oc` 命令行工具是用Go语言编写的可执行文件，适用于下列操作系统:
 
 - Microsoft Windows
 - macOS 10
 - Linux
 
-This lab environment has the `oc` command line tool installed, and your lab user is already logged in to the OpenShift cluster.
+这个实验环境已经安装了 `oc` 命令行工具，并且您的实验用户已经登录到OpenShift集群。
 
-Issue the following command to see help information:
+发出以下命令以查看帮助信息:
 
 [source,bash,role=execute-1]
 ----
 oc help
 ----
 
-== Using a Project
+== 命名空间操作
 
-Projects are a top level concept to help you organize your deployments. An
-OpenShift project allows a community of users (or a user) to organize and manage
-their content in isolation from other communities. Each project has its own
-resources, policies (who can or cannot perform actions), and constraints (quotas
-and limits on resources, etc). Projects act as a "wrapper" around all the
-application services and endpoints you (or your teams) are using for your work.
+命名空间（也称项目）是帮助您组织部署的首要概念。通过一个OpenShift项目，允许一组用户(或单用户)组织和管理
+他们的内容与其他用户组隔离。每个项目都有自己的项目资源、策略(谁能或不能执行操作)和约束(配额以及资源限制等)。项目就像一个负责您(或您的团队)在工作中使用的应用程序服务和端点的“封装器”。
 
-During this lab, we are going to use a few different commands to make sure that
-things in the environment are working as expected.  Don't worry if you don't
-understand all of the terminology as we will cover it in detail in later labs.
+在这个实验中，我们将使用一些不同的命令来确保环境中的对象按预期工作。如果不理解所有的术语，也不要担心。因为我们将在以后的实验中详细介绍它。
 
-In this lab environment, you already have access to single project: *{{ project_namespace  }}*.
+在这个实验室环境中，你已经可以访问单个项目: *{{ project_namespace  }}*.
 
-If you had multiple projects, the first thing you would want to do is to switch
-to the *{{ project_namespace  }}* project to make sure you're on the correct project from now on.
-You can do this with the following command:
+如果你有多个项目，你想做的第一件事就是转换到 *{{ project_namespace  }}* 项目，以确保从现在开始您处于正确的项目中。
+你可以通过下面的命令来实现:
 
 [source,bash,role=execute-1]
 ----
 oc project {{ project_namespace  }}
 ----
 
-== The Web Console
+== Web 控制台
 
-OpenShift ships with a web-based console that will allow users to
-perform various tasks via a browser. 
+OpenShift提供了一个基于web的控制台，允许用户通过浏览器执行各种任务。
 
-To get a feel for how the web console works, click on this http://console-openshift-console.{{cluster_subdomain}}/k8s/cluster/projects[Web Console] link.
+要感受一下web控制台是如何工作的，点击这个 http://console-openshift-console.{{cluster_subdomain}}/k8s/cluster/projects[Web 控制台] 链接。
 
-On the login screen, enter the following credentials:
+在登录屏幕上，输入以下凭证:
 
 Username: `{{username}}`
 
 Password: `openshift`
 
-The first time you access the web console, you will most likely be in the Administrator perspective. You will be presented with the list of Projects that you can access, and you will see something that looks like the following image:
+第一次访问web控制台时，您很可能处于管理员视图中。你会看到一个你可以访问的项目列表，你会看到如下图片所示的内容:
 
 image::images/explore-webconsole1sc.png[Web Console]
 
-Click on the *{{ project_namespace  }}* project link. When you click on the
-*{{ project_namespace  }}* project, you will be taken to the project details page,
-which will list some metrics and details about your project. There's nothing there now, but that will change as you progress through the lab.
+点击 *{{ project_namespace  }}* 项目链接。当你点击
+*{{ project_namespace  }}* 工程，您将被带到项目详细信息页面，它将列出有关项目的一些指标和细节。现在什么都没有，但随着实验室的进展，内容就会有所改变。
 
 image::images/explore-webconsole2.png[Explore Project]
 
-At the top of the left navigation menu, you can toggle between the Administrator perspective and the Developer perspective.
+在左侧导航菜单的顶部，您可以在管理员视图和开发者视图之间切换。
 
 image::images/explore-perspective-toggle.png[Toggle Between Perspectives]
 
-Select *Developer* to switch to the Developer perspective. Once the Developer perspective loads, you should be in the *Topology* view. Right now, there are no applications or components to view, but once you begin working on the lab, you'll be able to visualize and interact with the components in your application here.
+选择 *开发者* 切换到开发者视图。一旦开发者视图加载，您应该处于 *拓扑* 视图中。目前，还没有应用程序或组件可查看，但一旦您开始在实验中工作，您将能够在这里找到可视化应用程序组件并与之交互。
 
 image::images/explore-add-application.png[Add New Applications]
 
 
-We will be using a mix of command line tooling and the web console for the labs.
-Get ready!
+我们将在实验室中混合使用命令行工具和web控制台。
+做好准备!
