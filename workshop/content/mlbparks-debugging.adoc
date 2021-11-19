@@ -1,34 +1,29 @@
-== Background: Port Forwarding and Debugging
-Just as we did before with remote shelling into our pods, we can also set up a port-forward between our local machine
-and our pod. The is useful for operations like connecting to a database running in a pod, viewing an administrative web
-interface we don't want to expose to the public, or, in our case, attaching a debugger to the JVM running our application
-server.
+== 背景：端口转发和调试
+就像我们之前对pod进行远程shelling一样，我们也可以在我们的pod和本地机器之间设置一个转发端口。这对于连接到运行在pod中的数据库、查看管理web接口但并不打算公开等操作非常有用，或者，在我们的例子中，将调试器附加到运行应用程序服务器的JVM上。
 
-You can read more about port-forwarding from the
-https://{{DOCS_URL}}/dev_guide/port_forwarding.html[developer documentation].
+您可以从这里阅读更多关于端口转发的内容
+https://{{DOCS_URL}}/dev_guide/port_forwarding.html[开发手册].
 
-By port forwarding the debugging port for the application server, we can attach the debugger from our IDE and actually
-step through the code in the pod as it is running in real time. By default EAP is not in debug mode, therefore we first
-need to turn on the debug ports
+通过端口转发应用程序服务器的调试端口，我们可以从IDE附加调试器并在Pod中逐级检查代码，因为它是实时运行的。默认情况下，EAP不是在调试模式，因此我们首先
+需要打开调试端口。
 
 
-== Exercise: Enabling Debugging in EAP on OpenShift
+== 练习：在OpenShift上启用EAP调试
 
-It is very simple to turn on debugging. The EAP S2I container we are using is looking for an environment variable to
-control whether or not to enable the debug port. All we need to do is set an environment variable for the deployment.
+打开调试开关非常简单。我们使用的EAP S2I容器会扫描一个环境变量来控制是否启用调试端口，因此我们需要做的就是为部署设置这个环境变量。
 
 [source,bash,role=copypaste]
 ----
 oc set env dc/mlbparks DEBUG=true
 ----
 
-This will force a redeploy of our MLBparks pod, this time with the JDWT transport enabled and serving on port 8787.
+这将强制重新部署MLBparks pod，启用JDWT传输并在端口8787上监听调试。
 
-== Exercise: Port-Forwarding from the pod to our local machine
+== 练习：从pod到本地机器端口转发
 
-It is quite simple to do port-forwarding.
+端口转发非常简单。
 
-First get the pods:
+首先获取pod:
 [source,bash,role=copypaste]
 ----
 oc get pods
@@ -50,30 +45,27 @@ mlbparks-3-hcd8g                 0/1     Running     0          10s
 ...
 ----
 
-Now we can set to set up the port-forward:
+现在我们可以设置端口转发:
 
 [source,bash,role=copypaste]
 ----
 oc port-forward mlbparks-3-hcd8g 8787:8787
 ----
 
-We said to port-forward from port 8787 on the pod to 8787 on the local machine. Now we can attach a remote debugger.
+这表示从pod上的端口8787转发到本地机器上的8787端口。现在我们可以附加一个远程调试器。
 
-NOTE: To stop port-forwarding just hit ctrl-c in the terminal window where you did the port forward command
+NOTE: 要停止端口转发，只需在执行端口转发命令的终端窗口中按 ctrl-c
 
-=== Setting up Remote Debug in IntelliJ
+=== 在IntelliJ中设置远程调试
 
-Setting up remote debugging is quite easy in IntelliJ. First edit the run/debug configurations.
-Under the Run menu (alt-u), choose edit configurations. This will bring up the new configuration dialog.
+在IntelliJ中设置远程调试非常容易。首先编辑run/debug配置。在Run菜单(Alt-u)下，选择编辑配置。这将打开新的配置对话框。
 
-Click the plus in the top left corner, scroll down, and choose remote.
+单击左上角的加号，向下滚动，并选择 Remote。
 
 image::images/mlbparks-debugging-intellij-debug-new.png[IntelliJ New Configuration]
 
-On the resulting dialog page, change the name at the top to "on OpenShift" or whatever is informative to you. Then
-towards the bottom right, change the port number to 8787. When you have done that click "OK".
+在结果对话框页面上，将顶部的名称改为“On OpenShift”或任何你想用的名称。然后在右下角修改端口号为8787。当你完成了，点击“OK”。
 
 image::images/mlbparks-debugging-intellij-debug-info.png[IntelliJ New Configuration]
 
-Now when you click the Debug icon in IntelliJ, it will open the debugger and attach to JVM in the pod on OpenShift. Go
-ahead and set a break point in any class you want and it will do normal debugging - just like you know and love!
+现在，当您单击IntelliJ中的Debug图标时，它将打开调试器并附加到OpenShift上的pod中的JVM。去在任何你想要的类中设置一个断点，它就会进行正常的调试 —— 就像你知道并喜欢的那样!
