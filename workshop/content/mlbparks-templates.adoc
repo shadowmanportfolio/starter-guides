@@ -1,51 +1,35 @@
-In this lab, we're going to deploy a complete backend application, consisting of
-a REST API backend and a MongoDB database. The complete application will already
-be wired together and described as a backend for the map visualization tool, so
-that once the application is built and deployed, you will be able to see the new
-map.
+在这个实验中，我们将部署一个完整的后端应用程序，包括一个REST API后端和MongoDB数据库。完整的应用将会连接在一起并被定义为地图可视化工具的后端，所以一旦应用程序被构建和部署，您将能够看到新的地图。
 
 image::images/roadshow-app-architecture-mlbparks.png[Application architecture,800,align="center"]
 
-Let's combine all of the exercises we have performed in the last several labs by
-using a *Template* that we can instantiate with a single command.  While we
-could have used templates to deploy everything in the workshop today, remember
-that it is important for you to understand how to create, deploy, and wire
-resources together.
+让我们使用一个 *Template* 组装前几个实验中做的练习，通过用一个命令实例化应用。当我们可以使用模板来部署今天Workshop上的所有内容时，了解如何将资源在一起创建、部署和连接是很重要的。
 
-== Exercise: Instantiate a Template
+== 练习：实例化一个模板
 
-The front end application we've been working with this whole time will display
-as many back end services' data as are created. Adding more stuff with the right
-*Label* will make more stuff show up on the map.
+我们一直使用的前端应用程序将显示所创建的后端服务的数据。用右边的 *Label* 添加内容将使更多的信息显示在地图上。
 
-Now you will deploy a map of Major League Baseball stadiums in the US by using a
-template. It is pre-configured to build the back end Java application, and
-deploy the MongoDB database. It also uses a *Hook* to call the `/ws/data/load`
-endpoint to cause the data to be loaded into the database from a JSON file in
-the source code repository. Execute the following command:
+现在，您将使用模板部署美国职业棒球大联盟体育场的地图。它是预配置的，用于构建后端Java应用程序和部署MongoDB数据库。它还使用 *Hook* 调用 `/ws/data/load` 端点，以使数据从源代码存储库中的JSON文件加载到数据库中。执行如下命令:
 
 [source,bash,role=execute-1]
 ----
 oc create -f https://raw.githubusercontent.com/openshift-roadshow/mlbparks/master/ose3/application-template-eap.json
 ----
 
-What just happened? What did you just `create`? The item that we passed to the `create`
-command is a *Template*. `create` simply makes the template available in
-your *Project*. You can see this with the following command:
+刚才发生了什么?你刚刚 `create` 了什么？我们传递给 `create` 命令的参数是一个 *Template* 。`create` 只是让模板在你的 *命名空间* 中可用。你可以通过下面的命令看到:
 
 [source,bash,role=execute-1]
 ----
 oc get template
 ----
 
-You will see output like the following:
+您将看到如下输出：
 
 [source,bash]
 ----
 mlbparks      Application template MLBParks backend running on Wildfly and using mongodb   12 (2 blank)   8
 ----
 
-Run the following command to instantiate the template:
+执行如下命令实例化模板：
 
 [source,bash,role=execute-1]
 ----
@@ -54,9 +38,7 @@ oc new-app mlbparks -p APPLICATION_NAME=mlbparks
 
 [TIP]
 ====
-The template can also use maven for the build. In case you want to try this option
-provide the *MAVEN_MIRROR_URL* parameter with the location of the internal nexus
-repository:
+模板还可以使用maven进行构建。如果你想尝试这个选项，将 *MAVEN_MIRROR_URL* 参数赋值为内部连接存储库的位置：
 
 [source,bash,role=copypaste]
 ----
@@ -65,7 +47,7 @@ oc new-app mlbparks --name=mlbparks -p MAVEN_MIRROR_URL=http://nexus.{{INFRA_PRO
 ====
 
 
-You will see some output similar to this:
+你会看到类似这样的输出：
 
 [source,bash]
 ----
@@ -104,48 +86,42 @@ You will see some output similar to this:
     Run 'oc status' to view your app.
 ----
 
-OpenShift will now:
+OpenShift现在将：
 
-* Configure and start a build
-** Using the supplied Maven mirror URL (if you have specified the parameter)
-** From the supplied source code repository
-* Configure and deploy MongoDB
-** Using auto-generated user, password, and database name
-* Configure environment variables for the app to connect to the DB
-* Create the correct services
-* Label the app service with `type=parksmap-backend`
+* 配置并启动构建
+** 使用提供的Maven镜像URL(如果您已经指定了参数)
+** 以所提供的源代码存储库为源
+* 配置部署MongoDB
+** 使用自动生成的用户、密码和数据库名称
+* 配置应用程序连接DB的环境变量
+* 创建正确的服务
+* 用 `type=parksmap-backend` 标记应用服务
 
-All with one command!
+所有步骤只用一个命令完成！
 
-When the build is complete, visit the parks map. Does it work? Think about how
-this could be used in your environment.  For example, a template could define a
-large set of resources that make up a "reference application", complete with
-several app servers, databases, and more.  You could deploy the entire set of
-resources with one command, and then hack on them to develop new features,
-microservices, fix bugs, and more.
+当构建完成后，浏览公园地图。它工作吗?考虑一下如何在您的实际环境中使用它。例如，模板可以定义组成“参考应用程序”的大量资源，包括多个应用服务器、数据库等。您可以使用一个命令部署整个资源集，然后对它们进行修改，以开发新特性、微服务、修复bug等等。
 
 image::images/mlbparks-templates-complete-overview.png[Complete overview]
 
-In addition to being able to instantiate templates from the command line as we did above, templates can also be instantiated from the Developer Perspective in the web console. Click *+Add*, then *From Catalog* and search for `mlb`. You should see a result for `MLBparks`.
+除了能够像我们上面做的那样从命令行实例化模板，模板也可以从web控制台的开发人员视角实例化。点击 *+Add* ，然后 *From Catalog* ，搜索 `mlb` 。你应该看到 `MLBparks` 的结果。
 
 image::images/mlbparks-templates-dev-catalog.png[Template in Developer Catalog]
 
-If you click on `MLBparks` and then click the *Instantiate Template* button, you'll see a form that guides you through the different required and optional parameters needed to instantiate this template.
+如果你点击 `MLBparks` ，然后点击 *Instantiate Template* 按钮，你会看到一个表单，它指导你通过各种必需和可选参数实例化这个模板。
 
-CAUTION: Do not actually instantiate the template from the web console now, since you have already done so via the command line.
+CAUTION: 现在不要从web控制台实际实例化模板，因为你已经通过命令行这样做了。
 
-As a final exercise, look at the template that was used to create the
-resources for our *mlbparks* application.
+作为最后一个练习，看看用于为 *mlbparks* 应用程序创建资源的模板。
 
 [source,bash,role=execute-1]
 ----
 oc get template mlbparks -o yaml
 ----
 
-But as always, you can use the OpenShift web console to do the same. In the Developer Perspective, click *Advanced -> Search* in the left navigation, then select *Template* from the dropdown, and click *mlbparks*. 
+但与往常一样，你可以使用OpenShift web控制台做同样的事情。在开发人员透视图中，在左侧导航栏中单击 *Advanced -> Search* ，然后从下拉菜单中选择 *Template* ，然后单击 *mlbparks*。
 
 image::images/mlbparks-templates-yaml-menu.png[Complete overview]
 
-On the next page, click *YAML* to see/edit the YAML from here.
+在下一页，点击 *YAML* 从这里查看或编辑YAML。
 
 image::images/mlbparks-templates-yaml-edit.png[Template YAML edit]
