@@ -23,7 +23,7 @@ Portal]* - 一个在线互动学习环境，在这里你可以运行和体验Ope
 
 * *link:https://commons.openshift.org[OpenShift Commons]* - 一个用户、合作伙伴、客户和代码贡献者聚集在一起在OpenShift上协作和工作的社区。
 
-以下的免费OpenShift网上电子书也可供下载。
+以下OpenShift电子书也可网上免费下载。
 
 * *link:https://www.openshift.com/for-developers/[OpenShift
 for Developers]*
