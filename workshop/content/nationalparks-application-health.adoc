@@ -1,13 +1,10 @@
-== Background: Readiness and Liveness Probes
-As we have seen before in the UI via warnings, there is a concept of application
-health checks in OpenShift. These come in two flavors:
+== 背景:就绪和存活探测器
+正如我们之前在UI中通过警告所看到的，OpenShift中有一个应用程序健康检查的概念。它们有两种类型：
 
-* Readiness probe
-* Liveness probe
+* 就绪探测器
+* 存活探测器
 
-From the
-https://{{DOCS_URL}}/applications/application-health.html[Application
-Health] section of the documentation, we see the definitions:
+从文档 https://{{DOCS_URL}}/applications/application-health.html[应用健康] 部分说明内容中，我们看到了定义:
 
 [glossary]
 Liveness Probe::
