@@ -15,24 +15,14 @@ JBoss EAP中的集群是使用Kubernetes发现机制通过找到其他JBoss EAP�
 oc scale dc/mlbparks --replicas=2
 ----
 
-For pods based on Java images, the web console also exposes access to a
-hawt.io-based JVM console for viewing and managing any relevant Java components.
-A link is displayed in the pod's details on the *Workloads -> Pods* page,
-provided the container has a port named jolokia. On the console, click on
-mlbparks pods, then on any of the two pods deployed. On the *Details* tab, click
-on *Open Java Console*.对于基于Java镜像的Pod，web控制台还公开了基于hawt.io，查看和管理任何相关Java组件的JVM控制台。
-一个链接显示在 *Workloads -> Pods* 页面的pod详细信息，前提是容器开放了个叫jolokia的端口。在控制台上，单击
-Mlbparks pod，然后在两个pod中的任何一个上部署。在“*Details*”页签中，单击
-打开Java控制台*。
+对于用Java应用镜像的Pod，web控制台还公开了基于hawt.io，查看和管理任何相关Java组件的JVM控制台。
+在 *Workloads -> Pods* 页面的pod详细信息中会显示一个链接，前提是容器开放jolokia的端口。在控制台上，单击
+Mlbparks pod，然后点击已经部署的两个pod中的任何一个。在 *Details* 页签中，单击 *Open Java Console* 。
 
 image::images/mlbparks-clustering-details.png[Java Console Link,880,align="center"]
 
-In the Java Console, use the *JMX* browser and click on *jgroups &rarr; channel
-&rarr; ee*. The right pane shows the list of clustering JMX attributes including
-*view* which is the current state of the cluster. This attribute shows the name
-of two pods which are currently members of the cluster. When *mlbparks* pod gets
-scaled up or down, JBoss EAP gets notified by calling Kubernetes' REST API and
-updates the cluster status based on the number of pods available.
+在Java控制台中，使用 *JMX* 浏览器并单击 *jgroups &rarr; channel &rarr; ee* 。右窗格显示了集群的JMX属性列表，包括 *view* 是集群的当前状态。此属性显示两个现在是集群成员的Pod名称。当 *mlbparks* pod 个数增加或缩减，
+JBoss EAP根据可用的 Pod 数量通过调用Kubernetes的REST API来更新集群状态。
 
 image::images/mlbparks-clustering-hawtio.png[Java Console - Clustering,1000,align="center"]
 
