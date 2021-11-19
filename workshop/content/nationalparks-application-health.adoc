@@ -1,4 +1,4 @@
-== 背景:就绪和存活探测器
+== 背景：就绪和存活探测器
 正如我们之前在UI中通过警告所看到的，OpenShift中有一个应用程序健康检查的概念。它们有两种类型：
 
 * 就绪探测器
@@ -7,64 +7,47 @@
 从文档 https://{{DOCS_URL}}/applications/application-health.html[应用健康] 部分说明内容中，我们看到了定义:
 
 [glossary]
-Liveness Probe::
-  A liveness probe checks if the container in which it is configured is still
-  running. If the liveness probe fails, the kubelet kills the container, which
-  will be subjected to its restart policy. Set a liveness check by configuring
-  the `template.spec.containers.livenessprobe` stanza of a pod configuration.
-Readiness Probe::
-  A readiness probe determines if a container is ready to service requests. If
-  the readiness probe fails a container, the endpoints controller ensures the
-  container has its IP address removed from the endpoints of all services. A
-  readiness probe can be used to signal to the endpoints controller that even
-  though a container is running, it should not receive any traffic from a proxy.
-  Set a readiness check by configuring the
-  `template.spec.containers.readinessprobe` stanza of a pod configuration.
+存活探测器::
+  存活探测器检查配置它的容器是否仍在运行。如果存活探测失败，kubelet将杀死容器，该容器将受到其重新启动策略的影响。通过设置Pod配置的 `template.spec.containers.livenessprobe` 标签来来设置存活检查。
+就绪探测器::
+  就绪探测确定容器是否已准备好服务请求。如果就绪探测失败，端点控制器将确保容器的IP地址从所有服务的端点中删除。就绪探测可用于向端点控制器发出信号，表明即使容器正在运行，它也不应该接收来自代理的任何流量。通过设置Pod配置的 `template.spec.containers.readinessprobe` 标签来来设置就绪检查。
 
-It sounds complicated, but it really isn't. We will use the web console to add
-these probes to our `nationalparks` application.
+这听起来很复杂，但事实并非如此。我们将使用web控制台将这些探测器添加到我们的 `nationalparks` 应用程序中。
 
-== Exercise: Add Health Checks
-As we are going to be implementing a realistic CI/CD pipeline, we will be doing
-some testing of the "development" version of the application. However, in order
-to test the app, it must be ready. This is where OpenShift's application health
-features come in very handy.
+== 练习：添加健康检查
+当我们要实现一个实际的CI/CD管道时，我们将对应用程序的 "development" 版本进行一些测试。然而，为了测试应用程序，它必须准备好。这就是OpenShift的应用程序健康特性非常有用的地方。
 
-We are going to add both a readiness and liveness probe to the existing
-`nationalparks` deployment. This will ensure that OpenShift does not add any
-instances to the service until they pass the readiness checks, and will ensure
-that unhealthy instances are restarted (if they fail the liveness checks).
+我们将在现有的 `nationalparks` 部署中增加一个就绪和存活探测器。这将确保OpenShift不会向服务添加任何实例，直到它们通过就绪检查，并将确保不健康的实例重新启动(如果它们未能通过活性检查)。
 
-From the *Topology* view, click `nationalparks`. On the side panel, click the *Actions* dropdown menu and the select *Add Health Checks*.
+在 *拓扑* 视图中，单击 `nationalparks`。在侧面板上，单击 *Actions* 下拉菜单并选择 *Add Health Checks*。
 
 image::images/nationalparks-application-health-menu.png[Add Health Checks]
 
-Click to *Add Readiness Probe* and add in *Path* field: 
+点击 *Add Readiness Probe* 并在 *Path* 字段中添加：
 
 [source,role=copypaste]
 ----
 /ws/healthz/
 ----
 
-Leave all default settings like *Port* 8080 and *Type* HTTP GET. Click the little bottom-right confirmation gray tick to confirm:
+保留所有默认设置，如 *Port* 8080和 *Type* HTTP GET。点击右下角的小灰色确认勾来确认：
 
 image::images/nationalparks-application-health-settings.png[Add Readiness and Liveness Probe]
 
-Repeat the same procedure for Liveness Probe, click to *Add Liveness Probe* and add in *Path* field: 
+对存活探测器重复相同的过程，单击 *Add Liveness Probe* ，并在 *Path* 字段中添加：
 
 [source,role=copypaste]
 ----
 /ws/healthz/
 ----
 
-Leave all default settings like *Port* 8080 and *Type* HTTP GET. Click the little bottom-right confirmation gray tick to confirm.
+保留所有默认设置，如 *Port* 8080和 *Type* HTTP GET。点击右下角的灰色确认标记进行确认。
 
-WARNING: Note the trailing slash in the URL
+WARNING: 注意URL末尾的斜杠
 
-Finally confirm all new changes clicking to *Add*:
+最后确认所有的新更改，点击 *Add*：
 
 image::images/nationalparks-application-health-add.png[Add Probes]
 
 
-You will notice that these changes caused a new deployment -- they counted as a
-configuration change.
+您将注意到这些更改导致了新的部署——这些操作被视为配置变更。
