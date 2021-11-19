@@ -1,35 +1,35 @@
-You can find all urls, hostnames, usernames and passwords that are needed during the workshop in this page. Note that the urls are also embedded inside the labs so that you don't have to go back and forth between this page and the labs.
+您可以在此页面中找到workshop期间所需的所有url、主机名、用户名和密码。请注意，url也嵌入在实验中，因此您不必在这个页面和实验之间来回切换。
 
-== OpenShift cluster URL
+== OpenShift 集群 URL
 
-Console Address: http://console-openshift-console.{{cluster_subdomain}} +
-API Address: https://api.{{cluster_subdomain}}:6443 +
+控制台地址： http://console-openshift-console.{{cluster_subdomain}} +
+API 地址： https://api.{{cluster_subdomain}}:6443 +
 
-Username: `{{ username}}` + 
-Password: `openshift` +
-
-
-
-== Workshop Guides
-
-Web: http://starter-guides-{{ INFRA_PROJECT }}.{{cluster_subdomain}}
+用户名： `{{ username}}` + 
+口令： `openshift` +
 
 
-== Web terminal
 
-Web: http://terminal-{{ INFRA_PROJECT }}.{{cluster_subdomain}}
+== Workshop 手册
+
+入口： http://starter-guides-{{ INFRA_PROJECT }}.{{cluster_subdomain}}
+
+
+== 网页终端
+
+入口： http://terminal-{{ INFRA_PROJECT }}.{{cluster_subdomain}}
 
 == Git Server
 
-Web: http://gogs-{{ INFRA_PROJECT }}.{{cluster_subdomain}}
+入口： http://gogs-{{ INFRA_PROJECT }}.{{cluster_subdomain}}
 
-Username: `{{username}}` + 
-Password: `{{ GOGS_PASSWORD }}` + 
+用户名： `{{username}}` + 
+口令： `{{ GOGS_PASSWORD }}` + 
 
-== Nexus Maven repository
+== Nexus Maven 仓库
 
-Web: http://nexus-{{ INFRA_PROJECT }}.{{cluster_subdomain}}
+入口： http://nexus-{{ INFRA_PROJECT }}.{{cluster_subdomain}}
 
-== OpenShift Ops View
+== OpenShift Ops 视图
 
-Web: http://ocp-ops-view-{{ INFRA_PROJECT }}.{{cluster_subdomain}}
+入口： http://ocp-ops-view-{{ INFRA_PROJECT }}.{{cluster_subdomain}}
