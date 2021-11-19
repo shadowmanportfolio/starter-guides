@@ -1,14 +1,14 @@
-This lab introduces you to the architecture of the ParksMap application used throughout this workshop, to get a better understanding of the things you'll be doing from a developer perspective. ParksMap is a polyglot geo-spatial data visualization application built using the microservices architecture and is composed of a set of services which are developed using different programming languages and frameworks.
+本实验向您介绍了在整个workshop中使用的ParksMap应用程序的体系结构，以便从开发人员的角度更好地理解将要做的事情。ParksMap是一个使用微服务架构构建的多语言地理空间数据可视化应用程序，由一组使用不同编程语言和框架开发的服务组成。
 
 image::images/roadshow-app-architecture.png[Application architecture,800,align="center"]
 
-The main service is a web application which has a server-side component in charge of aggregating the geo-spatial APIs provided by multiple independent backend services and a client-side component in JavaScript that is responsible for visualizing the geo-spatial data on the map. The client-side component which runs in your browser communicates with the server-side via WebSockets protocol in order to update the map in real-time.
+主服务是一个web应用程序，它有一个服务器端组件负责聚合由多个独立后端服务提供的地理空间API，还有一个JavaScript客户端组件负责在地图上可视化地理空间数据。运行在浏览器中的客户端组件通过WebSockets协议与服务器端通信，以便实时更新地图。
 
-There will be a set of independent backend services deployed that will provide different mapping and geo-spatial information. The set of available backend services that provide geo-spatial information are:
+我们将部署一套独立的后端服务，来提供不同的地图和地理空间信息。提供地理空间信息的可用后端服务集有:
 
-* WorldWide National Parks
-* Major League Baseball Stadiums in North America
+* 全球国家公园
+* 美国职业棒球大联盟的体育场
 
-The original source code for this application is located link:https://github.com/openshift-roadshow/[here].
+这个应用程序的原始源代码位于链接: https://github.com/openshift-roadshow/[点击这里]。
 
-The server-side component of the ParksMap web application acts as a communication gateway to all the available backends. These backends will be dynamically discovered by using service discovery mechanisms provided by OpenShift which will be discussed in more details in the following labs.
+ParksMap web应用程序的服务器端组件充当所有可用后端之间的通信网关。这些后端将通过使用OpenShift提供的服务发现机制来动态发现，这将在接下来的实验室中进行更详细的讨论。
