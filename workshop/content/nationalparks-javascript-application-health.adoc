@@ -21,7 +21,7 @@
 
 在 *拓扑* 视图中，单击 `nationalparks`。在侧面板上，单击 *Actions* 下拉菜单并选择 *Add Health Checks*。
 
-image::images/nationalparks-application-health-menu-javascript.png[Add Health Checks]
+image::images/nationalparks-application-health-menu-js.png[Add Health Checks]
 
 点击 *Add Readiness Probe* 并在 *Path* 字段中添加：
 
