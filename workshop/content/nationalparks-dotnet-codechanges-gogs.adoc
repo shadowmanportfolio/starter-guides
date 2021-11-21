@@ -90,7 +90,7 @@ nationalparks-2   Source    Git@3b26e1a   Running    43 seconds ago
 
 一旦构建和部署完成，通过在浏览器中查看应用程序，验证你的新镜像已经自动部署：
 
-link:http://nationalparks-{{project_namespace}}.{{cluster_submdomain}}/ws/info/[National Parks Info Page]
+link:http://nationalparks-{{project_namespace}}.{{cluster_submdomain}}/ws/info/[National Parks 信息页]
 
 现在您应该看到在返回的JSON字符串中设置的新名称。
 
@@ -135,7 +135,7 @@ Warning: the following images triggers were disabled: nationalparks:live
 
 一旦部署完成，通过在浏览器中查看应用程序，验证页面标题是否恢复为原始标题。
 
-link:http://nationalparks-{{project_namespace}}.{{cluster_subdomain}}/ws/info/[National Parks Info Page]
+link:http://nationalparks-{{project_namespace}}.{{cluster_subdomain}}/ws/info/[National Parks 信息页]
 
 [NOTE]
 ====
