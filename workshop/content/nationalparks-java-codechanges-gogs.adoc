@@ -39,7 +39,7 @@ image::images/nationalparks-codechanges-gogs-add-webhook.png[Webhook]
 
 image::images/nationalparks-codechanges-gogs-config-webhook.png[Webhook]
 
-手工！从现在开始，每次你提交新的源代码到你的Gogs仓库，一个新的构建和部署将发生在OpenShift中。我们来试试。
+收工！从现在开始，每次你提交新的源代码到你的Gogs仓库，一个新的构建和部署将发生在OpenShift中。我们来试试。
 
 == 练习：使用 Gogs Web Hooks
 点击Gogs页面顶部的 "Project" ，然后点击页面中间的 "Files" 。这是Gogs的仓库视图。
