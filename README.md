@@ -76,34 +76,34 @@ Workshop支持4种编程语言练习：
 
 **先决条件**
 
-* An OpenShift 4.8 Workshop cluster from [Red Hat Product Demo System (RHPDS)](https://rhpds.redhat.com). This cluster is available in the catalog in the **Workshops** folder and is named **OpenShift 4.8 Workshop**.
-* Install the **OpenShift Pipelines Operator** onto this OpenShift 4.8 Workshop cluster in all namespaces.
+* 来自[红帽产品演示系统(RHPDS)](https://rhpds.redhat.com)的OpenShift 4.8 Workshop集群。该集群在 **Workshops** 文件夹的目录中可用，命名为 **OpenShift 4.8 Workshop**。
+* 在OpenShift 4.8 Workshop集群上的所有命名空间安装 **OpenShift Pipelines Operator** 。
 
-[AgnosticD](https://github.com/redhat-cop/agnosticd) is used to deploy the workshop, which provides a deploying infrastructure to build and configure application environments.
+[AgnosticD](https://github.com/redhat-cop/agnosticd) 用于部署Workshop，它提供了一个用于构建和配置应用程序环境的部署基础设施。
 
-1. First, using the `oc login` command, log into the OpenShift cluster where you want to deploy the workshop. You need to log in with cluster admin permissions.
+1. 首先，使用 `oc login` 命令，登录到您想部署workshop的OpenShift集群。您需要以集群管理权限登录。
 
-2. Next, clone the AgnosticD repository (or your fork of it, if you are making changes):
+2. 接下来，克隆AgnosticD存储库(或者你的分支，如果你正在进行更改)：
 
 ```
 git clone https://github.com/redhat-cop/agnosticd
 ```
 
-3. In your terminal, cd into the agnosticd repository:
+3. 在终端中，cd到agnosticd存储库中:
 
 ```
 cd agnosticd
 ```
 
-Python headers (Python.h) are required. On Mac OS X you should have it already in place if you have installed Python with Homebrew.
+Python头文件(Python.h)是必需的。在Mac OS X上，如果你已经用Homebrew安装了Python，那么你应该已经有了它。
 
-On Fedora:
+在Fedora:
 
 ```bash
 sudo dnf install python3-dev
 ```
 
-4. Setup Virtual Env:
+4. 安装 Virtual Env:
 
 ```bash
 python3 -mvenv ~/virtualenv/ansible2.9-python3.6-2021-01-22
@@ -111,21 +111,22 @@ python3 -mvenv ~/virtualenv/ansible2.9-python3.6-2021-01-22
  pip install -r https://raw.githubusercontent.com/redhat-cop/agnosticd/development/tools/virtualenvs/ansible2.9-python3.6-2021-01-22.txt
 ```
 
-This will get you a bash shell into an AgnosticD enabled virtual env. In this environment, you'll be able to run or test AgnosticD workloads.
+这将使您进入一个启用了AgnosticD的虚拟env的bash shell。在此环境中，您将能够运行或测试AgnosticD工作负载。
 
-5. cd into the ansible directory:
+5. cd 进入 ansible 目录：
 
 ```
 cd ansible
 ```
 
-6. Set you environments GUID
+6. 设置环境 GUID
 ```
 GUID=<YOUR_GUID>
 ```
-7. Run the following script to deploy all the components of the starter workshop. 
-Change the value of `num_users` and `user_count` to match the number of users you want to provision for the workshop. (Note: these values must both be the same ie if you want to provision 20 users for your lab set `"num_users": 20, "user_count": 20`).
-The target hosts and ocp username can be left as the defaults or change them if needed.
+7. 运行以下脚本以部署初学者workshop的所有组件。
+
+更改 `num_users` 和 `user_count` 的值，以匹配您希望为workshop提供的用户数量。(注意：这些值必须是相同的，即如果你想为你的实验提供20个用户，设置 `"num_users": 20, "user_count": 20`)。
+目标主机和ocp用户名可以保留为默认值，也可以根据需要更改。
 
 ```
 TARGET_HOST=localhost
@@ -156,90 +157,90 @@ done
 
 ## 运行Workshop
 
-### Starting the Workshop for Participants
+### 参与者开始 Workshop
 
-Once the deployment finishes, navigate to the OpenShift Console. If you provisioned the workshop using the RHPDS OCP4 - Getting Started Workshop, you will receive a email with the student and your administrator login credentials once deployment is complete.
+部署完成后，导航到OpenShift控制台。如果您使用RHPDS OCP4 - Getting Started Workshop来提供环境，则在部署完成后，您将收到学生和管理员登录凭证的电子邮件。
 
-In the left-side menu of the OpenShift Console, go to Networking -> Routes and change the project at the top of the page to `labs`.
+在OpenShift控制台的左侧菜单中，选择Networking -> Routes，并将页面顶部的项目更改为 `labs`。
 
-* The `etherpad` route is for the Etherpad deployment. Append `/p/workshop` to the end of this route and share that URL with lab participants so they can claim a username.
-* The `homeroom` route is the one that launches the workshop chooser. Give this URL to lab participants after they've claimed a username.
+* `etherpad` 路由用于Etherpad部署。在路由的末尾添加 `/p/workshop` ，并与实验室参与者共享该URL，以便他们可以声明用户名。
+* `homeroom` 路由是启动workshop入口的路由。在实验室参与者声明用户名后，将这个URL给他们。
 
-If you need to provide the direct URL to any Routes, the structure of the URL is as follows.
+如果您需要为任何路由提供直接URL, URL的结构如下所示。
 
-* A GUID [was created](#Deploying-on-Red-Hat-Product-Demo-System) as a custom attribute of your RHPDS lab. This GUID is used in two parts of your cluster's domain name: the base domain and the cluster name.
-* The Route URLs are in the form of  
+* 一个GUID[已经创建](#在Red-Hat产品演示系统上部署)作为您RHPDS实验室的自定义属性。这个GUID用于集群域名的两个部分:基本域和集群名称。
+* 路由url的格式是 
 **ROUTE-NAME**-labs.apps.cluster-**GUID**.**GUID**.example.opentlc.com  
-If your GUID is, for example, `abc-1234`, and the route name is `myroute`, the Route URL will be http://`myroute`-lab.apps.cluster-`abc-1234`.`abc-1234`.example.opentlc.com
+例如，如果你的GUID是 `abc-1234`，而路由名称是 `myroute`，路由URL将是http://`myroute`-lab.apps.cluster-`abc-1234`.`abc-1234`.example.opentlc.com
 
 ## 仅部署实验指南
 
-**Note**: For this workshop, you will typically want to deploy the full workshop, per the instructions above. Deploying the lab guides only is normally only done if you are making changes to the lab guide content and want to quickly verify and view your changes.
+**Note**: 对于本workshop，您通常希望按照上面的说明部署完整的workshop。通常情况下，只有当您正在对实验指南内容进行更改并希望快速验证和查看更改时，才会部署实验指南。
 
-1. To deploy the lab guides only, first clone this Git repository (or your fork of it, if you are making changes) to your own machine. Use the command:
+1. 要仅部署实验指南，请首先将这个Git存储库(或者您的分支，如果您正在进行更改的话)克隆到您自己的机器上。使用命令:
 
 ```
-git clone --recurse-submodules https://github.com/openshift-labs/starter-guides.git
+git clone --recurse-submodules https://github.com/shadowmanportfolio/starter-guides.git
 ```
 
-The ``--recurse-submodules`` option ensures that Git submodules are checked out. If you forget to use this option, after having cloned the repository, run:
+ ``--recurse-submodules`` 选项确保Git子模块被检出。如果忘记使用此选项，在克隆存储库之后，运行:
 
 ```
 git submodule update --recursive --remote
 ```
 
-2. Next create a project in OpenShift into which the workshop is to be deployed. You must be logged in as cluster admin to deploy the guides.
+2. 接下来，在OpenShift中创建一个将要部署工作坊的项目。必须以集群管理员身份登录才能部署指南。
 
 ```
 oc new-project workshops
 ```
 
-3. From within the top level of the Git repository, now run:
+3. 从Git仓库的顶层，现在运行：
 
 ```
 .workshop/scripts/deploy-spawner.sh
 ```
 
-The name of the deployment will be ``lab-getting-started``.
+部署的名称为 ``lab-getting-started``。
 
-4. You can determine the hostname for the URL to access the workshop by running:
+4. 您可以通过运行以下命令来确定访问Workshop的URL的主机名：
 
 ```
-oc get route lab-getting-started
+oc get route lab-getting-started-spawner
 ```
 
-When the URL for the workshop is accessed you will be prompted for a user name and password. Use your email address or some other unique identifier for the user name. This is only used to ensure you get a unique session and can attach to the same session from a different browser or computer if need be. The password you must supply is ``openshift``.
+当访问workshop的URL时，将提示您输入用户名和密码。使用您的电子邮件地址或其他一些用户名的唯一标识符。这只用于确保您得到一个独特的会话，并可以在需要时从不同的浏览器或计算机附加到相同的会话。您必须提供的密码是 ``openshift``。
 
 ## 开发
 
-The deployment created above will use an image from [Quay.io](https://quay.io/) for this workshop, a container automation platform, based on the ``ocp-4.8`` branch of the repository.
+上面创建的部署将使用来自[Quay.io](https://quay.io/)的镜像，这是一个基于储存库的 ``ocp-4.8`` 分支的容器自动化平台。
 
-To make changes to the workshop content and test them, edit the files in the Git repository and then run:
+要更改研讨会内容并对其进行测试，请在Git存储库中编辑文件，然后运行:
 
 ```
 .workshop/scripts/build-workshop.sh
 ```
 
-This will replace the existing image used by the active deployment.
+这将替换活动部署使用的现有镜像。
 
-If you are running an existing instance of the workshop select "Restart Workshop" from the menu top right of the workshop environment dashboard.
+If you are running an existing instance of the workshop select "Restart Workshop" from the menu top right of the workshop environment dashboard.如果您正在运行Workshop的现有实例，请从研讨会环境仪表板的菜单右上角选择 "Restart Workshop" 。
 
-When you are happy with your changes, push them back to the remote Git repository.
+当您对更改感到满意时，将它们推回远程Git存储库。
 
 ## 删除Workshop
 
-To delete the spawner and any active sessions, including projects, run:
+要删除spawner和任何活动的会话，包括项目，运行:
 
 ```
 .workshop/scripts/delete-spawner.sh
 ```
 
-To delete the build configuration for the workshop image, run:
+要删除workshop镜像的构建配置，请运行以下命令:
 
 ```
 .workshop/scripts/delete-workshop.sh
 ```
 
-## Next
+## 下一步
 
-As Homeroom is EOL, new developments are now based on [Antora](https://antora.org). A Stand-alone version to run on any OCP cluster is available [here](https://github.com/redhat-scholars/openshift-starter-guides)
+由于Homeroom是EOL，新的开发现在基于[Antora](https://antora.org)。可以在任何OCP集群上运行的独立版本在[这里](https://github.com/redhat-scholars/openshift-starter-guides)
