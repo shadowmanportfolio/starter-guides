@@ -1,7 +1,7 @@
 # Lab - Getting Started with OpenShift for Developers
 
-* [Overview](#overview)
-* [Deploying the Workshop](#deploying-the-workshop)
+* [概述](#概述)
+* [部署Workshop](#部署Workshop)
   * [Deploying on Red Hat Product Demo System](#deploying-on-red-hat-product-demo-system)
   * [Deploying to an OpenShift Cluster](#deploying-to-an-openshift-cluster)
 * [Running the Workshop](#running-the-workshop)
@@ -9,7 +9,7 @@
 * [Development](#development)
 * [Deleting the Workshop](#deleting-the-workshop)
 
-## Overview
+## 概述
 
 | | |
 --- | ---
@@ -58,7 +58,7 @@ The full workshop contains several components:
 
 An example of the Java lab guide can be found [here](http://lab-getting-started-ocp4-starter-guide.apps.osd4-demo.u6k6.p1.openshiftapps.com/workshop/common-workshop-summary).
 
-## Deploying the Workshop
+## 部署Workshop
 
 This workshop is designed to be deployed from [Red Hat Product Demo System (RHPDS)](https://rhpds.redhat.com).
 
