@@ -243,4 +243,4 @@ If you are running an existing instance of the workshop select "Restart Workshop
 
 ## 下一步
 
-由于Homeroom是EOL，新的开发现在基于[Antora](https://antora.org)。可以在任何OCP集群上运行的独立版本在[这里](https://github.com/redhat-scholars/openshift-starter-guides)
+由于Homeroom是EOL，新的开发现在基于[Antora](https://antora.org)。可以在任何OCP集群上运行的独立版本在[这里](https://github.com/redhat-scholars/openshift-starter-guides)。
