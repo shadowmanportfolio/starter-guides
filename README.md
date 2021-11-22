@@ -2,7 +2,7 @@
 
 * [概述](#概述)
 * [部署Workshop](#部署Workshop)
-  * [在Red Hat产品演示系统上部署](#在Red Hat产品演示系统上部署)
+  * [在Red Hat产品演示系统上部署](#在Red-Hat产品演示系统上部署)
   * [部署到OpenShift集群](#部署到OpenShift集群)
 * [运行Workshop](#运行Workshop)
 * [仅部署实验指南](#仅部署实验指南)
