@@ -12,6 +12,7 @@
 ## 概述
 
 | | |
+--- | ---
 | 观众体验水平 | 入门级 |
 | 支持用户数 | 每个集群最多100个 |
 | 平均完成时间 | 90 分钟 |
@@ -59,21 +60,21 @@ Workshop支持4种编程语言练习：
 
 ## 部署Workshop
 
-This workshop is designed to be deployed from [Red Hat Product Demo System (RHPDS)](https://rhpds.redhat.com).
+本workshop可在[红帽产品演示系统(RHPDS)](https://rhpds.redhat.com)进行部署。
 
 ### 在Red Hat产品演示系统上部署
 
-Upon logging into RHPDS, highlight the **Services** sidebar, and select the **Catalogs** menu. The workshop is found in the catalog under the **Workshops** folder and is named **OCP4 - Getting Started Workshop**. The `City or Customer` field in the provisioning form will be used to create a GUID that will be visible to the participants in the cluster URLs.
+登录到RHPDS后，突出显示 **Services** 侧栏，并选择 **Catalogs** 菜单。Workshop可在 **Workshops** 文件夹下的目录中找到，名为 **OCP4 - Getting Started Workshop**。配置表单中的 `City or Customer` 字段将用于创建一个在集群URL中对参与者可见的GUID。
 
-Follow the directions in the [Running the Workshop](#running-the-workshop) section to begin the workshop itself.
+按照[运行Workshop](#运行Workshop)部分的说明开始Workshop。
 
-**Note:** It will take up to 75 minutes to deploy the OCP4 cluster via RHPDS.
+**Note:** 通过RHPDS部署OCP4集群最多需要75分钟。
 
 ### 部署到OpenShift集群
 
-The recommended way to deploy this workshop is directly from the RHPDS catalog as described above. If you'd like to deploy it manually, you can order the base OpenShift 4.8 Workshop and deploy the Getting Started workshop via the instructions below.
+如果您想手动部署它，您可以申请基本的OpenShift 4.8 workshop，并通过下面的说明部署入门workshop。
 
-**Prerequisites**
+**先决条件**
 
 * An OpenShift 4.8 Workshop cluster from [Red Hat Product Demo System (RHPDS)](https://rhpds.redhat.com). This cluster is available in the catalog in the **Workshops** folder and is named **OpenShift 4.8 Workshop**.
 * Install the **OpenShift Pipelines Operator** onto this OpenShift 4.8 Workshop cluster in all namespaces.
