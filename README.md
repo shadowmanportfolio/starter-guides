@@ -223,7 +223,7 @@ oc get route lab-getting-started-spawner
 
 这将替换活动部署使用的现有镜像。
 
-If you are running an existing instance of the workshop select "Restart Workshop" from the menu top right of the workshop environment dashboard.如果您正在运行Workshop的现有实例，请从研讨会环境仪表板的菜单右上角选择 "Restart Workshop" 。
+如果您正在运行Workshop的现有实例，请从研讨会环境仪表板的菜单右上角选择 "Restart Workshop" 。
 
 当您对更改感到满意时，将它们推回远程Git存储库。
 
