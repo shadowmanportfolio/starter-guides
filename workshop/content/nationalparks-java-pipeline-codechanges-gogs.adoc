@@ -1,49 +1,44 @@
-== Background: Web Hooks
+== 背景：Web Hooks
 
-Most Git repository servers support the concept of web hooks -- calling to an
-external source via HTTP(S) when a change in the code repository happens.
-OpenShift provides an API endpoint that supports receiving hooks from
-remote systems in order to trigger builds. By pointing the code repository's
-hook at the OpenShift Pipelines resources, automated code/build/deploy pipelines can be
-achieved.
+大多数Git存储库服务器支持web hooks的概念——当代码存储库发生变化时，通过HTTP(S)调用触发外部事件。OpenShift提供了一个API端点，支持从远程系统接收hook以触发构建。通过将代码库的hook指向OpenShift pipeline（管道）资源，可以实现自动化的代码/构建/部署管道。
 
-== Adding Triggers to your Pipeline
+== 向管道添加触发器
 
-Tekton *Triggers* enable us to configure Pipelines to respond to external events (Git push events, pull requests etc) such as Web Hooks.
+Tekton *Triggers* 使我们能够配置Pipeline来响应外部事件(Git push events, pull requests 等等)，比如Web Hooks。
 
-Adding triggering support requires the creation of a `TriggerTemplate`, `TriggerBinding`, and an `EventListener` in our project.
+添加触发支持需要在我们的项目中创建一个 `TriggerTemplate`、 `TriggerBinding`和一个 `EventListener` 。
 
 
 
 image::images/devops-pipeline-triggers.png[Triggers]
 
-Let's see each component in detail:
+让我们详细看看每个组件：
 
-* *TriggerTemplate*: a trigger template is a template for newly created resources. It supports parameters to create specific `PipelineResources` and `PipelineRuns`.
-* *TriggerBinding*: validates events and extracts payload fields
-* *EventListener*: connects `TriggerBindings` and `TriggerTemplates` into an addressable endpoint (the event sink). It uses the extracted event parameters from each TriggerBinding (and any supplied static parameters) to create the resources specified in the corresponding TriggerTemplate. It also optionally allows an external service to pre-process the event payload via the interceptor field.
+* *TriggerTemplate*：触发器模板是新创建资源的模板。它支持参数来创建特定的 `PipelineResources` 和 `PipelineRuns` 。
+* *TriggerBinding*：验证事件并提取有效负载字段。
+* *EventListener*: 将 `TriggerBindings` 和 `TriggerTemplates` 连接到可寻址端点(事件接收器)。它使用从每个TriggerBinding(和任何提供的静态参数)提取的事件参数来创建相应的TriggerTemplate中指定的资源。它还允许外部服务通过拦截器字段对事件有效负载进行预处理。
 
-Now let's create them all together for our Pipeline:
+现在让我们为我们的Pipeline一起创建它们：
 
 [source,shell,role=execute-1]
 ----
 oc create -f http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks/raw/master/pipeline/nationalparks-triggers.yaml -n {{project_namespace}}
 ----
 
-This will create a new Pod with a Route that we can use to setup our Webhook on Gogs to trigger the automatic start of the Pipeline.
+这将创建一个带有路由的新Pod，我们可以使用它在Gogs上设置我们的Webhook来触发管道的自动启动。
 
-From left side menu, click on *Topology* to verify if a new Deployment *el-nationalparks* for the `EventListener` has ben created:
+在左侧菜单中，点击 *Topology* 以验证是否为 `EventListener` 创建了一个新的Deployment *el-nationalparks* ：
 
 image::images/devops-pipeline-triggers-eventlistener.png[EventListener created]
 
 
-== Exercise: Configuring Gogs Web Hooks
+== 练习：配置Gogs Web Hooks
 
-Click on the Deployment, go into *Routes* section and and copy the *el-nationparks* Route URL.
+点击部署，进入 *Routes* 部分并复制 *el-nationparks* 路由 URL。
 
 image::images/devops-pipeline-triggers-route.png[EventListener created]
 
-Once you have the URL copied to your clipboard, navigate to the code repository that you have on Gogs:
+一旦你把URL复制到剪贴板上，导航到Gogs上的代码库：
 
 
 link:http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks[Gogs Repository]
