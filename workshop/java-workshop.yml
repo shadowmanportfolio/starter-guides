@@ -1,6 +1,6 @@
 ---
-name: Starter Labs (Java)
-description: Developing Java Applications on OpenShift - Starter Lab
+name: 基础实验(Java)
+description: 在OpenShift - 基础实验中开发Java应用程序
 
 modules:
   activate:

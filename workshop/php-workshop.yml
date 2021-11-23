@@ -1,6 +1,8 @@
 ---
 name: Starter Labs (PHP)
 description: Developing PHP Applications on OpenShift - Starter Lab
+name: 基础实验(PHP)
+description: 在OpenShift - 基础实验中开发PHP应用程序
 
 modules:
   activate:

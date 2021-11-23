@@ -1,6 +1,6 @@
 ---
-name: Starter Labs (.NET)
-description: Developing .NET Core Applications on OpenShift - Starter Lab
+name: 基础实验(.NET)
+description: 在OpenShift - 基础实验中开发.NET应用程序
 
 modules:
   activate:
