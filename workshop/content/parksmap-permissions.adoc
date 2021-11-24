@@ -1,76 +1,64 @@
-Almost every interaction with an OpenShift environment that you can think of
-requires going through the OpenShift's control plane API. All API interactions are both authenticated (AuthN - who are you?) and authorized (AuthZ - are you allowed to do what you are asking?).
+几乎你能想到的与OpenShift环境的每一次交互都需要通过OpenShift的控制平面API。所有的API交互都是经过认证的(AuthN - 你是谁?)和授权的(AuthZ - 你可以做你要求的事情吗？)。
 
-In the log aggregation lab we saw that there was an
-error in reference to a *Service Account*.
+在日志聚合实验中，我们看到在引用 *Service Account* 时出现了一个错误。
 
-As OpenShift is a declarative platform, some actions will be performed by the platform and not by the end user (when he or she issues a command). These actions are performed using a *Service Account* which is a special type of `user` that the platform will use internally.
+由于OpenShift是一个声明式平台，一些操作将由平台执行，而不是由最终用户(发出命令的角色)执行。这些操作是通过 *Service Account* 执行的，它是平台内部使用的一种特殊类型的 `用户` 。
 
-OpenShift automatically creates a few special service accounts in every project.
-The **default** service account is the one taking the responsibility of running the pods, and OpenShift uses and injects this service account into
-every pod that is launched. By changing the permissions for that service
-account, we can do interesting things.
+OpenShift会在每个项目中自动创建一些特殊的服务帐户。 **default**  服务帐户是负责运行pod的人，而OpenShift使用并将该服务帐户注入到每个启动的pod中。通过更改该服务帐户的权限，我们可以做一些有趣的事情
 
-You can view current permissions in the web console, go to the Topology view in the Developer Perspective, click the `parksmap` entry, go to the *Details* tab, and then click the *Namespace*. 
+您可以在web控制台中查看当前权限，进入开发者视图中的拓扑页面，单击 `parksmap` 条目，进入 *Details* 选项卡，然后单击 *Namespace*。
 
 image::images/parksmap-permissions-namespace.png[Namespace]
 
-Then, click *Role Bindings*.
+然后，单击 *Role Bindings* 。
 
 image::images/parksmap-permissions-membership.png[Membership]
 
-== Exercise: Grant Service Account View Permissions
-The parksmap application wants to talk to the OpenShift API to learn about other
-*Pods*, *Services*, and resources within the *Project*. You'll soon learn why!
+== 练习：授予服务帐户视图权限
+parksmap应用程序想要与OpenShift API对话来了解其他API *Pods*、 *Services* 和 *Project* 中的资源。你很快就会知道为什么!
 
 [source,bash,role=execute-1]
 ----
 oc project {{ project_namespace }}
 ----
 
-Then:
+然后：
 
 [source,bash,role=execute-1]
 ----
 oc policy add-role-to-user view -z default
 ----
 
-The `oc policy` command above is giving a defined _role_ (`view`) to a user. But
-we are using a special flag, `-z`. What does this flag do? From the `-h` output:
+上面的 `oc policy` 命令给用户一个定义好的 _role_ (`view`) 。但我们用的是一个特殊的标志 `-z`。这标志是干什么用的？从 `-z`输出：
 
 [source,bash]
 ----
 -z, --serviceaccount=[]: service account in the current namespace to use as a user
 ----
 
-The `-z` syntax is a special one that saves us from having to type out the
-entire string, which, in this case, is
-`system:serviceaccount:{{ project_namespace }}:default`. It's a nifty shortcut.
+ `-z` 标志是一种特殊的语法表示，它使我们不必输入整个字符串。在本例中，完整参数应该是 `system:serviceaccount:{{ project_namespace }}:default` 。用 `default` 就简便了很多，这是一个方便的快捷方式。
 
 [NOTE]
 ====
-The `-z` flag will only work for service accounts in the *current* project.
-If you're referring to a service account in a different project, use the `-n <project>`switch.
+ `-z` 标志只适用于 *当前* 项目中的服务帐户。如果要引用不同项目中的服务帐户，请使用 `-n <project>` 开关。
 ====
 
-Now that the `default` *Service Account* now has **view** access, so now it can query the API to see what resources are within the *Project*. This also has the added benefit of suppressing the error message! Although, in reality, we fixed the application.
+现在 `default` *Service Account* 具有了 **view** 权限，所以现在它可以查询API来查看 *Project* 中有哪些资源。这还有一个附加的好处，那就是处理错误消息！实际上，我们修复了应用程序日志中的错误。
 
-Another way you could have done the same is by using the OpenShift console. Once you're on the 
-*Workloads -> Deployments* page, click on the *Namespace*, then *Role Bindings* and then the *Create Binding* button.
+另外一种方法是使用OpenShift控制台。一旦你在 *Workloads -> Deployments*  页面，单击 *Namespace* ，然后 *Role Bindings* ，最后点击 *Create Binding* 按钮。
 
 image::images/parksmap-permissions-membership-serviceaccount-list.png[Service account list]
 
-Select *view* for the Role Binding Name *{{ project_namespace }}* for the Namespace, *view* for the Role Name, *Service Account* for the Subject, *{{ project_namespace }}* for the Subject Namespace, and *default* for the Subject Name.
+在命名空间中为角色绑定名 *{{project_namespace}}* 选择 *view* ，在角色名称中选择 *view* ，在Subject选择 *Service Account* ，在Subject Namespace中选择 *{{project_namespace}}* ，在Subject Name中选择 *default* 。
 
 image::images/parksmap-permissions-membership-serviceaccount-edit.png[Service account edit]
 
-Once you're finished editing permissions, click on the *Create* button.
+完成权限编辑后，单击 *Create* 按钮。
 
 image::images/parksmap-permissions-membership-serviceaccount-done.png[Service account changed]
 
-== Exercise: Redeploy Application
-One more step is required. We need to re-deploy the `parksmap` application because it's
-given up trying to query the API.
+== 练习：重新部署应用程序
+还需要一个步骤。重新部署 `parksmap` 应用程序，因为它放弃了尝试查询API。
 
 [source,bash,role=execute-1]
 ----
@@ -78,24 +66,20 @@ oc rollout restart deployment/parksmap
 ----
 
 A new deployment is immediately started. Return to Topology view and click the `parksmap` entry again to watch it happen. You might not be fast enough! But it will be reflected in the *ReplicaSet* number.
+新的部署立即启动。返回到拓扑视图并再次单击 `parksmap` 条目来观察它好何发生。你可能不够快！但它将反映在 *ReplicaSet* 显示的数字中。
 
 image::images/parksmap-permissions-redeployed.png[Application deployed]
 
-If you look at the logs for the application now, you should see no errors.  That's great.
+如果现在查看应用程序的日志，应该不会看到任何错误。太好了，问题解决！
 
-== (Optional) Exercise: Grant User View Permissions
-If you create a project, you are that project's administrator. This means that
-you can grant access to other users, too. If you like, give your neighbor view
-access to your project using the following command:
+== (可选)练习：授予用户视图权限
+如果您创建了一个项目，那么您就是该项目的管理员。这意味着您也可以将访问权限授予其他用户。如果你愿意，使用下面的命令授予你旁边同学访问你项目的权限：
 
-CAUTION: In the following command(s), replace `{{ project_namespace  }}` with the user name of the person to whom you want to grant access.
+CAUTION: 在以下命令中，将 `{{ project_namespace  }}` 替换为您想要授予访问权限的人的用户名。
 
 [source,bash,role=copy-and-edit]
 ----
 oc policy add-role-to-user view {{ project_namespace  }}
 ----
 
-Have them go to the project view by clicking the *Projects* button and verify
-that they can see your project and its resources. This type of arrangement (view
-but not edit) might be ideal for a developer getting visibility into a
-production application's project.
+通过单击 *Projects* 按钮让他们转到项目视图，并验证他们可以看到您的项目及其资源。这种类型权限的设定(可视，但不是编辑)对于开发人员了解产品应用程序的项目是比较理想的。
