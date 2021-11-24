@@ -1,66 +1,64 @@
-In this lab, we're going to deploy the web component of the ParksMap application which is also called `parksmap` and uses OpenShift's service discovery mechanism to discover the backend services deployed and shows their data on the map.
+在这个实验室中，我们将部署ParksMap应用程序的web组件，它也被称为 `parksmap` ，并使用OpenShift的服务发现机制来发现部署的后端服务，并在地图上显示它们的数据。
 
 image::images/roadshow-app-architecture-parksmap-1.png[Application architecture,800,align="center"]
 
-== Exercise: Deploying your First Image
+== 练习：部署您的第一个镜像
 
-Let's start by doing the simplest thing possible - get a plain old
-Docker-formatted image to run on OpenShift. This is incredibly simple to do.
-With OpenShift it can be done directly from the web console.
+让我们从做最简单的事情开始——获得一个普通的旧的docker格式的镜像在OpenShift上运行。这是非常简单的。使用OpenShift可以直接从web控制台完成。
 
-Return to the http://console-openshift-console.{{cluster_subdomain}}/k8s/cluster/projects[Web Console].
+回到 http://console-openshift-console.{{cluster_subdomain}}/k8s/cluster/projects[Web 控制台]。
 
-If you're no longer on the Developer perspective, return there now. 
+如果您不再处于开发者视图中，那么现在就返回那里。
 
-From the left menu, click *+Add*. You will see a screen where you have multiple options to deploy application to OpenShift. Click *Container Image* to open a dialog that will allow you to specify the information for the image you want to deploy.
+从左侧菜单中，单击 *+Add*。您将看到一个屏幕，其中有多个选项可以将应用程序部署到OpenShift。单击 *Container Image* 打开一个对话框，该对话框允许您指定要部署的镜像的信息。
 
 image::images/parksmap-devconsole-container-image.png[Add from Container Image]
 
-In the *Image Name* field, copy/paste the following into the box:
+在 *Image Name* 字段中，复制/粘贴以下内容到文本框中：
 
 [source,role=copy]
 ----
 quay.io/openshiftroadshow/{{PARKSMAP_IMAGENAME}}:{{PARKSMAP_VERSION}}
 ----
 
-OpenShift will then go out to the container registry specified and interrogate the image.
+然后，OpenShift将前往指定的镜像注册表并查找镜像。
 
-Your screen will end up looking something like this:
+你的屏幕最终会看起来像这样：
 
 image::images/parksmap-image.png[Explore Project]
 
-In *Runtime Icon* you can select the icon to use in OpenShift Topology View for the app. You can leave the default OpenShift icon, or select one from the list.
+在 *Runtime Icon* 中，您可以选择应用程序的OpenShift拓扑视图中使用的图标。您可以保留默认的OpenShift图标，或从列表中选择一个。
 
-NOTE: The purpose of this exercise is to deploy a microservice from an agnostic existing container image (Frontend, this was made with Spring Boot). The specific programming language path you have chosen is described and implemented in the next microservice chapter (Backend).
+NOTE: 这个练习的目的是从一个未知的现有容器镜像部署一个微服务(前端应用，用Spring Boot框架开发)。您所选择的特定编程语言路径将在下一章(后端)中描述和实现。
 
-Make sure to have the correct values in:
+确保配置参数正确：
 
 * *Application Name* : workshop
 * *Name* : parksmap
 
-Ensure *Deployment* is selected from *Resource* section.
+确保从 *Resource* 部分选择 *Deployment* 。
 
-*Un-check* the checkbox next to *Create a route to the application*. For learning purposes, we will create a *Route* for the application later in the workshop.
+*取消勾选* 复选框 *Create a route to the application*。出于学习目的，我们将在稍后的Workshop中为应用程序手工创建一个 *Route* 。
 
-At the bottom of the page, click *Labels* in the Advanced Options section and add some labels to better identify this deployment later. Labels will help us identify and filter components in the web console and in the command line.
+在页面底部，单击Advanced Options部分中的 *Labels* ，并添加一些标签，以便稍后更好地识别此部署。标签将帮助我们在web控制台和命令行中识别和过滤组件。
 
 image::images/nationalparks-labels.png[Labels image]
 
-We will add 3 labels. After you enter the name=value pair for each label, press *tab* or de-focus with mouse before typing the next. First the name to be given to the application.
+我们将添加3个标签。在为每个标签输入“名称=值”对后，在输入下一个标签之前按 *tab* 或用鼠标解除焦点。首先是应用程序的名称。
 
 [source,role=copy]
 ----
 app=workshop
 ----
 
-Next the name of this deployment.
+接下来是部署的名称。
 
 [source,role=copy]
 ----
 component=parksmap
 ----
 
-And finally, the role this component plays in the overall application.
+最后，该组件在整个应用程序中扮演的角色。
 
 [source,role=copy]
 ----
@@ -69,63 +67,54 @@ role=frontend
 
 image::images/parksmap-image-options.png[Deploy image]
 
-Next, click the blue *Create* button. You will be directed to the *Topology* page, where you should see the visualization for the `parksmap` deployment config in the `workshop` application.
+接下来，单击蓝色的 *Create* 按钮。您将被引向 *Topology* 页面，在那里您应该可以看到 `workshop` 应用程序 `parksmap` deployment config 的可视化展示。
 
 image::images/parksmap-dc-topology.png[Topology View with Parksmap]
 
-These few steps are the only ones you need to run to get a
-container image deployed on OpenShift. This should work with any
-container image that follows best practices, such as defining an EXPOSE
-port, not needing to run specifically as the *root user* or other user name, and a single non-exiting CMD to execute on start.
+您只需要运行这几个步骤就可以在OpenShift上部署容器镜像。这应该适用于任何遵循最佳实践的容器镜像，比如定义一个EXPOSE端口，不需要以 *root用户* 或其他用户名的形式运行，以及在启动时执行一个非退出CMD。
 
-NOTE: Providing appropriate labels is desired when deploying complex applications for organization purposes. OpenShift uses a label *app* to define and group components together in the Overview page. OpenShift will create this label with some default if the user doesn't provide it explicitly.
+NOTE: 在部署复杂应用程序时，出于管理目的，需要提供适当的标签。OpenShift使用标签 *app* 在Overview页面中定义和分组组件。如果用户没有显式提供这个标签，OpenShift会使用一些默认值创建这个标签。
 
 
-== Background: Containers and Pods
+== 背景：容器和Pod
 
-Before we start digging in, we need to understand how containers and *Pods* are
-related. We will not be covering the background on these technologies in this lab but if you have questions please inform the instructor. Instead, we will dive right in and start using them.
+在我们开始深入研究之前，我们需要了解容器和 *Pods* 之间的关系。我们不会在本实验中介绍这些技术的背景知识，但如果你有问题，请告知讲师。接下来，我们将直接开始使用它们，过后可能会帮助我们加深对这些概念的理解。
 
-In OpenShift, the smallest deployable unit is a *Pod*. A *Pod* is a group of one or more OCI containers deployed together and guaranteed to be on the same host.
-From the official OpenShift documentation:
+在OpenShift中，最小的可部署单元是一个 *Pod*。一个 *Pod* 是一组部署在一起的一个或多个OCI容器，并保证它们在同一主机上。
+
+从OpenShift官方文档中看：
 
 [quote]
 __
-Each *Pod* has its own IP address, therefore owning its entire port space, and
-containers within pods can share storage. *Pods* can be "tagged" with one or
-more labels, which are then used to select and manage groups of *pods* in a
-single operation.
+每个 *Pod* 都有自己的IP地址，因此它拥有整个端口空间，pods中的容器可以共享存储。 *Pods* 可以用一个或多个标签 "标记" ，标签用于在一个单一的操作中选择和管理分组的 *pods* 。
 __
 
-*Pods* can contain multiple OCI containers. The general idea is for a *Pod* to
-contain a "main process" and any auxiliary services you want to run along with that process. Examples of containers you might put in a *Pod* are, an Apache HTTPD
-server, a log analyzer, and a file service to help manage uploaded files.
+*Pods* 可以包含多个OCI容器。一般的想法是让一个 *Pod* 包含一个 "主进程" 和任何您希望与该进程一起运行的辅助服务。例如，可以放在同一个 *Pod* 中的容器包括Apache HTTPD服务器、日志分析器和帮助管理上传文件的文件服务。
 
-== Exercise: Examining the Pod
+== 练习：检查Pod
 
-If you click on the `parksmap` entry in the Topology view, you will see some information about that deployment config. The *Resources* tab may be displayed by default. If so, click on the *Details* tab. 
+如果您单击拓扑视图中的 `parksmap` 条目，您将看到关于该部署配置的一些信息。默认情况下，可以显示 *Resources* 选项卡。如果是，单击 *Details* 选项卡。
 
 image::images/switchtoresources.png[Details Tab image]
 
-On that panel, you will see that there is a single *Pod* that was created by your actions.
+在该面板上，您将看到由您的操作创建的单个 *Pod* 。
 
 image::images/parksmap-overview.png[Pod overview]
 
-You can also get a list of all the *Pods* created within your *Project*, by navigating to *Workloads -> Pods* in the Administrator perspective of the web console.
+您还可以获得在您的 *Project* 中创建的所有 *Pods* 的列表，通过在web控制台的管理员视图中导航到 *Workloads -> Pods* 。
 
 image::images/parksmap-podlist.png[Pod list]
 
-This *Pod* contains a single container, which
-happens to be the `parksmap` application - a simple Spring Boot/Java application.
+这个 *Pod* 包含一个单独的容器，它恰好是一个 `parksmap` 应用程序——一个简单的Spring Boot/Java应用程序。
 
-You can also examine *Pods* from the command line:
+你也可以从命令行检查 *Pods* ：
 
 [source,bash,role=execute-1]
 ----
 oc get pods
 ----
 
-You should see output that looks similar to:
+你应该看到类似的输出：
 
 [source,text]
 ----
@@ -133,21 +122,16 @@ NAME                READY   STATUS      RESTARTS   AGE
 parksmap-65c4f8b676-k5gkk    1/1     Running     0          20s
 ----
 
-The above output lists all of the *Pods* in the current *Project*, including the
-*Pod* name, state, restarts, and uptime. Once you have a *Pod*'s name, you can
-get more information about the *Pod* using the `oc get` command.  To make the
-output readable, I suggest changing the output type to *YAML* using the
-following syntax:
+上面的输出列出了当前 *Project* 中的所有 *Pods* ，包括 *Pod* 名称、状态、重启和正常运行时间。一旦有了 *Pod* 的名称，就可以使用 `oc get` 命令获取有关 *Pod* 的更多信息。为了使输出具有可读性，我建议使用以下语法将输出类型更改为 *YAML* :
 
-NOTE: Make sure you use the correct *Pod* name from your output.
+NOTE: 确保您在输出中使用了正确的 *Pod* 名称：
 
 [source,bash,role=copy-and-edit]
 ----
 oc get pod parksmap-65c4f8b676-k5gkk -o yaml
 ----
 
-You should see something like the following output (which has been truncated due
-to space considerations of this workshop manual):
+你应该看到如下的输出(由于Workshop指导手册篇幅关系，我们截取了片段)：
 
 [source,text]
 ----
@@ -188,74 +172,51 @@ metadata:
 ...............
 ----
 
-The web interface also shows a lot of the same information on the *Pod* details
-page. If you click on the name of the *Pod*, you will
-find the details page. You can also get there by clicking on the `parksmap` deployment config on the *Topology* page, selecting *Resources*, and then clicking the *Pod* name.
+web界面也在 *Pod* 详细信息页面上显示了许多相同的信息。如果您单击 *Pod* 的名称，您将找到详细信息页面。您也可以通过单击 *Topology* 页面上的 `parksmap` deployment config，选择 *Resources* ，然后单击 *Pod* 名称来查看。
 
 image::images/parksmap-dc-resources.png[Parksmap Resources]
 
-From here you can see configuration, metrics, environment variables, logs, events and get a Terminal shell on the running pod.
+从这里，您可以看到配置、指标、环境变量、日志、事件，并在运行的pod上获得shell终端入口。
 
 image::images/parksmap-pod.png[Pod Details]
 
 image::images/parksmap-pod-events.png[Pod Events]
 
-Getting the `parksmap` image running may take a little while to complete. Each
-OpenShift node that is asked to run the image has to pull (download) it, if the
-node does not already have it cached locally. You can check on the status of the
-image download and deployment in the *Pod* details page, or from the command
-line with the `oc get pods` command that you used before.
+运行 `parksmap` 镜像可能需要一段时间才能完成。如果集群节点还没有将镜像缓存在本地，每一个即将运行镜像的OpenShift节点必须拉取(下载)镜像。您可以在 *Pod* 详细信息页面中查看镜像下载和部署的状态，或者使用之前使用的 `oc get pods` 命令从命令行查看镜像下载和部署的状态。
 
-The default view in the *Developer* console is *Graph View*. You can switch between *Graph* and *List* views by using the toggle in the top right of the console.
+*开发者* 控制台中的默认视图是 *Graph view* 。您可以使用控制台右上方的开关在 *Graph* 和 *List* 视图之间切换。
 
 image::images/nationalparks-listview.png[List View Toggle]
 
 image::images/nationalparks-graphview.png[Topology View Toggle]
 
-== Background: Customizing the Image Lifecycle Behavior
+== 背景：自定义镜像生命周期行为
 
-Whenever OpenShift asks the node's CRI (Container Runtime Interface) runtime (Docker daemon or CRI-O) to run an image, the runtime will check to make sure it has the right "version" of the image to run.
-If it doesn't, it will pull it from the specified registry.
+每当OpenShift要求节点的CRI(容器运行时接口)运行时(Docker守护进程或CRI-O)运行镜像时，运行时将检查以确保它有正确的镜像 "版本" 来运行。如果没有，所需版本镜像将从指定的镜像仓库中拉取出来。
 
-There are a number of ways to customize this behavior. They are documented in
-https://{{DOCS_URL}}/applications/application_life_cycle_management/creating-applications-using-cli.html#applications-create-using-cli-image_creating-applications-using-cli[specifying an image]
-as well as
-https://{{DOCS_URL}}/openshift_images/managing_images/image-pull-policy.html[image pull policy].
+有许多方法可以定制此行为。详细请参考
+https://{{DOCS_URL}}/applications/application_life_cycle_management/creating-applications-using-cli.html#applications-create-using-cli-image_creating-applications-using-cli[定制镜像]
+以及
+https://{{DOCS_URL}}/openshift_images/managing_images/image-pull-policy.html[镜像提取策略]。
 
-== Background: Services
+== 背景：服务
 
-*Services* provide a convenient abstraction layer inside OpenShift to find a
-group of similar *Pods*. They also act as an internal proxy/load balancer between
-those *Pods* and anything else that needs to access them from inside the
-OpenShift environment. For example, if you needed more `parksmap` instances to
-handle the load, you could spin up more *Pods*. OpenShift automatically maps
-them as endpoints to the *Service*, and the incoming requests would not notice
-anything different except that the *Service* was now doing a better job handling
-the requests.
+*Services* 在OpenShift中提供了一个方便的抽象层来查找一组类似的 *Pods* 。它们还充当那些在OpenShift环境中 *Pods* 和其他需要从内部访问它们的对象之间的内部代理/负载平衡器。例如，如果你需要更多的 `parksmap` 实例来处理工作负载，你可以调度更多的 *Pods* 。OpenShift自动将它们映射为 *Services* 端点，并且传入的请求数据除了感受到 *Services* 现在在处理请求方面做得更好了以外，不会发现有任何不同。
 
-When you asked OpenShift to run the image, it automatically created a *Service*
-for you. Remember that services are an internal construct. They are not
-available to the "outside world", or anything that is outside the OpenShift
-environment. That's okay, as you will learn later.
+当你要求OpenShift运行镜像时，它会自动为你创建一个 *Service* 。请记住，服务是一个内部构造。它们对 "外部世界" 或OpenShift环境之外的任何东西都不可用。稍后会详细介绍到这一部分内容。
 
-The way that a *Service* maps to a set of *Pods* is via a system of *Labels* and
-*Selectors*. *Services* are assigned a fixed IP address and many ports and
-protocols can be mapped.
+ *Service* 映射到一组 *Pods* 的方式是通过系统 *Labels* 和 *Selectors*。 *Services* 分配一个固定的IP地址，可以映射多个端口和协议。
 
-There is a lot more information about
-https://{{DOCS_URL}}/architecture/understanding-development.html#understanding-kubernetes-pods[Services],
-including the YAML format to make one by hand, in the official documentation.
+还有很多 https://{{DOCS_URL}}/architecture/understanding-development.html#understanding-kubernetes-pods[Services] 相关资料，在官方文档中包含手工定义Service的YAML格式样例。
 
-Now that we understand the basics of what a *Service* is, let's take a look at
-the *Service* that was created for the image that we just deployed. In order to
-view the *Services* defined in your *Project*, enter in the following command:
+现在我们了解了 *Service* 的基础知识，让我们看看为刚刚部署的镜像创建的 *Service* 。为了查看您的 *Project* 中定义的 *Service*，输入以下命令:
 
 [source,bash,role=execute-1]
 ----
 oc get services
 ----
 
-You should see output similar to the following:
+你应该看到类似如下的输出：
 
 [source,bash]
 ----
@@ -263,24 +224,20 @@ NAME       TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
 parksmap   ClusterIP   172.30.22.209  <none>        8080/TCP   3h
 ----
 
-In the above output, we can see that we have a *Service* named `parksmap` with an
-IP/Port combination of 172.30.22.209/8080TCP. Your IP address may be different, as
-each *Service* receives a unique IP address upon creation. *Service* IPs are
-fixed and never change for the life of the *Service*.
+在上面的输出中，我们可以看到我们有一个名为 `parksmap` 的 *Service*，它带有172.30.22.209/8080 TCP的IP/端口组合。您的IP地址可能是不同的，因为每个 *Service* 在创建时收到一个唯一的IP地址。 *Service* ip是固定的，在 *Service* 的生命周期内不会改变。
 
-In the Developer perspective from the *Topology* view, service information is available by clicking the `parksmap` deployment config, then *Resources*, and then you should see the `parksmap` entry in the *Services* section.
+在 *Topology* 视图的Developer视图中，可以通过单击 `parksmap` deployment config，接着单击 *Resources* ，然后您应该在 *Services* 部分中看到 `parksmap` 条目。
 
 image::images/parksmap-serviceslist.png[Services list]
 
-You can also get more detailed information about a *Service* by using the
-following command to display the data in YAML:
+您还可以通过下面的命令来显示YAML中的数据来获取关于 *Service* 的更详细的信息：
 
 [source,bash,role=execute-1]
 ----
 oc get service parksmap -o yaml
 ----
 
-You should see output similar to the following:
+你应该看到类似如下的输出：
 
 [source,text]
 ----
@@ -318,22 +275,20 @@ status:
   loadBalancer: {}
 ----
 
-Take note of the `selector` stanza. Remember it.
+注意 `selector` 标签部分的值。记住它。
 
-Alternatively, you can use the web console to view information about the *Service* by clicking on it from the previous screen.
+或者，您可以使用web控制台通过在上一个屏幕上单击服务条目来查看有关 *Service* 的信息。
 
 image::images/parksmap-service.png[Service]
 
-It is also of interest to view the YAML of the *Pod* to understand how OpenShift
-wires components together. For example, run the following command to get the
-name of your `parksmap` *Pod*:
+通过查看 *Pod* 的YAML来理解OpenShift是如何将组件连接到一起的也是很有意义的。例如，运行以下命令获取您的 `parksmap` *Pod*的名称:
 
 [source,bash,role=execute-1]
 ----
 oc get pods
 ----
 
-You should see output similar to the following:
+你应该看到类似如下的输出：
 
 [source,bash]
 ----
@@ -341,14 +296,14 @@ NAME                        READY   STATUS    RESTARTS   AGE
 parksmap-65c4f8b676-k5gkk   1/1     Running   0          5m12s
 ----
 
-Now you can view the detailed data for your *Pod* with the following command:
+现在，您可以使用以下命令查看 *Pod* 的详细数据：
 
 [source,bash,role=copy-and-edit]
 ----
 oc get pod parksmap-65c4f8b676-k5gkk -o yaml
 ----
 
-Under the `metadata` section you should see the following:
+在 `metadata` 部分，你应该看到以下内容：
 
 [source,bash]
 ----
@@ -357,21 +312,19 @@ Under the `metadata` section you should see the following:
     deploymentconfig: parksmap
 ----
 
-* The *Service* has `selector` stanza that refers to `deploymentconfig=parksmap`.
-* The *Pod* has multiple *Labels*:
+*  *Service* 的 `selector` 节定义了它引用 `deploymentconfig=parksmap`。
+* 该 *Pod* 有多个 *Labels*：
 ** `app=parksmap`
 ** `deploymentconfig=parksmap`
 
-*Labels* are just key/value pairs. Any *Pod* in this *Project* that has a *Label* that
-matches the *Selector* will be associated with the *Service*. To see this in
-action, issue the following command:
+ *Labels*只是键/值对。此 *Project* 中的任何 *Pod* 具有 *Label* 且匹配 *Selector* 将与 *Service* 相关联。要查看实际情况，发出以下命令:
 
 [source,bash,role=execute-1]
 ----
 oc describe service parksmap
 ----
 
-You should see something like the following output:
+你应该看到如下输出：
 
 [source,text]
 ----
@@ -394,7 +347,4 @@ Session Affinity:  None
 Events:            <none>
 ----
 
-You may be wondering why only one endpoint is listed. That is because there is
-only one *Pod* currently running.  In the next lab, we will learn how to scale
-an application, at which point you will be able to see multiple endpoints
-associated with the *Service*.
+您可能想知道为什么只列出了一个端点。这是因为只有一个 *Pod* 当前正在运行。在接下来的实验中，我们将学习如何扩展应用程序，此时您将能够看到与 *Service* 关联的多个端点。
