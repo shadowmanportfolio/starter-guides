@@ -1,22 +1,15 @@
-Containers are treated as immutable infrastructure and therefore it is generally
-not recommended to modify the content of a container through SSH or running custom
-commands inside the container. Nevertheless, in some use-cases, such as debugging
-an application, it might be beneficial to get into a container and inspect the
-application.
+容器被视为不可变的基础设施，因此通常不建议通过SSH或在容器内运行自定义命令来修改容器的内容。然而，在某些用例中，例如调试应用程序，进入容器并检查应用程序可能是有益的。
 
-== Exercise: Remote Shell Session to a Container Using the CLI
+== 练习：使用CLI远程Shell会话访问容器
 
-OpenShift allows establishing remote shell sessions to a container without the
-need to run an SSH service inside each container. In order to establish an
-interactive session inside a container, you can use the `oc rsh` command. First
-get the list of available pods:
+OpenShift允许建立到容器的远程shell会话，而不需要在每个容器中运行SSH服务。为了在容器中建立一个交互式会话，你可以使用 `oc rsh` 命令。首先获取可用的pods列表：
 
 [source,bash,role=execute-1]
 ----
 oc get pods
 ----
 
-You should an output similar to the following:
+你应该得到类似如下的输出：
 
 [source,bash]
 ----
@@ -24,14 +17,14 @@ NAME                        READY   STATUS    RESTARTS   AGE
 parksmap-65c4f8b676-fxcrq   1/1     Running   0          52m
 ----
 
-Now you can establish a remote shell session into the pod by using the pod name:
+现在你可以通过使用pod名称来建立一个远程shell会话到pod：
 
 [source,bash,role=copy-and-edit]
 ----
 oc rsh parksmap-65c4f8b676-fxcrq
 ----
 
-You would see the following output:
+你会看到以下输出：
 
 [source,bash]
 ----
@@ -40,12 +33,10 @@ sh-4.2$
 
 [NOTE]
 ====
-The default shell used by `oc rsh` is `/bin/sh`. If the deployed container does
-not have *sh* installed and uses another shell, (e.g. *A Shell*) the shell command
-can be specified after the pod name in the issued command.
+`oc rsh` 默认使用的shell是 `/bin/sh`。如果部署的容器没有安装 *sh* ，并且使用另一个shell(例如 *A Shell*)，那么shell命令可以在发出的命令中的pod名称之后指定。
 ====
 
-Run the following command to list the files in the top folder:
+执行如下命令列出根文件夹下的文件：
 
 [source,bash,role=execute-1]
 ----
@@ -57,43 +48,40 @@ ls /
 anaconda-post.log  bin  dev  etc  home  lib  lib64  lost+found  media  mnt  opt  parksmap.jar  proc  root  run  sbin  srv  sys  tmp  usr  var
 ----
 
-== Exercise: Remote Shell Session to a Container Using the Web Console
+== 练习：使用Web控制台对容器进行远程Shell会话
 
-The OpenShift Web Console also provides a convenient way to access a terminal session on the container without having to use the CLI.
+OpenShift Web控制台还提供了一种方便的方法来访问容器上的终端会话，而无需使用CLI。
 
-In order to access a pod's terminal via the Web Console, go to the Topology view in the Developer Perspective, click the `parksmap` entry, and then click on the *Pod*. 
+为了通过Web控制台访问pod的终端，请转到开发者视图中的拓扑页面，单击 `parksmap` 条目，然后单击 *Pod*。 
 
 image::images/parksmap-rsh-dev-console-pod.png[Pod in Dev Console]
 
-Once you are viewing the information for the selected pod, click on the *Terminal* tab to open up a shell session.
+查看所选pod的信息后，单击 *Terminal* 选项卡打开shell会话。
 
 image::images/parksmap-rsh-applications-pods-terminal.png[Pod List]
 
 
-Go ahead and execute the same commands you did when using the CLI to see how the Web Console based terminal behaves.
+继续执行与使用CLI时相同的命令，以查看基于Web控制台的终端的行为。
 
-Before proceeding, close the connection to the pod.
+在继续后面的实验之前，关闭与pod的连接。
 
 [source,bash,role=execute-1]
 ----
 exit
 ----
 
-== Exercise: Execute a Command in a Container
+== 练习：在容器中执行命令
 
-In addition to remote shell, it is also possible to run a command remotely in an
-already running container using the `oc exec` command. This does not require
-that a shell is installed, but only that the desired command is present and in
-the executable path.
+除了远程shell之外，还可以使用 `oc exec` 命令在已经运行的容器中远程运行命令。这并不需要安装shell，只需要在可执行路径中存在所需的命令。
 
-In order to show just the JAR file, run the following:
+为了只显示JAR文件，运行以下命令：
 
 [source,bash,role=copy-and-edit]
 ----
 oc exec parksmap-2-mcjsw -- ls -l /parksmap.jar
 ----
 
-You would see something like the following:
+你会看到如下内容：
 
 [source,bash]
 ----
@@ -103,19 +91,17 @@ You would see something like the following:
 
 [NOTE]
 ====
-The `--` syntax in the `oc exec` command delineates where exec's options
-end and where the actual command to execute begins. Take a look at `oc exec
---help` for more details.
+`oc exec` 命令中的 `--` 语法描述了exec选项的结束位置和要执行的实际命令的开始位置。看看 `oc exec --help` 了解更多细节。
 ====
 
-You can also specify the shell commands to run directly with the *oc rsh* command:
+您也可以指定shell命令，直接使用 *oc rsh* 命令运行：
 
 [source,bash,role=copy-and-edit]
 ----
 oc rsh parksmap-2-mcjsw whoami
 ----
 
-You would see something like:
+你会看到这样的东西：
 
 [source,bash]
 ----
@@ -124,12 +110,7 @@ You would see something like:
 
 [NOTE]
 ====
-It is important to understand that, for security reasons, OpenShift does not run containers as the user specified in the Dockerfile by default. In fact,
-when OpenShift launches a container its user is actually randomized.
+需要理解的是，出于安全原因，默认情况下，OpenShift不会以Dockerfile中指定的用户身份运行容器。事实上，当OpenShift启动一个容器时，它的用户实际上是随机的。
 
-If you want or need to allow OpenShift users to deploy container images that do
-expect to run as root (or any specific user), a small configuration change is
-needed. You can learn more about the
-https://{{DOCS_URL}}/openshift_images/create-images.html#images-create-guide-general_create-images[container image guidelines]
-for OpenShift.
+如果希望或需要允许OpenShift用户部署以root(或任何特定用户)身份运行的容器镜像，则需要进行一个小的配置更改。你可以了解更多关于 https://{{DOCS_URL}}/openshift_images/create-images.html#images-create-guide-general_create-images[OpenShift容器镜像指南] 。
 ====
