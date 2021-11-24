@@ -1,48 +1,39 @@
-In this lab, we're going to make our application visible to the end users, so they can access it.
+在这个实验里，我们要让应用程序对最终用户可见，这样他们就可以访问它。
 
 image::images/roadshow-app-architecture-parksmap-2.png[Application architecture,800,align="center"]
 
-== Background: Routes
+== 背景：路由
 
-While *Services* provide internal abstraction and load balancing within an
-OpenShift environment, sometimes clients (users, systems, devices, etc.)
-**outside** of OpenShift need to access an application. The way that external
-clients are able to access applications running in OpenShift is through the
-OpenShift routing layer. And the data object behind that is a *Route*.
+ *Services* 提供OpenShift环境的内部抽象和负载平衡，有时 **外部** 的客户端(用户、系统、设备等)需要访问OpenShift上运行的应用程序。这种访问是通过OpenShift路由层实现的。背后的数据对象就是 *Route*。
 
-The default OpenShift router (HAProxy) uses the HTTP header of the incoming
-request to determine where to proxy the connection. You can optionally define
-security, such as TLS, for the *Route*. If you want your *Services*, and, by
-extension, your *Pods*, to be accessible from the outside world, you need to
-create a *Route*.
+默认的OpenShift路由器(HAProxy)使用传入请求的HTTP包头来确定代理连接的位置。您可以选择为 *Route* 定义安全，比如TLS。如果您想要您的 *Services* 以及扩展后的 *Pods* 可以从外部世界访问，您需要创建一个 *Route*。
 
-== Exercise: Creating a Route
+== 练习：创建路由
 
-You may remember that when we deployed the `parksmap` application, we un-checked the checkbox to 
-create a *Route*. Normally it would have been created for us automatically. Fortunately, creating a *Route* is a pretty straight-forward process. You simply `expose` the *Service* via the command line or via the *Administrator Perspective*.
+你可能还记得，当我们部署 `parksmap` 应用程序时，我们取消了创建 *Route* 的复选框。若勾选的话，平台会自动为我们创建 *Route* 。其实，创建 *Route* 是一个非常简单的过程。您只需通过命令行或通过 *管理员视图*  `暴露` 服务。
 
-=== Creating a route using the Web Console
+=== 通过Web控制台创建路由
 
-In the *Administrator Perspective* click *Networking -> Routes* and then the *Create Route* button. 
+在 *管理员视图* 中单击 *Networking -> Routes* ，然后单击 *Create Route* 按钮。
 
-Insert *parksmap* in *Name* field.
+在 *Name* 字段中插入 *parksmap* 。
 
-From *Service* field, select *parksmap*. For *Target Port*, select *8080*.
+从 *Service* 字段中，选择 *parksmap* 。在 *Target Port* 选项中选择 *8080*。
 
-In *Security* section, check *Secure route*. Select *Edge* from *TLS Termination* list.
+在 *Security* 片段中检查 *Secure route* 。从 *TLS Termination* 列表中选择 *Edge* 。
 
-Leave all other fields blank and click *Create*:
+将所有其他字段留空，然后单击 *Create*：
 
 image::images/parksmap-route-create-1.png[Create Route1,align="center"]
 
 image::images/parksmap-route-create-2.png[Create Route2,align="center"]
 
 
-When creating a *Route*, some other options can be provided, like the hostname and path for the *Route* or the other TLS configurations.
+当创建一个 *Route*时，可以提供一些其他选项，比如 *Route* 的主机名和路径或其他TLS配置。
 
-=== Creating a route using the command line
+=== 使用命令行创建路由
 
-When using the command line, we can first verify that we don't already have any existing *Routes*:
+当使用命令行时，我们可以首先验证我们没有任何现有的 *Routes*：
 
 [source,bash,role=execute-1]
 ----
@@ -54,7 +45,7 @@ oc get routes
 No resources found.
 ----
 
-Now we need to get the *Service* name to expose:
+现在我们需要获取要暴露的 *Service* 名称：
 
 [source,bash,role=execute-1]
 ----
@@ -67,7 +58,7 @@ NAME       CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
 parksmap   172.30.169.213   <none>        8080/TCP   5h
 ----
 
-Once we know the *Service* name, creating a *Route* is a simple one-command task:
+一旦我们知道了 *Service* 名称，创建 *Route* 就是一个简单的单命令任务：
 
 [source,bash,role=execute-1]
 ----
@@ -79,7 +70,7 @@ oc create route edge parksmap --service=parksmap
 route.route.openshift.io/parksmap exposed
 ----
 
-Verify the *Route* was created with the following command:
+使用以下命令验证 *Route* 是否已创建：
 
 [source,bash,role=execute-1]
 ----
@@ -92,13 +83,13 @@ NAME       HOST/PORT                            PATH      SERVICES   PORT       
 parksmap   parksmap-{{project_namespace}}.{{cluster_subdomain}}             parksmap   8080-tcp   edge          None
 ----
 
-You can also verify the *Route* in the *Developer Perspective* under the *Resources* tab for your `parksmap` deployment configuration. Also note that there is a decorator icon on the `parksmap` visualization now. If you click that, it will open the URL for your *Route* in a browser.
+您还可以验证您的 `parksmap` 部署配置的 *Resources* 选项卡下的 *开发者视图* 中的 *Route*。还要注意的是，现在在 `parksmap` 可视化页面中有一个装饰图标。如果你点击它，它会在浏览器中打开你的 *Route* 的URL。
 
 image::images/parksmap-route-created.png[Route created]
 
-This application is now available at the URL shown in the Developer Perspective. Click the link and you will see it.
+该应用程序现在可以在开发者视图中显示的URL处使用。点击链接，你就会看到它。
 
-NOTE: At first time, the Browser will ask permission to get your position. This is needed by the Frontend app to center the world map to your location, if you don't allow it, it will just use a default location.
+NOTE: 第一次访问应用时，浏览器会请求您的许可来获取当前位置。前端应用程序需要根据位置展现以您的位置为中心的世界地图，如果您不允许获取位置，它会使用默认位置来展示地图。这部分展现功能对实验顺利完整进行没有影响。
 
 image::images/parksmap-route-empty-map.png[Empty map]
 
