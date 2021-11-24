@@ -40,7 +40,7 @@ oc policy add-role-to-user view -z default
 
 [NOTE]
 ====
- `-z` 标志只适用于 *当前* 项目中的服务帐户。如果要引用不同项目中的服务帐户，请使用 `-n <project>` 开关。
+ `-z` 标志只适用于当前项目中的服务帐户。如果要引用不同项目中的服务帐户，请使用 `-n <project>` 开关。
 ====
 
 现在 `default` *Service Account* 具有了 **view** 权限，所以现在它可以查询API来查看 *Project* 中有哪些资源。这还有一个附加的好处，那就是处理错误消息！实际上，我们修复了应用程序日志中的错误。
