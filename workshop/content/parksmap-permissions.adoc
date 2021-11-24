@@ -36,7 +36,7 @@ oc policy add-role-to-user view -z default
 -z, --serviceaccount=[]: service account in the current namespace to use as a user
 ----
 
- `-z` 标志是一种特殊的语法表示，它使我们不必输入整个字符串。在本例中，完整参数应该是 `system:serviceaccount:{{ project_namespace }}:default` 。用 `default` 就简便了很多，这是一个方便的快捷方式。
+`-z` 标志是一种特殊的语法表示，它使我们不必输入整个字符串。在本例中，完整参数应该是 `system:serviceaccount:{{ project_namespace }}:default` 。用 `default` 就简便了很多，这是一个方便的快捷方式。
 
 [NOTE]
 ====
