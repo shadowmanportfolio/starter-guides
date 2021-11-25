@@ -12,14 +12,14 @@ image::images/nationalparks-pipeline-codechanges-webhook-config.png[Webhook]
 
 您把URL复制到剪贴板上，再导航到Gogs上的代码库，点击 *Copy URL with Secret* :
 
-link:http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks-py[Gogs Repository]
+link:http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks-py[Gogs 代码库]
 
 您的Gogs凭证信息如下：
 
 [source,bash]
 ----
-username: {{username}}
-password: {{GOGS_PASSWORD}}
+用户名： {{username}}
+口令： {{GOGS_PASSWORD}}
 ----
 
 点击屏幕右上角的Settings链接：
