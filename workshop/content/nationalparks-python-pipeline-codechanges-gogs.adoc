@@ -1,139 +1,124 @@
-== Background: Web Hooks
+== 背景：Web Hooks
 
-Most Git repository servers support the concept of web hooks -- calling to an
-external source via HTTP(S) when a change in the code repository happens.
-OpenShift provides an API endpoint that supports receiving hooks from
-remote systems in order to trigger builds. By pointing the code repository's
-hook at the OpenShift Pipelines resources, automated code/build/deploy pipelines can be
-achieved.
+大多数Git存储库服务器支持web hooks的概念——当代码存储库发生变化时，通过HTTP(S)调用触发外部事件。OpenShift提供了一个API端点，支持从远程系统接收hook以触发构建。通过将代码库的hook指向OpenShift pipeline（管道）资源，可以实现自动化的代码/构建/部署管道。
 
-== Adding Triggers to your Pipeline
+== 向管道添加触发器
 
-Tekton *Triggers* enable us to configure Pipelines to respond to external events (Git push events, pull requests etc) such as Web Hooks.
+Tekton *Triggers* 使我们能够配置Pipeline来响应外部事件(Git push events, pull requests 等等)，比如Web Hooks。
 
-Adding triggering support requires the creation of a `TriggerTemplate`, `TriggerBinding`, and an `EventListener` in our project.
+添加触发支持需要在我们的项目中创建一个 `TriggerTemplate`、 `TriggerBinding`和一个 `EventListener` 。
 
 
 
 image::images/devops-pipeline-triggers.png[Triggers]
 
-Let's see each component in detail:
+让我们详细看看每个组件：
 
-* *TriggerTemplate*: a trigger template is a template for newly created resources. It supports parameters to create specific `PipelineResources` and `PipelineRuns`.
-* *TriggerBinding*: validates events and extracts payload fields
-* *EventListener*: connects `TriggerBindings` and `TriggerTemplates` into an addressable endpoint (the event sink). It uses the extracted event parameters from each TriggerBinding (and any supplied static parameters) to create the resources specified in the corresponding TriggerTemplate. It also optionally allows an external service to pre-process the event payload via the interceptor field.
+* *TriggerTemplate*：触发器模板是新创建资源的模板。它支持参数来创建特定的 `PipelineResources` 和 `PipelineRuns` 。
+* *TriggerBinding*：验证事件并提取有效负载字段。
+* *EventListener*: 将 `TriggerBindings` 和 `TriggerTemplates` 连接到可寻址端点(事件接收器)。它使用从每个TriggerBinding(和任何提供的静态参数)提取的事件参数来创建相应的TriggerTemplate中指定的资源。它还允许外部服务通过拦截器字段对事件有效负载进行预处理。
 
-Now let's create them all together for our Pipeline:
+现在让我们为我们的Pipeline一起创建它们：
 
 [source,shell,role=execute-1]
 ----
 oc create -f http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks-py/raw/master/pipelines/nationalparks-triggers-all.yaml -n {{project_namespace}}
 ----
 
-This will create a new Pod with a Route that we can use to setup our Webhook on Gogs to trigger the automatic start of the Pipeline.
+这将创建一个带有路由的新Pod，我们可以使用它在Gogs上设置我们的Webhook来触发管道的自动启动。
 
-From left side menu, click on *Topology* to verify if a new Deployment *el-nationalparks* for the `EventListener` has ben created:
+在左侧菜单中，点击 *Topology* 以验证是否为 `EventListener` 创建了一个新的Deployment *el-nationalparks* ：
 
 image::images/devops-pipeline-triggers-eventlistener-python.png[EventListener created]
 
 
-== Exercise: Configuring Gogs Web Hooks
+== 练习：配置Gogs Web Hooks
 
-Click on the Deployment, go into *Routes* section and and copy the *el-nationparks* Route URL.
+点击部署，进入 *Routes* 部分并复制 *el-nationparks* 路由 URL。
 
 image::images/devops-pipeline-triggers-route-python.png[EventListener created]
 
-Once you have the URL copied to your clipboard, navigate to the code repository that you have on Gogs:
+一旦你把URL复制到剪贴板上，导航到Gogs上的代码库：
 
 
-link:http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks-py[Gogs Repository]
+link:http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks-py[Gogs 代码库]
 
 
-Your Gogs credentials are:
+您的Gogs凭证是：
 
 [source,bash]
 ----
-username: {{username}}
-password: {{GOGS_PASSWORD}}
+用户名： {{username}}
+口令： {{GOGS_PASSWORD}}
 ----
 
-Click the Settings link on the top right of the screen:
+点击屏幕右上方的Settings链接：
 
 image::images/nationalparks-codechanges-gogs-settings.png[Webhook]
 
-Click on *Webhooks*, then the *Add Webhook* button, and finally select *Gogs*.
+点击 *Webhook* ，然后点击 *Add Webhook* 按钮，最后选择 *Gogs*。
 
 image::images/nationalparks-codechanges-gogs-add-webhook.png[Webhook]
 
-In the next screen, paste your link into the "Payload URL" field. You can leave the
-secret token field blank -- the secret is already in the URL and does not need
-to be in the payload.
+在下一个屏幕，将您的链接粘贴到 "Payload URL" 字段中。您可以将secret token字段留空——secret已经在URL中，不需要放在负载中。
 
-Change the `Content Type` to `application/json`.
+修改 `Content Type` 为 `application/json`。
 
-Finally, click on *Add Webhook*.
+最后，点击 *Add Webhook*。
 
 image::images/nationalparks-codechanges-gogs-config-webhook.png[Webhook]
 
-Boom! From now on, every time you commit new source code to your Gogs
-repository, a new build and deploy will occur inside of OpenShift.  Let's try
-this out.
+收工！从现在开始，每当您向Gogs代码库提交新的源代码时，一个新的构建和部署就会出现在OpenShift内部。我们来试一下。
 
-== Exercise: Using Gogs Web Hooks
+== 练习：使用 Gogs Web Hooks
+点击Gogs里的 *Files* 标签。这是Gogs的代码库视图。
 
-Click the *Files* tab in Gogs. This is Gogs's repository view.  
-
-CAUTION: Make sure that the drop-down menu at the upper right is set for 
-the *`master`* branch. Navigate to the
-following path:
+CAUTION: 确保在右上角的下拉菜单设置为 *`master`* 分支。进入以下路径：
 
 [source,bash]
 ----
 /
 ----
 
-Then click on the `wsgi.py` file.
+然后点击 `wsgi.py` 文件。
 
-Once you have the file on the screen, click the edit button in the top right
-hand corner as shown here:
+一旦文件显示在屏幕上，点击右上角的编辑按钮，如下所示：
 
 image::images/nationalparks-codechanges-gogs-python-change-code.png[Webhook]
 
-Change line number 50:
+修改第50行：
 
 [source,python]
 ----
  'displayName': 'National Parks (PY)',
 ----
 
-To
+改成：
 
 [source,python]
 ----
  'displayName': 'Amazing National Parks (PY)',
 ----
 
-Click on Commit changes at the bottom of the screen. Feel free to enter a commit
-message.
+单击屏幕底部的Commit changes。可随意输入提交消息。
 
-Once you have committed your changes, a new *PipelineRun* should almost instantaneously be
-triggered in OpenShift. Click *Pipeline* in the left navigation menu then `nationalparks-pipeline`. You should see a new one running: 
+一旦你提交了你的更改，一个新的 *PipelineRun* 应该几乎立即在OpenShift中触发。点击左侧导航菜单中的 *Pipeline* ，然后点击 `nationalparks-pipeline`。你应该看到一个新管道实例正在运行：
 
 image::images/nationalparks-codechanges-pipeline-running.png[Webhook]
 
-or run the following command to verify:
+或者运行以下命令进行验证：
 
 [source,bash,role=execute-1]
 ----
 oc get PipelineRun
 ----
 
-Once the build and deploy has finished, verify your new image was automatically deployed by viewing the application in your browser:
+一旦构建和部署完成，通过在浏览器中查看应用程序来验证新镜像是否自动部署：
 
 
-link:http://nationalparks-{{project_namespace}}.{{cluster_subdomain}}/ws/info/[National Parks Info Page]
+link:http://nationalparks-{{project_namespace}}.{{cluster_subdomain}}/ws/info/[National Parks 信息页]
 
 
-You should now see the new name you have set in the JSON string returned.
+现在您应该看到在返回的JSON字符串中设置的新名称。
 
-NOTE: To see this in the map's legend itself, you will need to scale down your parksmap to 0, then back up to 1 to force the app to refresh its cache.
+NOTE: 为了在地图的图例中看到这一点，你需要将你的parksmap缩小到0，然后回到1来强制应用程序刷新它的缓存。
