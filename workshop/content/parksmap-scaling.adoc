@@ -1,32 +1,21 @@
-== Background: Deployments and ReplicaSets
+== 背景：Deployments 和 ReplicaSets
 
-While *Services* provide routing and load balancing for *Pods*, which may go in and
-out of existence, *ReplicaSet* (RS) and *ReplicationController* (RC) are used to specify and then
-ensure the desired number of *Pods* (replicas) are in existence. For example, if
-you always want your application server to be scaled to 3 *Pods* (instances), a
-*ReplicaSet* is needed. Without an RS, any *Pods* that are killed or
-somehow die/exit are not automatically restarted. *ReplicaSets* and *ReplicationController* are how OpenShift "self heals" and while *Deployments* control *ReplicaSets*, *ReplicationController* here are controlled by *DeploymentConfigs*.
+当 *Services* 为 *Pods* 提供路由和负载均衡时， *ReplicaSet* (RS)和 *ReplicationController* (RC)用于指定并确保所需 *Pods* (副本)的存在数量。例如，如果您总是希望您的应用保持在3个 *Pods*(实例)，那么一个 *ReplicaSet* 是必需的。没有RS，任何被杀死或删除/退出的 *pod* 都不会自动重新启动。OpenShift通过 *ReplicaSets* 和 *ReplicationController* 来 "自我修复" ，而 *Deployments* 控制 *ReplicaSets* ，而 *DeploymentConfigs* 控制 *ReplicationController*。
 
-From the https://{{DOCS_URL}}/applications/deployments/what-deployments-are.html[deployments documentation]:
+这个链接是 https://{{DOCS_URL}}/applications/deployments/what-deployments-are.html[deployments介绍文档]：
 
 [quote]
 __
-Similar to a replication controller, a ReplicaSet is a native Kubernetes API object that ensures a specified number of pod replicas are running at any given time. The difference between a replica set and a replication controller is that a replica set supports set-based selector requirements whereas a replication controller only supports equality-based selector requirements.
+与Replication controller类似，ReplicaSet是一个本机Kubernetes API对象，它确保在任何给定时间运行指定数量的pod副本。replica set 和 replication controller之间的区别在于，前者支持基于集合的选择器需求，而后者只支持基于相等的选择器需求。
 __
 
-In Kubernetes, a *Deployment* (D) defines how something should be deployed. In almost all cases, you will end up using the *Pod*, *Service*,
-*ReplicaSet* and *Deployment* resources together. And, in
-almost all of those cases, OpenShift will create all of them for you.
+在Kubernetes中， *Deployment* (D)定义了应该如何部署某些内容。在几乎所有的情况下，你最终都会同时使用 *Pod* ，*Service*， *ReplicaSet* 和 *Deployment* 资源。在几乎所有这些情况下，OpenShift会为你创建所有相关资源。
 
-There are some edge cases where you might want some *Pods* and an *RS* without a *D*
-or a *Service*, and others, so feel free to ask us about them after the labs.
+在一些个别情况下，你可能想要一些 *pod* 和 *RS* 没有 *D* 或 *Service*，以及其他资源。这没有涵盖在本次实验内容中，但也是可以灵活配置实现的。
 
-== Exercise: Exploring Deployment-related Objects
+== 练习：探索与部署相关的对象
 
-Now that we know the background of what a *ReplicaSet* and
-*Deployment* are, we can explore how they work and are related. Take a
-look at the *Deployment* (D) that was created for you when you told
-OpenShift to stand up the `parksmap` image:
+前面了解了 *ReplicaSet* 和 *Deployment* 的背景，接下来我们探索它们是如何工作的，以及它们之间的联系。我们看一下 *Deployment* (D) ，这是当你告诉OpenShift部署 `parksmap` 镜像时，平台为你创建的对象：
 
 [source,bash,role=execute-1]
 ----
@@ -39,10 +28,9 @@ NAME       READY   UP-TO-DATE   AVAILABLE   AGE
 parksmap   1/1     1            1           20m
 ----
 
-To get more details, we can look into the *ReplicaSet* (*RS*).
+要获得更多细节，我们可以查看  *ReplicaSet* (*RS*)。
 
-Take a look at the *ReplicaSet* (RS) that was created for you when
-you told OpenShift to stand up the `parksmap` image:
+查看一下当你告诉OpenShift部署 `parksmap` 镜像实例时平台创建的 *ReplicaSet* (RS)：
 
 [source,bash,role=execute-1]
 ----
@@ -55,35 +43,32 @@ NAME                  DESIRED   CURRENT   READY   AGE
 parksmap-65c4f8b676   1         1         1       21m
 ----
 
-This lets us know that, right now, we expect one *Pod* to be deployed
-(`Desired`), and we have one *Pod* actually deployed (`Current`). By changing
-the desired number, we can tell OpenShift that we want more or less *Pods*.
+可以看到，现在我们希望部署一个 *Pod* (`Desired`)，我们有一个 *Pod* 已经实际部署(`Current`)。通过改变期望（`Desired`）的数字，我们可以告诉OpenShift我们想要更多或更少的 *Pods*。
 
-OpenShift's *HorizontalPodAutoscaler* effectively monitors the CPU usage of a
-set of instances and then manipulates the RCs accordingly.
+OpenShift的 *HorizontalPodAutoscaler* 有效地监控一组实例的CPU使用情况，然后相应地操作RC来扩缩容。
 
-You can learn more about the CPU-based
-https://{{DOCS_URL}}/nodes/pods/nodes-pods-autoscaling.html#nodes-pods-autoscaling-about_nodes-pods-autoscaling[Horizontal Pod Autoscaler here]
+您可以了解 https://{{DOCS_URL}}/nodes/pods/nodes-pods-autoscaling.html#nodes-pods-autoscaling-about_nodes-pods-autoscaling[关于基于CPU自动扩缩容] 的更多信息。
 
-== Exercise: Scaling the Application
+== 练习：扩展应用程序
 
 Let's scale our parksmap "application" up to 2 instances. We can do this with
 the `scale` command. You could also do this by incrementing the Desired Count in the OpenShift web console. Pick one of these methods; it's your choice.
+让我们将parksmap "应用程序"扩展到2个实例。我们可以使用 `scale` 命令，也可以通过在OpenShift web控制台中增加Desired 数量来做到这一点。根据您的喜好选择其中任意一种方法。
 
 [source,bash,role=execute-1]
 ----
 oc scale --replicas=2 deployment/parksmap
 ----
 
-You can also scale up to two pods in the *Developer Perspective*. From the Topology view, first click the `parksmap` deployment config and select the *Details* tab:
+您还可以在 *开发者视图* 中扩展到两个pod。在拓扑视图中，首先单击 `parksmap` deployment config，然后选择 *Details* 选项卡：
 
 image::images/parksmap-details.png[Details]
 
-Next, click the *^* icon next to the Pod visualization to scale up to 2 pods.
+接下来，单击Pod可视化旁边的 *^* 图标扩展到2个Pod。
 
 image::images/parksmap-scaleup.png[Scaling up]
 
-To verify that we changed the number of replicas, issue the following command:
+为了验证我们改变了副本的数量，发出以下命令：
 
 [source,bash,role=execute-1]
 ----
@@ -96,8 +81,7 @@ NAME                  DESIRED   CURRENT   READY   AGE
 parksmap-65c4f8b676   2         2         2       23m
 ----
 
-You can see that we now have 2 replicas. Let's verify the number of pods with
-the `oc get pods` command:
+你可以看到我们现在有两个副本。让我们用 `oc get pods` 命令来验证pod的数量:
 
 [source,bash,role=execute-1]
 ----
@@ -111,15 +95,14 @@ parksmap-65c4f8b676-fxcrq   1/1     Running   0          92s
 parksmap-65c4f8b676-k5gkk   1/1     Running   0          24m
 ----
 
-And lastly, let's verify that the *Service* that we learned about in the
-previous lab accurately reflects two endpoints:
+最后，让我们验证一下，我们在之前的实验中了解到的 *Service* 准确地反映了两个端点：
 
 [source,bash,role=execute-1]
 ----
 oc describe svc parksmap
 ----
 
-You will see something like the following output:
+你会看到如下输出：
 
 [source,bash]
 ----
@@ -143,14 +126,14 @@ Session Affinity:  None
 Events:            <none>
 ----
 
-Another way to look at a *Service*'s endpoints is with the following:
+另一种查看 *Service* 端点的方法是：
 
 [source,bash,role=execute-1]
 ----
 oc get endpoints parksmap
 ----
 
-And you will see something like the following:
+您将看到如下内容：
 
 [source,bash]
 ----
@@ -158,28 +141,19 @@ NAME       ENDPOINTS                           AGE
 parksmap   10.128.2.90:8080,10.131.0.40:8080   45m
 ----
 
-Your IP addresses will likely be different, as each pod receives a unique IP
-within the OpenShift environment. The endpoint list is a quick way to see how
-many pods are behind a service.
+您的IP地址可能是不同的，因为每个pod在OpenShift环境中获得唯一的IP。端点列表是查看一个服务背后有多少Pod的快速方法。
 
-You can also see that both *Pods* are running in the Developer Perspective:
+您还可以看到两个 *Pod* 都在开发者视图中运行：
 
 image::images/parksmap-scaled.png[Scaled]
 
-Overall, that's how simple it is to scale an application (*Pods* in a
-*Service*). Application scaling can happen extremely quickly because OpenShift
-is just launching new instances of an existing image, especially if that image
-is already cached on the node.
+总之，扩展一个应用程序(*Service* 中的 *Pods*)就是这么简单。应用程序扩展速度非常快，因为特别是当该镜像已经缓存在节点上时，OpenShift只是启动一个现有镜像的新实例。
 
-== Application "Self Healing"
+== 应用程序 "自愈"
 
-Because OpenShift's *RSs* are constantly monitoring to see that the desired number
-of *Pods* actually are running, you might also expect that OpenShift will "fix" the
-situation if it is ever not right. You would be correct!
+因为OpenShift的 *RS* 不断地监视，观察所需的 *Pods* 数量和实际运行的数量是否匹配。所以，你可能还会期望OpenShift将自动 "修复" 这种一旦出现不匹配的情况。是的，OpenShift可以做到！
 
-Since we have two *Pods* running right now, let's see what happens if we
-"accidentally" kill one. Run the `oc get pods` command again, and choose a *Pod*
-name. Then, do the following:
+既然我们现在有两个 *pod* 在运行，让我们看看如果我们 "意外" 删除一个会如何。再次运行 `oc get pods` 命令，并选择任意一个 *Pod* 名称。然后，做以下工作：
 
 [source,bash,role=copy-and-edit]
 ----
@@ -194,30 +168,18 @@ parksmap-65c4f8b676-bjz5g   1/1     Running   0          13s
 parksmap-65c4f8b676-fxcrq   1/1     Running   0          4m48s
 ----
 
-Did you notice anything? One container has been deleted, and there's a new container already being created. 
+你注意到了吗？已经删除了一个容器，并且创建了一个新的容器。
 
-Also, the names of the *Pods* are slightly changed.
-That's because OpenShift almost immediately detected that the current state (1
-*Pod*) didn't match the desired state (2 *Pods*), and it fixed it by scheduling
-another *Pod*.
+此外， *Pods* 的名称也有些许改变。这是因为OpenShift几乎立即检测到当前状态 (1个 *Pod* ) 不匹配所需的状态 (2个 *Pod* ) ，马上会通过调度另一个 *Pod* 来修复。
 
-Additionally, OpenShift provides rudimentary capabilities around checking the
-liveness and/or readiness of application instances. If the basic checks are
-insufficient, OpenShift also allows you to run a command inside the container in
-order to perform the check. That command could be a complicated script that uses
-any installed language.
+此外，OpenShift还提供了应用程序实例存活以及就绪情况的基本检查功能。如果基本检查还不够，OpenShift还允许您在容器内运行命令来执行检查。该命令可以是使用任何已安装语言的复杂脚本。
 
-Based on these health checks, if OpenShift decided that our `parksmap`
-application instance wasn't alive, it would kill the instance and then restart
-it, always ensuring that the desired number of replicas was in place.
+基于这些运行状况检查，如果OpenShift判定我们的 `parksmap` 应用程序实例已停止，它将杀死该实例，然后重新启动它，始终确保所需的副本数量已到位。
 
-More information on probing applications is available in the
-https://{{DOCS_URL}}/nodes/containers/nodes-containers-health.html[Application
-Health] section of the documentation and later in this guide.
+关于探测应用程序的更多信息可以在产品文档的 https://{{DOCS_URL}}/nodes/containers/nodes-containers-health.html[应用程序健康] 部分和本实验指南的后面章节内容中了解。
 
-== Exercise: Scale Down
+== 练习：缩减
 
-Before we continue, go ahead and scale your application down to a single
-instance. Feel free to do this using whatever method you like.
+在我们继续之前，请将应用程序缩减到一个实例。你可以使用任意你喜欢的方法来操作。
 
-WARNING: Don't forget to scale down back to 1 instance your `parksmap` component as otherwise you might experience some weird behavior in later labs. This is due to how the application has been coded and not to OpenShift itself.
+WARNING: 别忘了把你的 `parksmap` 组件缩小到1个实例，否则你可能会在以后的实验室中遇到一些奇怪的错误。这是由于应用程序编码设计只支持单例，而不是OpenShift平台本身所致。
