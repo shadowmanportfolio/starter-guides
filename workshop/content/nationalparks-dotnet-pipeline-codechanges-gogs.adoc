@@ -48,8 +48,8 @@ link:http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalpa
 
 [source,bash]
 ----
-username: {{username}}
-password: {{GOGS_PASSWORD}}
+用户名： {{username}}
+口令： {{GOGS_PASSWORD}}
 ----
 
 点击屏幕右上方的Settings链接：
