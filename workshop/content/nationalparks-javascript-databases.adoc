@@ -65,7 +65,7 @@ image::images/nationalparks-databases-catalog-databases.png[Data Stores]
 
 image::images/nationalparks-databases-catalog-databases-mongodb-config.png[MongoDB Deploy]
 
-CAUTION: Make sure you name your database service name *mongodb-nationalparks*
+CAUTION: 确保您的数据库服务名称为 *mongodb-nationalparks*。
 
 你可以看到，一些字段说 *"generated if empty"* 。这是OpenShift中 *模板* 的一个特性。现在，请确保在它们各自的字段中使用以下值：
 
@@ -89,7 +89,7 @@ image::images/nationalparks-databases-list-secrets.png[List Secrets]
 
 image::images/nationalparks-databases-binding-view-secret.png[National Parks Binding]
 
-Select the `nationalparks` workload and click *Save*.
+选择 `nationalparks` 工作负载并点击 *Save*。
 
 image::images/nationalparks-databases-binding-add-binding-to-nationalparks.png[Add binding to application]
 
