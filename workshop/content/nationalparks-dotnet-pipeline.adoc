@@ -206,7 +206,7 @@ image::images/devops-pipeline-start-2-new.png[Add parameters]
 
 您可以从 *Pipeline* 部分跟踪管道执行，查看所有进行中的步骤。点击 *Pipeline Runs* 选项卡查看它的运行情况：
 
-image::images/devops-pipeline-run-1.png[Pipeline runnin
+image::images/devops-pipeline-run-1.png[Pipeline running]
 
 在 *Workspaces*-> *app-source* 从列表中选择 *PVC* ，然后选择 *app-source-pvc*。这是管道中包含源代码和编译工件的管道任务所使用的共享卷。
 
