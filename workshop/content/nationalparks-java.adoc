@@ -41,7 +41,7 @@ OpenShift可以使用任何可访问的Git存储库。这可能是GitHub、GitLa
 口令：{{GOGS_PASSWORD}}
 ----
 
-http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks.git[Gogs 代码库]链接地址。
+link:http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks.git[Gogs 代码库]链接地址。
 
 
 稍后在实验中，我们希望您进行代码更改，然后重新构建您的应用程序。这是一个相当简单的Spring框架Java应用程序。
@@ -54,7 +54,7 @@ http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks.g
 
 image::images/nationalparks-show-add-options.png[Add to Project]
 
- *Import from Git* 工作流将根据一些选项指导你部署应用。
+*Import from Git* 工作流将根据一些选项指导你部署应用。
 
 在Git Repo URL文本框输入如下参数：
 
@@ -179,7 +179,7 @@ http://nationalparks-{{ project_namespace  }}.{{cluster_subdomain}}
 
 由于这是一个后端应用程序，它实际上没有一个web界面。但它仍然可以与浏览器一起使用。所有与parksmap前端一起工作的后端都需要实现一个 `/ws/info/` 端点。要进行测试，请在浏览器中访问此URL:
 
-链接：http://nationalparks-{{project_namespace}}.{{cluster_subdomain}}/ws/info/[National Parks 信息页]
+link:http://nationalparks-{{project_namespace}}.{{cluster_subdomain}}/ws/info/[National Parks 信息页]
 
 WARNING: URL末尾的斜杠是 *必须* 的。如果Pod正在运行，而应用程序不可用，请等待几秒钟并重试，因为我们还没有为此进行健康检查。
 
