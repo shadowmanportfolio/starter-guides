@@ -1,10 +1,3 @@
-In this lab, we're going to deploy a backend service, developed in JavaScript
- that will expose 2 main REST endpoints to the visualizer
-application (`parksmap` web component that was deployed in the previous labs).
-The application will query for national parks information (including it's
-coordinates) that is stored in a MongoDB database.  This application will also
-provide an external access point, so that the API provided can be directly used
-by the end user.
 在本节中，我们将部署一个后端服务，它是用JavaScript开发的，它将向可视化应用程序(在之前的实验中部署的 `parksmap` web组件)公开两个主要REST端点。该应用程序将查询存储在MongoDB数据库中的国家公园信息(包括其坐标)。该应用程序还将提供一个外部接入点，以便最终用户可以直接使用所提供的API。
 
 image::images/roadshow-app-architecture-nationalparks-1.png[Application architecture,800,align="center"]
