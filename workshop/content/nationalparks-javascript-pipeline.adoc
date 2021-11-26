@@ -150,9 +150,9 @@ spec:
 
 ----
 
- `Pipeline` 是用户定义的CD管道模型。Pipeline的代码定义了整个构建过程，通常包括构建应用程序、测试应用程序和交付应用程序的各个阶段。
+`Pipeline` 是用户定义的CD管道模型。Pipeline的代码定义了整个构建过程，通常包括构建应用程序、测试应用程序和交付应用程序的各个阶段。
 
- `Task` 和 `ClusterTask` 包含一些要执行的步骤。 *ClusterTasks* 可用于安装了OpenShift管道的集群内的所有用户，而 *Tasks* 可以自定义。
+`Task` 和 `ClusterTask` 包含一些要执行的步骤。 *ClusterTasks* 可用于安装了OpenShift管道的集群内的所有用户，而 *Tasks* 可以自定义。
 
 这个管道定义了3个任务：
 
