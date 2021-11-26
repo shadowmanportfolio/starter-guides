@@ -1,57 +1,51 @@
-In this lab you will learn about pipelines and how to configure a pipeline in OpenShift so
-that it will take care of the application lifecycle.
+在本实验中，您将学习管道以及如何在OpenShift中配置管道，以便用它来管理应用程序的生命周期。
 
-== Background: Continuous Integration and Pipelines
+== 背景：持续集成和管道
 
-A continuous delivery (CD) pipeline is an automated expression of your process for getting software
-from version control right through to your users and customers.
-Every change to your software (committed in source control) goes through a complex process on
-its way to being released. This process involves building the software in a reliable and repeatable
-manner, as well as progressing the built software (called a "build") through multiple stages of
-testing and deployment.
+持续交付(CD)管道是将软件从版本控制直接传递给用户和客户的过程的自动表达。对软件的每一个变更(在源代码控制中提交)在发布的过程中都要经历一个复杂的过程。这个过程包括以可靠和可重复的方式构建软件，以及通过测试和部署的多个阶段来推进构建的软件(称为 "构建" )。
 
-OpenShift Pipelines is a cloud-native, continuous integration and delivery (CI/CD) solution for building pipelines using https://tekton.dev/[Tekton]. Tekton is a flexible, Kubernetes-native, open-source CI/CD framework that enables automating deployments across multiple platforms (Kubernetes, serverless, VMs, etc) by abstracting away the underlying details.
+OpenShift pipeline是一个基于云的持续集成和交付(CI/CD)解决方案，运用 https://tekton.dev/[Tekton] 来构建管道。Tekton是一个灵活的、Kubernetes原生的开源CI/CD框架，通过抽象底层细节，可以实现跨多个平台(Kubernetes、无服务器、vm等)的自动部署。
 
 image::images/devops-pipeline-flow.png[Pipelines]
 
-== Understanding Tekton
+== 认识 Tekton
 
-Tekton defines a number of https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Kubernetes custom resources] as building blocks in order to standardize pipeline concepts and provide a terminology that is consistent across CI/CD solutions. 
+Tekton定义了许多 https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Kubernetes自定义资源] 作为构建块，以便标准化管道概念，并提供跨CI/CD解决方案的一致术语。
 
-The custom resources needed to define a pipeline are listed below:
+定义管道所需的自定义资源如下所示：
 
-* `Task`: a reusable, loosely coupled number of steps that perform a specific task (e.g. building a container image)
-* `Pipeline`: the definition of the pipeline and the `Tasks` that it should perform
-* `TaskRun`: the execution and result of running an instance of task
-* `PipelineRun`: the execution and result of running an instance of pipeline, which includes a number of `TaskRuns`
+* `Task`: 执行特定任务(例如构建容器镜像)的可重用的、松散耦合的多个步骤
+* `Pipeline`: 管道的定义和它应该执行的 `Tasks` 
+* `TaskRun`: 任务实例运行的执行和结果
+* `PipelineRun`: 管道实例的执行和结果，其中包括一些 `TaskRuns`
 
 image::images/tekton-architecture.png[Tekton Architecture]
 
-In short, in order to create a pipeline, one does the following:
+简而言之，为了创建一个管道，需要执行以下操作：
 
-* Create custom or install https://github.com/tektoncd/catalog[existing] reusable `Tasks`
-* Create a `Pipeline` and `PipelineResources` to define your application's delivery pipeline
-* Create a `PersistentVolumeClaim` to provide the volume/filesystem for pipeline execution or provide a `VolumeClaimTemplate` which creates a `PersistentVolumeClaim`
-* Create a `PipelineRun` to instantiate and invoke the pipeline
+* 创建自定义或安装 https://github.com/tektoncd/catalog[现有] 可重用的 `Tasks`
+* 创建一个 `Pipeline` 和 `PipelineResources` 来定义应用程序的交付管道
+* 创建一个 `PersistentVolumeClaim` 来为管道执行提供卷/文件系统，或者提供 `VolumeClaimTemplate` 来创建一个 `PersistentVolumeClaim` 
+* 创建一个 `PipelineRun` 来实例化和调用管道
 
-For further details on pipeline concepts, refer to the https://github.com/tektoncd/pipeline/tree/master/docs#learn-more[Tekton documentation] that provides an excellent guide for understanding various parameters and attributes available for defining pipelines.
-
-
-== Explore your Pipeline
-
-As pipelines provide the ability to promote applications between different stages of the delivery cycle, Tekton, which is our Continuous Integration server that will execute our pipelines, will be deployed on a project with a Continuous Integration role. Pipelines executed in this project will have permissions to interact with all the projects modeling the different stages of our delivery cycle. 
-
-For this example, we're going to deploy our pipeline that we created automatically from Developer Console together with `nationalparks` backend. 
+有关管道概念的进一步详细信息，请参阅 https://github.com/tektoncd/pipeline/tree/master/docs#learn-more[Tekton文档] ，它为理解用于定义管道的各种参数和属性提供了很好的指南。
 
 
-Verify Tasks already available in the OpenShift cluster (ClusterTasks):
+== 探索您的管道
+
+由于管道提供了在交付周期的不同阶段之间提升应用程序的能力，Tekton是我们的持续集成服务器，它将被部署到一个具有持续集成角色的项目中，它将执行我们的管道。在这个项目中执行的管道将有权限与我们交付周期面向不同阶段的所有项目交互。
+
+在本例中，我们将从开发者视图中部署我们自动创建的管道，以及 `nationalparks` 后端。
+
+
+验证任务(ClusterTasks)已经在OpenShift集群中可用：
 
 [source,shell,role=execute-1]
 ----
 oc get clustertasks -n {{project_namespace}}
 ----
 
-You should see something similar:
+你应该会看到类似的显示：
 
 [source,bash]
 ----
@@ -64,14 +58,14 @@ s2i-dotnet-3-v0-16-3       4h58m
 ....
 ----
 
-Verify the Pipeline we created:
+验证我们创建的管道：
 
 [source,shell,role=execute-1]
 ----
 oc get pipelines -n {{project_namespace}}
 ----
 
-You should see something like this:
+你应该看到这样的显示：
 
 [source,bash]
 ----
@@ -79,7 +73,7 @@ NAME                     AGE
 nationalparks   8s
 ----
 
-Now let's review our Tekton Pipeline:
+现在让我们浏览一下Tekton Pipeline：
 
 [source,yaml,role=copypaste]
 ----
@@ -158,81 +152,79 @@ spec:
 
 ----
 
-A `Pipeline` is a user-defined model of a CD pipeline. A Pipeline’s code defines your entire build process, which typically includes stages for building an application, testing it and then delivering it.
+ `Pipeline` 是用户定义的CD管道模型。Pipeline的代码定义了整个构建过程，通常包括构建应用程序、测试应用程序和交付应用程序的各个阶段。
 
-A `Task` and a `ClusterTask` contain some step to be executed. *ClusterTasks* are available to all user within a cluster where OpenShift Pipelines has been installed, while *Tasks* can be custom.
+ `Task` 和 `ClusterTask` 包含一些要执行的步骤。 *ClusterTasks* 可用于安装了OpenShift管道的集群内的所有用户，而 *Tasks* 可以自定义。
 
-This pipeline has 3 Tasks defined:
+这个管道定义了3个任务：
 
-- *fetch-repository*: this is a `ClusterTask` that will clone our source repository for nationalparks and store it to a `Workspace` `app-source` which will use the PVC created for it `app-source-workspace`
-- *build*: will build and test our .NET Core C# application, generate and push a container image automatically with compiled binaries inside OpenShift Container Registry.
-- *deploy*: it will deploy the created image on OpenShift using the Deployment named `nationalparks` we created in the previous lab.
+- *fetch-repository*: 这是一个 `ClusterTask` ，它将克隆我们的国家公园的代码存储库，并将其存储到一个 `Workspace` `app-source` ，这将使用为它创建的PVC `app-source-workspace`。
+- *build*: 将构建和测试我们的 .NET Core C# 应用程序，在OpenShift内生成和推送一个包含编译后的二进制文件的容器镜像到内部镜像仓库。
+- *deploy*: 它将使用我们之前在实验中创建的名为 `nationalparks` 的Deployment，在OpenShift上部署新建的镜像。
 
-From left-side menu, click on *Pipeline*, then click on *nationalparks* to see the pipeline you just created.
+从左侧菜单，点击 *Pipeline*，然后点击 *nationalparks-pipeline* ，查看您刚刚创建的管道。
 
 image::images/devops-pipeline-created-new.png[Pipeline created]
 
-The Pipeline is parametric, with default value on the one we need to use.
+Pipeline是参数化的，需要使用的参数使用默认值。
 
-It is using one *Workspace*:
+它使用了一个 *Workspace*：
 
-- *app-source*: this need to be linked to a *PersistentVolumeClaim* since will be used to store the code and the compiled binary to be used in different *Tasks*
+- *app-source*: 链接到一个 *PersistentVolumeClaim* ，这个PVC用于存储代码和在不同的 *Task* 中使用的工件。
 
-== Exercise: Add Storage for your Pipeline
+== 练习：为管道添加存储
 
-OpenShift manages Storage with link:https://kubernetes.io/docs/concepts/storage/persistent-volumes/[Persistent Volumes] to be attached to Pods running our applications through *Persistent Volume Claim* requests, and it also provides the capability to manage it at ease from Web Console. 
-From *Administrator Perspective*, go to *Storage*-> *Persistent Volume Claims*.
+OpenShift管理存储链接: https://kubernetes.io/docs/concepts/storage/persistent-volumes/[持久卷] 通过 *Persistent Volume Claim* 请求被附加到运行我们的应用程序的Pods上，并且它还提供了从Web控制台轻松管理它的能力。
+从 *Administrator Perspective*，转到 *Storage*-> *Persistent Volume Claims*。
 
-Go to top-right side and click *Create Persistent Volume Claim* button.
+转到右上角，单击 *Create Persistent Volume Claim* 按钮。
 
-Inside *Persistent Volume Claim name* insert *app-source-pvc*.
+在 *Persistent Volume Claim name* 对话框填入 *app-source-pvc*。
 
-In *Size* section, insert *1* as we are going to create 1 GiB Persistent Volume for our Pipeline, using RWO Single User access mode.
+在 *Size* 部分, 填入 *1* 因为我们要为管道创建1 GiB的持久卷, 使用RWO单用户访问模式。
 
-Leave all other default settings, and click *Create*.
+保留所有其他默认设置，并单击 *Create*。
 
-image::images/nationalparks-codechanges-pipeline-pvc.png[Create PVC]
+image::images/nationalparks-codechanges-pipeline-pvc.png[创建 PVC]
 
-TIP: The *Storage Class* is the type of storage available in the cluster.
+TIP: *Storage Class* 是集群中可用的存储类型。
 
+== 运行管道
 
-== Run the Pipeline
-
-We can start now the Pipeline from the Web Console. Switch to *Developer Perspective*, and from left-side menu, click on *Pipeline*, then click on *nationalparks*. From top-right *Actions* list, click on *Start*.
+现在我们可以从Web控制台启动管道。从左侧菜单，点击 *Pipeline*，然后点击 *nationalparks-pipeline*。从右上角的 *Actions* 列表中，单击 *Start*。
 
 image::images/devops-pipeline-start-1-new.png[Start Pipeline]
 
-You will be prompted with parameters to add the Pipeline, showing default ones. 
+系统将提示您添加Pipeline的参数，并显示默认的参数。
 
 
-In *Workspaces*-> *app-source* select *PVC* from the list, then select *app-source-pvc*. This is the shared volume used by Pipeline Tasks in your Pipeline containing the source code and compiled artifacts.
-
-Click on *Start* to run your Pipeline.
+在 *Workspaces*-> *app-source* 从列表中选择 *PVC* ，然后选择 *app-source-pvc*。这是管道中包含源代码和编译工件的管道任务所使用的共享卷。
+点击 *Start* 来运行您的管道。
 
 image::images/devops-pipeline-start-2-new.png[Add parameters]
 
 
-You can follow the Pipeline execution from *Pipeline* section, watching all the steps in rogress. Click on *Pipeline Runs* tab to see it running:
+您可以从 *Pipeline* 部分跟踪管道执行，查看所有进行中的步骤。点击 *Pipeline Runs* 选项卡查看它的运行情况：
 
 image::images/devops-pipeline-run-1.png[Pipeline runnin
 
-In *Workspaces*-> *app-source* select *PVC* from the list, then select *app-source-pvc*. This is the share volume used by Pipeline Tasks in your Pipeline containing the source code and compiled artifacts.
+在 *Workspaces*-> *app-source* 从列表中选择 *PVC* ，然后选择 *app-source-pvc*。这是管道中包含源代码和编译工件的管道任务所使用的共享卷。
 
-Click on *Start* to run your Pipeline.
+点击 *Start* 来运行您的管道。
 
 image::images/devops-pipeline-start-2.png[Add parameters]
 
 
-You can follow the Pipeline execution from *Pipeline* section, watching all the steps in g]
+您可以从 *Pipeline* 部分跟踪管道执行，查看所有进行中的步骤。
 
-The click on the `PipelineRun` *national-parks-deploy-run-*:
+点击 `PipelineRun` *national-parks-deploy-run-*：
 
 image::images/devops-pipeline-run-2.png[Pipeline running animation]
 
-Then click on the *Task* running to check logs:
+然后点击正在运行的 *Task* 来检查日志：
 
 image::images/devops-pipeline-run-3.png[Pipeline Task log]
 
-Verify PipelineRun has been completed with success:
+验证PipelineRun已经成功完成：
 
 image::images/devops-pipeline-run-4.png[PipelineRun completed]
