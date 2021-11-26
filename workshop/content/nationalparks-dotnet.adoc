@@ -22,6 +22,7 @@ S2I的完整讨论超出了实验的范围，但是你可以找到更多的信�
 == 练习：创建.NET应用程序
 
 作为这项工作的一部分，我们将部署的后台服务称为 `nationalparks`。这是一个.NET应用程序，它对MongoDB数据库执行2D地理空间查询，以定位和返回世界上所有国家公园的地图坐标。这是一种巧妙的方式，来部署一个返回位置JSON列表的webservice。
+
 === 添加到工程
 
 因为 `nationalparks` 组件是一个后端，它将为我们现有的前端(parksmap)提供数据，所以我们将在现有项目中构建它。为了演示如何通过CLI或web控制台与OpenShift交互，我们将使用web控制台部署nationalparks组件。
@@ -42,7 +43,7 @@ link:http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalpa
 口令：{{GOGS_PASSWORD}}
 ----
 
-稍后在实验中，我们希望您进行代码更改，然后重新构建您的应用程序。这是一个相当简单的Spring框架Java应用程序。
+稍后在实验中，我们希望您进行代码更改，然后重新构建您的应用程序。这是一个相当简单的.NET应用程序。
 
 === 在OpenShift上构建代码
 
@@ -129,7 +130,7 @@ image::images/nationalparks-javascript-new-nodejs-build.png[Nationalparks build 
 * S2I进程将结果镜像推送到OpenShift内部镜像仓库
 * *Deployment* (D) 将检测出镜像已更改，而这将触发新部署。
 * 这个新部署将生成一个 *ReplicaSet* (RS) 。
-* RS将检测到没有 *Pods* 正在运行，因为我们设定默认副本数为1，这将触发部署一个pod。
+* RC将检测到没有 *Pods* 正在运行，因为我们设定默认副本数为1，这将触发部署一个pod。
 
 最后，当发出 `oc get pods` 命令时，你会看到构建Pod已经完成(退出)，并且应用程序 *Pod* 处于就绪和运行状态:
 

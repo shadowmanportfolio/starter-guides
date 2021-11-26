@@ -142,7 +142,7 @@ oc logs -f builds/nationalparks-1
 * S2I进程将结果镜像推送到OpenShift内部镜像仓库
 * *Deployment* (D) 将检测出镜像已更改，而这将触发新部署。
 * 这个新部署将生成一个 *ReplicaSet* (RS) 。
-* RS将检测到没有 *Pods* 正在运行，因为我们设定默认副本数为1，这将触发部署一个pod。
+* RC将检测到没有 *Pods* 正在运行，因为我们设定默认副本数为1，这将触发部署一个pod。
 
 最后，当发出 `oc get pods` 命令时，你会看到构建Pod已经完成(退出)，并且应用程序 *Pod* 处于就绪和运行状态:
 
