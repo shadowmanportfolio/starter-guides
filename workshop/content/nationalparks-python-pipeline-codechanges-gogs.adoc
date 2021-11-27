@@ -1,124 +1,124 @@
-== ±³¾°£ºWeb Hooks
+== èƒŒæ™¯ï¼šWeb Hooks
 
-´ó¶àÊıGit´æ´¢¿â·şÎñÆ÷Ö§³Öweb hooksµÄ¸ÅÄî¡ª¡ªµ±´úÂë´æ´¢¿â·¢Éú±ä»¯Ê±£¬Í¨¹ıHTTP(S)µ÷ÓÃ´¥·¢Íâ²¿ÊÂ¼ş¡£OpenShiftÌá¹©ÁËÒ»¸öAPI¶Ëµã£¬Ö§³Ö´ÓÔ¶³ÌÏµÍ³½ÓÊÕhookÒÔ´¥·¢¹¹½¨¡£Í¨¹ı½«´úÂë¿âµÄhookÖ¸ÏòOpenShift pipeline£¨¹ÜµÀ£©×ÊÔ´£¬¿ÉÒÔÊµÏÖ×Ô¶¯»¯µÄ´úÂë/¹¹½¨/²¿Êğ¹ÜµÀ¡£
+å¤§å¤šæ•°Gitå­˜å‚¨åº“æœåŠ¡å™¨æ”¯æŒweb hooksçš„æ¦‚å¿µâ€”â€”å½“ä»£ç å­˜å‚¨åº“å‘ç”Ÿå˜åŒ–æ—¶ï¼Œé€šè¿‡HTTP(S)è°ƒç”¨è§¦å‘å¤–éƒ¨äº‹ä»¶ã€‚OpenShiftæä¾›äº†ä¸€ä¸ªAPIç«¯ç‚¹ï¼Œæ”¯æŒä»è¿œç¨‹ç³»ç»Ÿæ¥æ”¶hookä»¥è§¦å‘æ„å»ºã€‚é€šè¿‡å°†ä»£ç åº“çš„hookæŒ‡å‘OpenShift pipelineï¼ˆç®¡é“ï¼‰èµ„æºï¼Œå¯ä»¥å®ç°è‡ªåŠ¨åŒ–çš„ä»£ç /æ„å»º/éƒ¨ç½²ç®¡é“ã€‚
 
-== Ïò¹ÜµÀÌí¼Ó´¥·¢Æ÷
+== å‘ç®¡é“æ·»åŠ è§¦å‘å™¨
 
-Tekton *Triggers* Ê¹ÎÒÃÇÄÜ¹»ÅäÖÃPipelineÀ´ÏìÓ¦Íâ²¿ÊÂ¼ş(Git push events, pull requests µÈµÈ)£¬±ÈÈçWeb Hooks¡£
+Tekton *Triggers* ä½¿æˆ‘ä»¬èƒ½å¤Ÿé…ç½®Pipelineæ¥å“åº”å¤–éƒ¨äº‹ä»¶(Git push events, pull requests ç­‰ç­‰)ï¼Œæ¯”å¦‚Web Hooksã€‚
 
-Ìí¼Ó´¥·¢Ö§³ÖĞèÒªÔÚÎÒÃÇµÄÏîÄ¿ÖĞ´´½¨Ò»¸ö `TriggerTemplate`¡¢ `TriggerBinding`ºÍÒ»¸ö `EventListener` ¡£
+æ·»åŠ è§¦å‘æ”¯æŒéœ€è¦åœ¨æˆ‘ä»¬çš„é¡¹ç›®ä¸­åˆ›å»ºä¸€ä¸ª `TriggerTemplate`ã€ `TriggerBinding`å’Œä¸€ä¸ª `EventListener` ã€‚
 
 
 
 image::images/devops-pipeline-triggers.png[Triggers]
 
-ÈÃÎÒÃÇÏêÏ¸¿´¿´Ã¿¸ö×é¼ş£º
+è®©æˆ‘ä»¬è¯¦ç»†çœ‹çœ‹æ¯ä¸ªç»„ä»¶ï¼š
 
-* *TriggerTemplate*£º´¥·¢Æ÷Ä£°åÊÇĞÂ´´½¨×ÊÔ´µÄÄ£°å¡£ËüÖ§³Ö²ÎÊıÀ´´´½¨ÌØ¶¨µÄ `PipelineResources` ºÍ `PipelineRuns` ¡£
-* *TriggerBinding*£ºÑéÖ¤ÊÂ¼ş²¢ÌáÈ¡ÓĞĞ§¸ºÔØ×Ö¶Î¡£
-* *EventListener*: ½« `TriggerBindings` ºÍ `TriggerTemplates` Á¬½Óµ½¿ÉÑ°Ö·¶Ëµã(ÊÂ¼ş½ÓÊÕÆ÷)¡£ËüÊ¹ÓÃ´ÓÃ¿¸öTriggerBinding(ºÍÈÎºÎÌá¹©µÄ¾²Ì¬²ÎÊı)ÌáÈ¡µÄÊÂ¼ş²ÎÊıÀ´´´½¨ÏàÓ¦µÄTriggerTemplateÖĞÖ¸¶¨µÄ×ÊÔ´¡£Ëü»¹ÔÊĞíÍâ²¿·şÎñÍ¨¹ıÀ¹½ØÆ÷×Ö¶Î¶ÔÊÂ¼şÓĞĞ§¸ºÔØ½øĞĞÔ¤´¦Àí¡£
+* *TriggerTemplate*ï¼šè§¦å‘å™¨æ¨¡æ¿æ˜¯æ–°åˆ›å»ºèµ„æºçš„æ¨¡æ¿ã€‚å®ƒæ”¯æŒå‚æ•°æ¥åˆ›å»ºç‰¹å®šçš„ `PipelineResources` å’Œ `PipelineRuns` ã€‚
+* *TriggerBinding*ï¼šéªŒè¯äº‹ä»¶å¹¶æå–æœ‰æ•ˆè´Ÿè½½å­—æ®µã€‚
+* *EventListener*: å°† `TriggerBindings` å’Œ `TriggerTemplates` è¿æ¥åˆ°å¯å¯»å€ç«¯ç‚¹(äº‹ä»¶æ¥æ”¶å™¨)ã€‚å®ƒä½¿ç”¨ä»æ¯ä¸ªTriggerBinding(å’Œä»»ä½•æä¾›çš„é™æ€å‚æ•°)æå–çš„äº‹ä»¶å‚æ•°æ¥åˆ›å»ºç›¸åº”çš„TriggerTemplateä¸­æŒ‡å®šçš„èµ„æºã€‚å®ƒè¿˜å…è®¸å¤–éƒ¨æœåŠ¡é€šè¿‡æ‹¦æˆªå™¨å­—æ®µå¯¹äº‹ä»¶æœ‰æ•ˆè´Ÿè½½è¿›è¡Œé¢„å¤„ç†ã€‚
 
-ÏÖÔÚÈÃÎÒÃÇÎªÎÒÃÇµÄPipelineÒ»Æğ´´½¨ËüÃÇ£º
+ç°åœ¨è®©æˆ‘ä»¬ä¸ºæˆ‘ä»¬çš„Pipelineä¸€èµ·åˆ›å»ºå®ƒä»¬ï¼š
 
 [source,shell,role=execute-1]
 ----
 oc create -f http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks-py/raw/master/pipelines/nationalparks-triggers-all.yaml -n {{project_namespace}}
 ----
 
-Õâ½«´´½¨Ò»¸ö´øÓĞÂ·ÓÉµÄĞÂPod£¬ÎÒÃÇ¿ÉÒÔÊ¹ÓÃËüÔÚGogsÉÏÉèÖÃÎÒÃÇµÄWebhookÀ´´¥·¢¹ÜµÀµÄ×Ô¶¯Æô¶¯¡£
+è¿™å°†åˆ›å»ºä¸€ä¸ªå¸¦æœ‰è·¯ç”±çš„æ–°Podï¼Œæˆ‘ä»¬å¯ä»¥ä½¿ç”¨å®ƒåœ¨Gogsä¸Šè®¾ç½®æˆ‘ä»¬çš„Webhookæ¥è§¦å‘ç®¡é“çš„è‡ªåŠ¨å¯åŠ¨ã€‚
 
-ÔÚ×ó²à²Ëµ¥ÖĞ£¬µã»÷ *Topology* ÒÔÑéÖ¤ÊÇ·ñÎª `EventListener` ´´½¨ÁËÒ»¸öĞÂµÄDeployment *el-nationalparks* £º
+åœ¨å·¦ä¾§èœå•ä¸­ï¼Œç‚¹å‡» *Topology* ä»¥éªŒè¯æ˜¯å¦ä¸º `EventListener` åˆ›å»ºäº†ä¸€ä¸ªæ–°çš„Deployment *el-nationalparks* ï¼š
 
 image::images/devops-pipeline-triggers-eventlistener-python.png[EventListener created]
 
 
-== Á·Ï°£ºÅäÖÃGogs Web Hooks
+== ç»ƒä¹ ï¼šé…ç½®Gogs Web Hooks
 
-µã»÷²¿Êğ£¬½øÈë *Routes* ²¿·Ö²¢¸´ÖÆ *el-nationparks* Â·ÓÉ URL¡£
+ç‚¹å‡»éƒ¨ç½²ï¼Œè¿›å…¥ *Routes* éƒ¨åˆ†å¹¶å¤åˆ¶ *el-nationparks* è·¯ç”± URLã€‚
 
 image::images/devops-pipeline-triggers-route-python.png[EventListener created]
 
-Ò»µ©Äã°ÑURL¸´ÖÆµ½¼ôÌù°åÉÏ£¬µ¼º½µ½GogsÉÏµÄ´úÂë¿â£º
+ä¸€æ—¦ä½ æŠŠURLå¤åˆ¶åˆ°å‰ªè´´æ¿ä¸Šï¼Œå¯¼èˆªåˆ°Gogsä¸Šçš„ä»£ç åº“ï¼š
 
 
-link:http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks-py[Gogs ´úÂë¿â]
+link:http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks-py[Gogs ä»£ç åº“]
 
 
-ÄúµÄGogsÆ¾Ö¤ÊÇ£º
+æ‚¨çš„Gogså‡­è¯æ˜¯ï¼š
 
 [source,bash]
 ----
-ÓÃ»§Ãû£º {{username}}
-¿ÚÁî£º {{GOGS_PASSWORD}}
+ç”¨æˆ·åï¼š {{username}}
+å£ä»¤ï¼š {{GOGS_PASSWORD}}
 ----
 
-µã»÷ÆÁÄ»ÓÒÉÏ·½µÄSettingsÁ´½Ó£º
+ç‚¹å‡»å±å¹•å³ä¸Šæ–¹çš„Settingsé“¾æ¥ï¼š
 
 image::images/nationalparks-codechanges-gogs-settings.png[Webhook]
 
-µã»÷ *Webhook* £¬È»ºóµã»÷ *Add Webhook* °´Å¥£¬×îºóÑ¡Ôñ *Gogs*¡£
+ç‚¹å‡» *Webhook* ï¼Œç„¶åç‚¹å‡» *Add Webhook* æŒ‰é’®ï¼Œæœ€åé€‰æ‹© *Gogs*ã€‚
 
 image::images/nationalparks-codechanges-gogs-add-webhook.png[Webhook]
 
-ÔÚÏÂÒ»¸öÆÁÄ»£¬½«ÄúµÄÁ´½ÓÕ³Ìùµ½ "Payload URL" ×Ö¶ÎÖĞ¡£Äú¿ÉÒÔ½«secret token×Ö¶ÎÁô¿Õ¡ª¡ªsecretÒÑ¾­ÔÚURLÖĞ£¬²»ĞèÒª·ÅÔÚ¸ºÔØÖĞ¡£
+åœ¨ä¸‹ä¸€ä¸ªå±å¹•ï¼Œå°†æ‚¨çš„é“¾æ¥ç²˜è´´åˆ° "Payload URL" å­—æ®µä¸­ã€‚æ‚¨å¯ä»¥å°†secret tokenå­—æ®µç•™ç©ºâ€”â€”secretå·²ç»åœ¨URLä¸­ï¼Œä¸éœ€è¦æ”¾åœ¨è´Ÿè½½ä¸­ã€‚
 
-ĞŞ¸Ä `Content Type` Îª `application/json`¡£
+ä¿®æ”¹ `Content Type` ä¸º `application/json`ã€‚
 
-×îºó£¬µã»÷ *Add Webhook*¡£
+æœ€åï¼Œç‚¹å‡» *Add Webhook*ã€‚
 
 image::images/nationalparks-codechanges-gogs-config-webhook.png[Webhook]
 
-ÊÕ¹¤£¡´ÓÏÖÔÚ¿ªÊ¼£¬Ã¿µ±ÄúÏòGogs´úÂë¿âÌá½»ĞÂµÄÔ´´úÂëÊ±£¬Ò»¸öĞÂµÄ¹¹½¨ºÍ²¿Êğ¾Í»á³öÏÖÔÚOpenShiftÄÚ²¿¡£ÎÒÃÇÀ´ÊÔÒ»ÏÂ¡£
+æ”¶å·¥ï¼ä»ç°åœ¨å¼€å§‹ï¼Œæ¯å½“æ‚¨å‘Gogsä»£ç åº“æäº¤æ–°çš„æºä»£ç æ—¶ï¼Œä¸€ä¸ªæ–°çš„æ„å»ºå’Œéƒ¨ç½²å°±ä¼šå‡ºç°åœ¨OpenShiftå†…éƒ¨ã€‚æˆ‘ä»¬æ¥è¯•ä¸€ä¸‹ã€‚
 
-== Á·Ï°£ºÊ¹ÓÃ Gogs Web Hooks
-µã»÷GogsÀïµÄ *Files* ±êÇ©¡£ÕâÊÇGogsµÄ´úÂë¿âÊÓÍ¼¡£
+== ç»ƒä¹ ï¼šä½¿ç”¨ Gogs Web Hooks
+ç‚¹å‡»Gogsé‡Œçš„ *Files* æ ‡ç­¾ã€‚è¿™æ˜¯Gogsçš„ä»£ç åº“è§†å›¾ã€‚
 
-CAUTION: È·±£ÔÚÓÒÉÏ½ÇµÄÏÂÀ­²Ëµ¥ÉèÖÃÎª *`master`* ·ÖÖ§¡£½øÈëÒÔÏÂÂ·¾¶£º
+CAUTION: ç¡®ä¿åœ¨å³ä¸Šè§’çš„ä¸‹æ‹‰èœå•è®¾ç½®ä¸º *`master`* åˆ†æ”¯ã€‚è¿›å…¥ä»¥ä¸‹è·¯å¾„ï¼š
 
 [source,bash]
 ----
 /
 ----
 
-È»ºóµã»÷ `wsgi.py` ÎÄ¼ş¡£
+ç„¶åç‚¹å‡» `wsgi.py` æ–‡ä»¶ã€‚
 
-Ò»µ©ÎÄ¼şÏÔÊ¾ÔÚÆÁÄ»ÉÏ£¬µã»÷ÓÒÉÏ½ÇµÄ±à¼­°´Å¥£¬ÈçÏÂËùÊ¾£º
+ä¸€æ—¦æ–‡ä»¶æ˜¾ç¤ºåœ¨å±å¹•ä¸Šï¼Œç‚¹å‡»å³ä¸Šè§’çš„ç¼–è¾‘æŒ‰é’®ï¼Œå¦‚ä¸‹æ‰€ç¤ºï¼š
 
 image::images/nationalparks-codechanges-gogs-python-change-code.png[Webhook]
 
-ĞŞ¸ÄµÚ50ĞĞ£º
+ä¿®æ”¹ç¬¬50è¡Œï¼š
 
 [source,python]
 ----
  'displayName': 'National Parks (PY)',
 ----
 
-¸Ä³É£º
+æ”¹æˆï¼š
 
 [source,python]
 ----
  'displayName': 'Amazing National Parks (PY)',
 ----
 
-µ¥»÷ÆÁÄ»µ×²¿µÄCommit changes¡£¿ÉËæÒâÊäÈëÌá½»ÏûÏ¢¡£
+å•å‡»å±å¹•åº•éƒ¨çš„Commit changesã€‚å¯éšæ„è¾“å…¥æäº¤æ¶ˆæ¯ã€‚
 
-Ò»µ©ÄãÌá½»ÁËÄãµÄ¸ü¸Ä£¬Ò»¸öĞÂµÄ *PipelineRun* Ó¦¸Ã¼¸ºõÁ¢¼´ÔÚOpenShiftÖĞ´¥·¢¡£µã»÷×ó²àµ¼º½²Ëµ¥ÖĞµÄ *Pipeline* £¬È»ºóµã»÷ `nationalparks-pipeline`¡£ÄãÓ¦¸Ã¿´µ½Ò»¸öĞÂ¹ÜµÀÊµÀıÕıÔÚÔËĞĞ£º
+ä¸€æ—¦ä½ æäº¤äº†ä½ çš„æ›´æ”¹ï¼Œä¸€ä¸ªæ–°çš„ *PipelineRun* åº”è¯¥å‡ ä¹ç«‹å³åœ¨OpenShiftä¸­è§¦å‘ã€‚ç‚¹å‡»å·¦ä¾§å¯¼èˆªèœå•ä¸­çš„ *Pipeline* ï¼Œç„¶åç‚¹å‡» `nationalparks-pipeline`ã€‚ä½ åº”è¯¥çœ‹åˆ°ä¸€ä¸ªæ–°ç®¡é“å®ä¾‹æ­£åœ¨è¿è¡Œï¼š
 
 image::images/nationalparks-codechanges-pipeline-running.png[Webhook]
 
-»òÕßÔËĞĞÒÔÏÂÃüÁî½øĞĞÑéÖ¤£º
+æˆ–è€…è¿è¡Œä»¥ä¸‹å‘½ä»¤è¿›è¡ŒéªŒè¯ï¼š
 
 [source,bash,role=execute-1]
 ----
 oc get PipelineRun
 ----
 
-Ò»µ©¹¹½¨ºÍ²¿ÊğÍê³É£¬Í¨¹ıÔÚä¯ÀÀÆ÷ÖĞ²é¿´Ó¦ÓÃ³ÌĞòÀ´ÑéÖ¤ĞÂ¾µÏñÊÇ·ñ×Ô¶¯²¿Êğ£º
+ä¸€æ—¦æ„å»ºå’Œéƒ¨ç½²å®Œæˆï¼Œé€šè¿‡åœ¨æµè§ˆå™¨ä¸­æŸ¥çœ‹åº”ç”¨ç¨‹åºæ¥éªŒè¯æ–°é•œåƒæ˜¯å¦è‡ªåŠ¨éƒ¨ç½²ï¼š
 
 
-link:http://nationalparks-{{project_namespace}}.{{cluster_subdomain}}/ws/info/[National Parks ĞÅÏ¢Ò³]
+link:http://nationalparks-{{project_namespace}}.{{cluster_subdomain}}/ws/info/[National Parks ä¿¡æ¯é¡µ]
 
 
-ÏÖÔÚÄúÓ¦¸Ã¿´µ½ÔÚ·µ»ØµÄJSON×Ö·û´®ÖĞÉèÖÃµÄĞÂÃû³Æ¡£
+ç°åœ¨æ‚¨åº”è¯¥çœ‹åˆ°åœ¨è¿”å›çš„JSONå­—ç¬¦ä¸²ä¸­è®¾ç½®çš„æ–°åç§°ã€‚
 
-NOTE: ÎªÁËÔÚµØÍ¼µÄÍ¼ÀıÖĞ¿´µ½ÕâÒ»µã£¬ÄãĞèÒª½«ÄãµÄparksmapËõĞ¡µ½0£¬È»ºó»Øµ½1À´Ç¿ÖÆÓ¦ÓÃ³ÌĞòË¢ĞÂËüµÄ»º´æ¡£
+NOTE: ä¸ºäº†åœ¨åœ°å›¾çš„å›¾ä¾‹ä¸­çœ‹åˆ°è¿™ä¸€ç‚¹ï¼Œä½ éœ€è¦å°†ä½ çš„parksmapç¼©å°åˆ°0ï¼Œç„¶åå›åˆ°1æ¥å¼ºåˆ¶åº”ç”¨ç¨‹åºåˆ·æ–°å®ƒçš„ç¼“å­˜ã€‚
