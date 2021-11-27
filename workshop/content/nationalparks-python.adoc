@@ -1,4 +1,4 @@
-在本节中，我们将部署一个后端服务，它是用JavaScript开发的，它将向可视化应用程序(在之前的实验中部署的 `parksmap` web组件)公开两个主要REST端点。该应用程序将查询存储在MongoDB数据库中的国家公园信息(包括其坐标)。该应用程序还将提供一个外部接入点，以便最终用户可以直接使用所提供的API。
+在本节中，我们将部署一个后端服务，它是用Python开发的，它将向可视化应用程序(在之前的实验中部署的 `parksmap` web组件)公开两个主要REST端点。该应用程序将查询存储在MongoDB数据库中的国家公园信息(包括其坐标)。该应用程序还将提供一个外部接入点，以便最终用户可以直接使用所提供的API。
 
 image::images/roadshow-app-architecture-nationalparks-1.png[Application architecture,800,align="center"]
 
@@ -19,9 +19,9 @@ OpenShift在一个叫做Build的特殊 *Pod* 中运行S2I进程Pod，因此构�
 
 S2I的完整讨论超出了实验的范围，但是你可以找到更多的信息在 https://{{DOCS_URL}}/openshift_images/using_images/using-s21-images.html[OpenShift S2I 文档] 或 https://github.com/openshift/source-to-image[GitHub] 。在本实验关于S2I，你需要记住的唯一关键概念是它的魔力。
 
-== 练习：创建JavaScript应用程序
+== 练习：创建Python应用程序
 
-作为这项工作的一部分，我们将部署的后台服务称为 `nationalparks`。这是一个JavaScript应用程序，它对MongoDB数据库执行2D地理空间查询，以定位和返回世界上所有国家公园的地图坐标。这是一种巧妙的方式，来部署一个返回位置JSON列表的webservice。
+作为这项工作的一部分，我们将部署的后台服务称为 `nationalparks`。这是一个Python应用程序，它对MongoDB数据库执行2D地理空间查询，以定位和返回世界上所有国家公园的地图坐标。这是一种巧妙的方式，来部署一个返回位置JSON列表的webservice。
 
 === 添加到工程
 
@@ -46,11 +46,11 @@ link:http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalpa
 
 
 
-稍后在实验中，我们希望您进行代码更改，然后重新构建您的应用程序。这是一个相当简单的Spring框架Java应用程序。
+稍后在实验中，我们希望您进行代码更改，然后重新构建您的应用程序。这是一个相当简单的Python应用程序。
 
 === 在OpenShift上构建代码
 
-与之前在现有镜像中使用 *+Add* 类似，我们也可以在指定源代码存储库时使用相同的方法。因为在这个实验中您有自己的git存储库，所以让我们将它与一个简单的JavaScript S2I镜像一起使用。
+与之前在现有镜像中使用 *+Add* 类似，我们也可以在指定源代码存储库时使用相同的方法。因为在这个实验中您有自己的git存储库，所以让我们将它与一个简单的Python S2I镜像一起使用。
 
 在开发者视图中，单击左侧导航中的 *+Add* ，转到 *Git Repository* 部分，然后选择 *From Git* 选项。
 
@@ -187,7 +187,7 @@ WARNING: URL末尾的斜杠是*必需的*。
 
 [source,bash]
 ----
-这是一个JavaScript应用程序，它对MongoDB数据库执行2D地理空间查询。
+这是一个Python应用程序，它对MongoDB数据库执行2D地理空间查询。
 ----
 
 然而，我们还没有数据库。

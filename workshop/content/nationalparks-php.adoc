@@ -1,137 +1,99 @@
-In this lab, we're going to deploy a backend service, developed in PHP 
-that will expose 2 main REST endpoints to the visualizer
-application (`parksmap` web component that was deployed in the previous labs).
-The application will query for national parks information (including its
-coordinates) that is stored in a MongoDB database.  This application will also
-provide an external access point, so that the API provided can be directly used
-by the end user.
+在本节中，我们将部署一个后端服务，它是用PHP开发的，它将向可视化应用程序(在之前的实验中部署的 `parksmap` web组件)公开两个主要REST端点。该应用程序将查询存储在MongoDB数据库中的国家公园信息(包括其坐标)。该应用程序还将提供一个外部接入点，以便最终用户可以直接使用所提供的API。
 
 image::images/roadshow-app-architecture-nationalparks-1.png[Application architecture,800,align="center"]
 
-== Background: Source-to-Image (S2I)
+== 背景：Source-to-Image (S2I)
 
-In a previous lab, we learned how to deploy an existing 
-image. Now we will expand on that by learning how OpenShift builds
-container images using source code from an existing repository.  This is accomplished using the Source-to-Image project.
+在以前的实验中，我们学习了如何部署预先存在镜像的容器。现在我们将通过学习OpenShift如何使用来自现有存储库的源代码构建容器镜像来扩展它。这是通过Source-to-Image项目来完成的。
 
-https://github.com/openshift/source-to-image[Source-to-Image (S2I)] is a
-open source project sponsored by Red Hat that has the following goal:
+https://github.com/openshift/source-to-image[Source-to-Image (S2I)] 是一个由Red Hat赞助的开源项目，它的目的是：
 
 [source]
 ----
-Source-to-image (S2I) is a tool for building reproducible container images. S2I
-produces ready-to-run images by injecting source code into an image and
-assembling a new image which incorporates the builder image and built
-source. The result is then ready to use with docker run. S2I supports
-incremental builds which re-use previously downloaded dependencies, previously
-built artifacts, etc.
+源到映像(S2I)是一个用于构建可复制的容器镜像的工具。S2I通过将源代码注入容器镜像(该容器镜像包含构建器镜像和构建的源代码)来生成运行就绪的容器镜像。它的构建结果可以直接在容器运行时环境使用。S2I支持重用预先下载的依赖项、预先构建的工件等的增量构建。
 ----
 
-OpenShift is S2I-enabled and can use S2I as one of its build mechanisms (in
-addition to building container images from Dockerfiles, and "custom" builds).
+OpenShift启用了S2I，并且可以使用S2I作为其构建机制之一(还支持从Dockerfiles构建容器镜像和 "自定义" 构建)。
 
-OpenShift runs the S2I process inside a special *Pod*, called a Build
-Pod, and thus builds are subject to quotas, limits, resource scheduling, and
-other aspects of OpenShift.
+OpenShift在一个叫做Build的特殊 *Pod* 中运行S2I进程Pod，因此构建要受制于OpenShift的配额、限制、资源调度和其他方面。
 
-A full discussion of S2I is beyond the scope of this class, but you can find
-more information about it either in the
-https://{{DOCS_URL}}/creating_images/s2i.html[OpenShift S2I documentation]
-or on https://github.com/openshift/source-to-image[GitHub]. The only key concept you need to
-remember about S2I is that it's magic.
+S2I的完整讨论超出了实验的范围，但是你可以找到更多的信息在 https://{{DOCS_URL}}/openshift_images/using_images/using-s21-images.html[OpenShift S2I 文档] 或 https://github.com/openshift/source-to-image[GitHub] 。在本实验关于S2I，你需要记住的唯一关键概念是它的魔力。
 
-== Exercise: Creating a PHP application
+== 练习：创建PHP应用程序
 
-The backend service that we will be deploying as part of this exercise is
-called `nationalparks`.  This is a PHP application that performs 2D
-geo-spatial queries against a MongoDB database to locate and return map
-coordinates of all National Parks in the world. That was just a fancy way of
-saying that we are going to deploy a webservice that returns a JSON list of
-places.
+作为这项工作的一部分，我们将部署的后台服务称为 `nationalparks`。这是一个PHP应用程序，它对MongoDB数据库执行2D地理空间查询，以定位和返回世界上所有国家公园的地图坐标。这是一种巧妙的方式，来部署一个返回位置JSON列表的webservice。
 
-=== Add to Project
-Because the `nationalparks` component is a backend to serve data that our
-existing frontend (parksmap) will consume, we are going to build it inside the existing
-project that we have been working with. To illustrate how you can interact with OpenShift via the CLI or the Web Console, we will deploy the `nationalparks` component using the web console.
+=== 添加到工程
 
-=== Using application code on embedded Git server
+因为 `nationalparks` 组件是一个后端，它将为我们现有的前端(parksmap)提供数据，所以我们将在现有项目中构建它。为了演示如何通过CLI或web控制台与OpenShift交互，我们将使用web控制台部署nationalparks组件。
 
-OpenShift can work with any accessible Git repository. This could be GitHub,
-GitLab, or any other server that speaks Git. You can even register webhooks in
-your Git server to initiate OpenShift builds triggered by any update to the
-application code!
+=== 在嵌入式Git服务器上使用应用程序代码
 
-The repository that we are going to use is already cloned in the internal Gogs repository
-and located at the following URL:
+OpenShift可以使用任何可访问的Git存储库。这可能是GitHub、GitLab或任何其他使用Git的服务器。你甚至可以在你的Git服务器中注册webhook来启动OpenShift的任何应用程序代码更新!
 
-link:http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks.git[Gogs Repository]
 
-Your Gogs credentials are:
+我们将要使用的存储库已经在Gogs内部存储库中克隆了，它位于以下URL:
+
+link:http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks-py.git[Gogs 代码库]链接地址。
+
+您的Gogs凭证是：
 
 [source,bash]
 ----
-username: {{username}}
-password: {{GOGS_PASSWORD}}
+用户名：{{username}}
+口令：{{GOGS_PASSWORD}}
 ----
 
-Later in the lab, we want you to make a code change and then rebuild your
-application. This is a fairly simple PHP application.
+稍后在实验中，我们希望您进行代码更改，然后重新构建您的应用程序。这是一个相当简单的PHP应用程序。
 
-=== Build the Code on OpenShift
+=== 在OpenShift上构建代码
 
-Similar to how we used "Add to project" before with an existing image, we
-can do the same for specifying a source code repository. Since for this lab you
-have your own git repository, let's use it with a simple PHP S2I image.
+与之前在现有镜像中使用 *+Add* 类似，我们也可以在指定源代码存储库时使用相同的方法。因为在这个实验中您有自己的git存储库，所以让我们将它与一个简单的PHP S2I镜像一起使用。
 
-In the OpenShift web console, find your `{{ project_namespace  }}` project, and then
-click the *Add* button and then the *Browse Catalog* link as highlighted in the following image:
+在OpenShift web控制台中，找到你的 `{{ project_namespace  }}` 项目，然后单击 *Add* 按钮，然后单击 *Browse Catalog* 链接，如下图中突出显示:
 
 image::images/nationalparks-show-catalog.png[Add to Project]
 
-This is the developer catalog which allows a user to select components they want to add to their application.
+这是一个开发人员目录，它允许用户选择他们想要添加到他们的应用程序中的组件。
 
-Search for `php`, and finally select *PHP* as shown in the following image:
+搜索 `php`，最后选择 *PHP* ，如下图所示：
 
 image::images/nationalparks-php-search-php.png[Developer Catalog Languages]
 
-After you click *PHP*, a dialog is presented as shown in the following image:
+点击 *PHP*后，弹出如下图所示的对话框：
 
 image::images/nationalparks-php-new-php-service.png[Add PHP]
 
 Click on the *Create Application* button and then enter a name and a Git repository URL. For the name, enter `nationalparks`,
-and for the Git repository URL, enter:
+and for the Git repository URL, enter:单击 *Create Application* 按钮，然后输入名称和Git代码库URL。输入 `nationalparks` 做为名称，输入以下地址做为Git代码库URL。
 
 [source,role=copypaste]
 ----
 http://gogs-{{INFRA_PROJECT}}.{{cluster_subdomain}}/{{username}}/nationalparks-php.git
 ----
 
-NOTE: All of these runtimes shown are made available via *Templates* and
-*ImageStreams*, which will be discussed in a later lab.
+NOTE: 所有展现的这些运行时也可以通过 *Templates* 和 *ImageStreams*创建，这将在稍后的实验中讨论。
 
-In the *Git Repository* field enter the base of the Git repository for
-your Nationaparks application. This will cause the S2I
-process to grab that specific tag in the code repository.
+在 *Git Repository* 字段中为你的 Nationaparks 应用程序输入Git代码库基线。这将导致S2I进程在代码库中获取特定的标签。
 
-Check the box to create a route and then click the *Create* button.
+选中创建route的复选框，然后点击 *Create* 按钮。
 
 image::images/nationalparks-php-configure-php-service.png[Runtimes]
 
-To see the build logs, in Topology view, click the nationalparks entry, then click on View Logs in the Builds section of the Resources tab.
+要查看构建日志，请在拓扑视图中单击nationalparks条目，然后单击Resources选项卡的Builds部分中的view logs。
 
 image::images/nationalparks-php-new-php-build.png[Nationalparks build]
 
-The initial build will take a few minutes to downloads all of the dependencies needed for
-the application. You can see all of this happening in real time!
+初始构建将花费几分钟时间下载应用程序所需的所有依赖项。你可以看到所有这些实时发生!
 
-From the command line, you can also see the *Builds*:
+通过命令行，你还可以看到 *Builds*：
 
 [source,bash,role=execute-1]
 ----
 oc get builds
 ----
 
-You'll see output like:
+你会看到这样的输出：
 
 [source,bash]
 ----
@@ -139,23 +101,21 @@ NAME              TYPE      FROM          STATUS     STARTED              DURATI
 nationalparks-1   Source    Git@b052ae6   Running    About a minute ago   1m2s
 ----
 
-You can also view the build logs with the following command:
+您还可以使用以下命令查看构建日志：
 
 [source,bash,role=execute-1]
 ----
 oc logs -f builds/nationalparks-1
 ----
 
-After the build has completed and successfully:
+在构建完成并成功之后：
 
-* The S2I process will push the resulting Docker-formatted image to the internal OpenShift registry
-* The *DeploymentConfiguration* (DC) will detect that the image has changed, and this
-  will cause a new deployment to happen.
-* A *ReplicationController* (RC) will be spawned for this new deployment.
-* The RC will detect no *Pods* are running and will cause one to be deployed, as our default replica count is just 1.
+* S2I进程将结果镜像推送到OpenShift内部镜像仓库
+* *Deployment* (D) 将检测出镜像已更改，而这将触发新部署。
+* 这个新部署将生成一个 *ReplicaSet* (RS) 。
+* RC将检测到没有 *Pods* 正在运行，因为我们设定默认副本数为1，这将触发部署一个pod。
 
-In the end, when issuing the `oc get pods` command, you will see that the build Pod
-has finished (exited) and that an application *Pod* is in a ready and running state:
+最后，当发出 `oc get pods` 命令时，你会看到构建Pod已经完成(退出)，并且应用程序 *Pod* 处于就绪和运行状态：
 
 [source,bash]
 ----
@@ -165,16 +125,14 @@ nationalparks-1-build   0/1       Completed   0          3m
 parksmap-1-4hbtk        1/1       Running     0          2h
 ----
 
-If you look again at the web console, you will notice that, when you create the
-application this way, OpenShift also creates a *Route* for you. You can see the
-URL in the web console, or via the command line:
+如果你再看看web控制台，你会注意到，当你以这种方式创建应用程序时，OpenShift也为你创建了一个 *Route* 。你可以在web控制台看到URL，或通过命令行:
 
 [source,bash,role=execute-1]
 ----
 oc get routes
 ----
 
-Where you should see something like the following:
+你应该会看到如下内容：
 
 [source,bash]
 ----
@@ -183,34 +141,32 @@ nationalparks   nationalparks-{{ project_namespace  }}.{{cluster_subdomain}}    
 parksmap        parksmap-{{ project_namespace  }}.{{cluster_subdomain}}                  parksmap        8080-tcp
 ----
 
-In the above example, the URL is:
+在上面的示例中，URL为：
 
 [source,bash,role=copypaste]
 ----
 http://nationalparks-{{ project_namespace  }}.{{cluster_subdomain}}
 ----
 
-Since this is a back-end application, it doesn't actually have a web interface.
-However, it can still be used with a browser. All backends that work with the parksmap
-frontend are required to implement a `/ws/info/` endpoint. To test, visit this URL in your browser:
+由于这是一个后端应用程序，它实际上没有一个web界面。但它仍然可以与浏览器一起使用。所有与parksmap前端一起工作的后端都需要实现一个 `/ws/info/` 端点。要进行测试，请在浏览器中访问此URL:
 
-link:http://nationalparks-{{project_namespace}}.{{cluster_subdomain}}/ws/info/[National Parks Info Page]
 
-WARNING: The trailing slash is *required*.
+link:http://nationalparks-{{project_namespace}}.{{cluster_subdomain}}/ws/info/[National Parks 信息页]
 
-You will see a simple JSON string:
+WARNING: URL末尾的斜杠是*必需的*。
+
+你会看到一个简单的JSON字符串:
 
 [source,json]
 ----
 {"id":"nationalparks-php","displayName":"National Parks (PHP)","center":{"latitude":"47.039304","longitude":"14.505178"},"zoom":4}
 ----
 
-Earlier we said:
+我们早些时候说:
 
 [source,bash]
 ----
-This is a PHP application that performs 2D geo-spatial queries
-against a MongoDB database
+这是一个PHP应用程序，它对MongoDB数据库执行2D地理空间查询。
 ----
 
-But we don't have a database. Yet.
+然而，我们还没有数据库。
