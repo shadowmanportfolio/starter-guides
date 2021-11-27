@@ -100,7 +100,7 @@ Python头文件(Python.h)是必需的。在Mac OS X上，如果你已经用Homeb
 在Fedora:
 
 ```bash
-sudo dnf install python3-dev
+sudo dnf install python3-devel
 ```
 
 4. 安装 Virtual Env:
