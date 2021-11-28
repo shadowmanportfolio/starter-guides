@@ -1,4 +1,4 @@
-WORKSHOP_NAME=开始实验
+WORKSHOP_NAME=lab-getting-started
 WORKSHOP_IMAGE=quay.io/openshiftlabs/lab-getting-started:ocp-4.8
 WORKSHOP_TITLE="开始使用OpenShift"
 WORKSHOP_DESCRIPTION="使用OpenShift开发应用的Workshop"
