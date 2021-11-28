@@ -1,7 +1,7 @@
 WORKSHOP_NAME=lab-getting-started
 WORKSHOP_IMAGE=quay.io/openshiftlabs/lab-getting-started:ocp-4.8
-WORKSHOP_TITLE="Getting Started with OpenShift"
-WORKSHOP_DESCRIPTION="A workshop introducing developers to OpenShift"
+WORKSHOP_TITLE="开始使用OpenShift"
+WORKSHOP_DESCRIPTION="面向开发人员使用OpenShift的Workshop"
 CONSOLE_IMAGE=quay.io/openshift/origin-console:4.8
 RESOURCE_BUDGET=x-large
 MAX_SESSION_AGE=7200
