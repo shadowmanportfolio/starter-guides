@@ -1,3 +1,3 @@
 WORKSHOP_FILE=php-workshop.yml
-WORKSHOP_NAME=lab-getting-started-php
-WORKSHOP_TITLE="Getting Started with OpenShift - PHP edition"
+WORKSHOP_NAME="开始实验（PHP）"
+WORKSHOP_TITLE="OpenShift入门 PHP版"
