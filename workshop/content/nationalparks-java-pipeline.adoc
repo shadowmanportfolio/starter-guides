@@ -104,7 +104,7 @@ spec:
     - name: build-and-test
       params:
         - name: MAVEN_IMAGE
-          value: gcr.io/cloud-builders/mvn
+          value: quay.io/samzhu/cloud-builders-mvn
         - name: GOALS
           value:
             - package
