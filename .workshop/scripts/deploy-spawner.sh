@@ -122,7 +122,7 @@ spec:
             memory: 128Mi
       containers:
       - name: pause
-        image: gcr.io/google_containers/pause
+        image: quay.io/samzhu/google-containers-pause
         resources:
           limits:
             memory: 128Mi
