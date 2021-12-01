@@ -205,7 +205,7 @@ https://{{DOCS_URL}}/openshift_images/managing_images/image-pull-policy.html[镜
 
 当你要求OpenShift运行镜像时，它会自动为你创建一个 *Service* 。请记住，服务是一个内部构造。它们对 "外部世界" 或OpenShift环境之外的任何东西都不可用。稍后会详细介绍到这一部分内容。
 
- *Service* 映射到一组 *Pods* 的方式是通过系统 *Labels* 和 *Selectors*。 *Services* 分配一个固定的IP地址，可以映射多个端口和协议。
+*Service* 映射到一组 *Pods* 的方式是通过系统 *Labels* 和 *Selectors*。 *Services* 分配一个固定的IP地址，可以映射多个端口和协议。
 
 还有很多 https://{{DOCS_URL}}/architecture/understanding-development.html#understanding-kubernetes-pods[Services] 相关资料，在官方文档中包含手工定义Service的YAML格式样例。
 
@@ -317,7 +317,7 @@ oc get pod parksmap-65c4f8b676-k5gkk -o yaml
 ** `app=parksmap`
 ** `deploymentconfig=parksmap`
 
- *Labels*只是键/值对。此 *Project* 中的任何 *Pod* 具有 *Label* 且匹配 *Selector* 将与 *Service* 相关联。要查看实际情况，发出以下命令:
+*Labels*只是键/值对。此 *Project* 中的任何 *Pod* 具有 *Label* 且匹配 *Selector* 将与 *Service* 相关联。要查看实际情况，发出以下命令:
 
 [source,bash,role=execute-1]
 ----
@@ -347,4 +347,4 @@ Session Affinity:  None
 Events:            <none>
 ----
 
-您可能想知道为什么只列出了一个端点。这是因为只有一个 *Pod* 当前正在运行。在接下来的实验中，我们将学习如何扩展应用程序，此时您将能够看到与 *Service* 关联的多个端点。
+您可能想知道为什么只列出了一个端点（Endpoint）。这是因为只有一个 *Pod* 当前正在运行。在接下来的实验中，我们将学习如何扩展应用程序，此时您将能够看到与 *Service* 关联的多个端点。
