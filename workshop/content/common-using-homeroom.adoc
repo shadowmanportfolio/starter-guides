@@ -1,19 +1,19 @@
-可通过以下链接进入workshop: https://github.com/openshift-homeroom[Homeroom]，这是一个交互式的培训环境，你无需在本地机器上安装任何东西，就可以在网页浏览器中使用。
+通过这个链接可以访问本次workshop使用的开源基础框架项目: https://github.com/openshift-homeroom[Homeroom]，这是一个交互式的培训环境，你无需在本地机器上安装任何东西，就可以在网页浏览器中开始实验。
 
-Homeroom仪表板提供了对workshop内容的一个或多个终端访问。
+Homeroom仪表板提供了对workshop内容的一个或多个访问终端。
 
-交互式shell托管在OpenShift内部运行的容器中。您需要的任何特殊命令行程序都已经预先安装。
+交互式shell托管在OpenShift内部运行的容器中。您需要的所有特殊命令行程序都已经预先安装。
 
-在处理workshop内容时，您将遇到需要在终端中运行的命令。这些将显示为:
+在进行workshop实验内容操作时，您需要在终端中运行的命令将以下面的形式显示:
 
 [source,text,role=execute-1]
 ----
 date
 ----
 
-这样的命令右边会出现一个play符号 +++<span class="fas fa-play-circle"></span>+++ ， 这表示您不需要自己在终端手工输入命令。只要简单单击命令上的任何地方，它将在终端中为您自动运行。
+这个命令右边会出现一个play符号 +++<span class="fas fa-play-circle"></span>+++ ， 这表示您不需要自己在终端手工输入命令。只要简单单击命令上的任何地方，它将在终端中为您自动运行。
 
-尝试点击上面的命令，如果您还没有试试的话。
+如果您还没点击的话，尝试点击上面的命令试试。
 
 使用这种方法可以节省时间，避免错误。
 
