@@ -83,7 +83,7 @@ CAUTION: 确保已经用适当的值配置了 *`MongoDB Database Name`* 参数�
 
 image::images/nationalparks-databases-list-secrets.png[List Secrets]
 
-单击 *Parameters* 下的secret名称。这个secret可以用在其他组件上，比如 `nationalparks` 后端，用于验证数据库。
+单击包含 *Parameters* 字样的secret名称。这个secret可以用在其他组件上，比如 `nationalparks` 后端，用于验证数据库。
 
 现在，连接和身份验证信息存储在项目中的一个secret中，我们需要将其添加到 `nationalparks` 后端。点击 *Add Secret to Workload* 按钮。
 
