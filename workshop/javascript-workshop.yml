@@ -1,7 +1,5 @@
 ---
-name: Starter Labs (Node.js)
-description: Developing Node.js Applications on OpenShift - Starter Lab
-name: 基础实验(Node.js)
+name: 基础实验（Node.js）
 description: 在OpenShift - 基础实验中开发Node.js应用程序
 
 modules:
