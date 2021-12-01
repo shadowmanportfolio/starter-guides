@@ -1,17 +1,16 @@
 image::images/common-environment-ocp-architecture.png[OCP Architecture]
 
-WorkShop托管在OpenShift环境中，该环境运行在AWS
-公有云。环境由以下系统组成:
+WorkShop托管在OpenShift环境中，该环境运行在AWS公有云。环境由以下几个部分组成:
 
 * Master 节点
-* Infrastructure 节点
+* Infrastructure （基础设施）节点
 * Worker 或 "应用" 节点
 * 动态置备存储
 
 基础设施节点提供以下几种服务:
 
 * Gogs git server
-* 实验室手册
+* 实验手册
 * OpenShift容器镜像库
 * OpenShift路由
 
