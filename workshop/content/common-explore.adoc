@@ -40,16 +40,15 @@ OpenShift提供了一个基于web的控制台，允许用户通过浏览器执�
 
 在登录屏幕上，输入以下凭证:
 
-Username: `{{username}}`
+用户名： `{{username}}`
 
-Password: `openshift`
+口令： `openshift`
 
 第一次访问web控制台时，您很可能处于管理员视图中。你会看到一个你可以访问的项目列表，你会看到如下图片所示的内容:
 
 image::images/explore-webconsole1sc.png[Web Console]
 
-点击 *{{ project_namespace  }}* 项目链接。当你点击
-*{{ project_namespace  }}* 工程，您将被带到项目详细信息页面，它将列出有关项目的一些指标和细节。现在什么都没有，但随着实验室的进展，内容就会有所改变。
+点击 *{{ project_namespace  }}* 项目链接。您将被带到 *{{ project_namespace  }}* 项目详细信息页面，它会列出有关项目的一些指标和细节。现在什么都没有，但随着实验室的进展，内容就会有所改变。
 
 image::images/explore-webconsole2.png[Explore Project]
 
