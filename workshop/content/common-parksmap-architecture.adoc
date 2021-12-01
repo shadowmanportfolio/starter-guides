@@ -9,6 +9,6 @@ image::images/roadshow-app-architecture.png[Application architecture,800,align="
 * 全球国家公园
 * 美国职业棒球大联盟的体育场
 
-这个应用程序的原始源代码位于链接: https://github.com/openshift-roadshow/[点击这里]。
+这个应用程序的源代码项目位于: https://github.com/openshift-roadshow/[点击这里]。
 
 ParksMap web应用程序的服务器端组件充当所有可用后端之间的通信网关。这些后端将通过使用OpenShift提供的服务发现机制来动态发现，这将在接下来的实验室中进行更详细的讨论。
