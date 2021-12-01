@@ -30,7 +30,7 @@ image::images/roadshow-app-architecture-nationalparks-2.png[Application architec
 oc create -f https://raw.githubusercontent.com/openshift-labs/starter-guides/ocp-4.8/mongodb-template.yaml -n {{project_namespace}}
 ----
 
-刚才发生了什么?你刚刚 `create`了什么?我们传递给 `create` 命令的参数是 *Template* 。 `create` 只是让模板在你的 *Project* 中可用。
+刚才发生了什么?你刚刚 `create` 了什么？我们传递给 `create` 命令的参数是 *Template* 。 `create` 只是让模板在你的 *Project* 中可用。
 
 == 练习：部署MongoDB
 
