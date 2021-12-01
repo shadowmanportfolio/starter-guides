@@ -6,7 +6,7 @@
 
 Tekton *Triggers* 使我们能够配置Pipeline来响应外部事件(Git push events, pull requests 等等)，比如Web Hooks。
 
-添加触发支持需要在我们的项目中创建一个 `TriggerTemplate`、 `TriggerBinding`和一个 `EventListener` 。
+添加触发支持需要在我们的项目中创建一个 `TriggerTemplate` 、 `TriggerBinding` 和一个 `EventListener` 。
 
 
 
@@ -17,6 +17,15 @@ image::images/devops-pipeline-triggers.png[Triggers]
 * *TriggerTemplate*：触发器模板是新创建资源的模板。它支持参数来创建特定的 `PipelineResources` 和 `PipelineRuns` 。
 * *TriggerBinding*：验证事件并提取有效负载字段。
 * *EventListener*: 将 `TriggerBindings` 和 `TriggerTemplates` 连接到可寻址端点(事件接收器)。它使用从每个TriggerBinding(和任何提供的静态参数)提取的事件参数来创建相应的TriggerTemplate中指定的资源。它还允许外部服务通过拦截器字段对事件有效负载进行预处理。
+
+这是安装上述组件的模板地址：
+
+[source,shell,role=execute-1]
+----
+http://gogs-labs.apps.ocp.demo.rhtsec.com/{{username}}/nationalparks-dotnet/src/master/Pipelines/nationalparks-triggers-all.yaml
+----
+
+NOTE: 在创建之前我们先修改一下里面的内容，把 `targetPort: 8080` 改为  `targetPort: http-listener` 。
 
 现在让我们为我们的Pipeline一起创建它们：
 
@@ -73,14 +82,14 @@ image::images/nationalparks-codechanges-gogs-config-webhook.png[Webhook]
 == 练习：使用 Gogs Web Hooks
 点击Gogs里的 *Files* 标签。这是Gogs的代码库视图。
 
-CAUTION: 确保在右上角的下拉菜单设置为 *`master`* 分支。进入以下路径：
+CAUTION: 确保在左上角的下拉菜单设置为 *`master`* 分支。进入以下路径：
 
 [source,bash]
 ----
 Controllers/
 ----
 
-然后点击 `BackendController.java` 文件。
+然后点击 `ParksController.cs` 文件。
 
 一旦文件显示在屏幕上，点击右上角的编辑按钮，如下所示：
 
