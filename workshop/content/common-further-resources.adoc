@@ -25,7 +25,7 @@ Portal]* - 一个在线互动学习环境，在这里你可以运行和体验Ope
 
 以下OpenShift电子书也可网上免费下载。
 
-* *link:https://www.openshift.com/for-developers/[OpenShift
+* *link:https://developers.redhat.com/e-books/openshift-for-developers/[OpenShift
 for Developers]*
 
 image::images/further-resources-openshift-for-developers.png[OpenShift for Developers]
@@ -34,6 +34,6 @@ image::images/further-resources-openshift-for-developers.png[OpenShift for Devel
 
 image::images/further-resources-devops-with-openshift.png[DevOps with OpenShift]
 
-* *link:https://www.openshift.com/deploying-to-openshift/[Deploying to OpenShift]*
+* *link:https://developers.redhat.com/e-books/deploying-openshift/old/[Deploying to OpenShift]*
 
 image::images/further-resources-deploying-to-openshift.png[Deploying to OpenShift]
