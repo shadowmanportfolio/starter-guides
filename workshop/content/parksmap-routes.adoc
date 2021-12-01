@@ -4,7 +4,7 @@ image::images/roadshow-app-architecture-parksmap-2.png[Application architecture,
 
 == 背景：路由
 
-*Services* 提供OpenShift环境的内部抽象和负载平衡，有时 **外部** 的客户端(用户、系统、设备等)需要访问OpenShift上运行的应用程序。这种访问是通过OpenShift路由层实现的。背后的数据对象就是 *Route*。
+*Services* 提供OpenShift环境的内部抽象和负载均衡，有时 **外部** 的客户端(用户、系统、设备等)需要访问OpenShift上运行的应用程序。这种访问是通过OpenShift路由层实现的。背后的数据对象就是 *Route*。
 
 默认的OpenShift路由器(HAProxy)使用传入请求的HTTP包头来确定代理连接的位置。您可以选择为 *Route* 定义安全，比如TLS。如果您想要您的 *Services* 以及扩展后的 *Pods* 可以从外部世界访问，您需要创建一个 *Route*。
 
@@ -29,7 +29,7 @@ image::images/parksmap-route-create-1.png[Create Route1,align="center"]
 image::images/parksmap-route-create-2.png[Create Route2,align="center"]
 
 
-当创建一个 *Route*时，可以提供一些其他选项，比如 *Route* 的主机名和路径或其他TLS配置。
+当创建一个 *Route* 时，可以提供一些其他选项，比如 *Route* 的主机名和路径或其他TLS配置。
 
 === 使用命令行创建路由
 
