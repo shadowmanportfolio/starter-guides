@@ -57,6 +57,8 @@ NAME                     AGE
 nationalparks-pipeline   8s
 ----
 
+NOTE: 将管道配置中的 `gcr.io/cloud-builders/mvn` 替换为 `quay.io/samzhu/cloud-builders-mvn` 。
+
 现在让我们查看一下Tekton Pipeline：
 
 [source,shell,role=copypaste]

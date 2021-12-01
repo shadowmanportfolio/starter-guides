@@ -73,7 +73,7 @@ image::images/nationalparks-codechanges-gogs-config-webhook.png[Webhook]
 == 练习：使用 Gogs Web Hooks
 点击Gogs里的 *Files* 标签。这是Gogs的代码库视图。
 
-CAUTION: 确保在右上角的下拉菜单设置为 *`master`* 分支。进入以下路径：
+CAUTION: 确保在左上角的下拉菜单设置为 *`master`* 分支。进入以下路径：
 
 [source,bash]
 ----
