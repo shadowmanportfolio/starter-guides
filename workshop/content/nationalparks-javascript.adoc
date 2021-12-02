@@ -71,9 +71,7 @@ NOTE: 如果你正确地复制了Gogs URL(检查空格等无误)，仍然得到�
 
 image::images/nationalparks-import-from-git-url-builder-js.png[Import from Git]
 
-NOTE: 所有展现的这些运行时也可以通过 *Templates* 和 *ImageStreams*创建，这将在稍后的实验中讨论。
-
-向下滚动到 *General* 部分。选择应用 'workshop' ，名为 'nationalparks'。
+NOTE: 所有展现的这些运行时也可以通过 *Templates* 和 *ImageStreams* 创建，这将在稍后的实验中讨论。
 
 向下滚动到 *General* 部分。选择：
 
@@ -174,7 +172,7 @@ http://nationalparks-{{project_namespace}}.{{cluster_subdomain}}
 
 link:http://nationalparks-{{project_namespace}}.{{cluster_subdomain}}/ws/info/[National Parks 信息页]
 
-WARNING: URL末尾的斜杠是*必需的*。
+WARNING: URL末尾的斜杠是 *必需的* 。
 
 你会看到一个简单的JSON字符串:
 
